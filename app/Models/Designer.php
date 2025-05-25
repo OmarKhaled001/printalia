@@ -39,8 +39,13 @@ class Designer extends Authenticatable
         return $this->hasMany(Design::class);
     }
 
-    public function subscription(): MorphOne
+    public function subscriptions()
     {
-        return $this->morphOne(Subscription::class, 'subscribable');
+        return $this->morphMany(Subscription::class, 'subscribable');
+    }
+
+    public function activeSubscription()
+    {
+        return $this->subscriptions()->where('is_approved', true)->where('end_date', '>=', now())->latest()->first();
     }
 }

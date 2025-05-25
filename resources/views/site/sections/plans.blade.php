@@ -24,7 +24,7 @@ $plans = Plan::where('is_active', true)->get();
                             </div>
                         </div>
                         <div class="pricing-btn">
-                            <a href="{{ route('designer.subscribe.form', ['id' => $plan->id]) }}" class="axil-btn btn-large btn-borderd fw-bolder">ابدأ الآن</a>
+                            <a href="{{ route('designer.subscribe.form',  $plan->id) }}" class="axil-btn btn-large btn-borderd fw-bolder">ابدأ الآن</a>
                         </div>
                     </div>
                     <div class="pricing-body">

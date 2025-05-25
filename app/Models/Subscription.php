@@ -11,6 +11,7 @@ class Subscription extends Model
 
     protected $fillable = [
         'subscribable_id',
+        'plan_id',
         'subscribable_type',
         'start_date',
         'end_date',
@@ -23,5 +24,10 @@ class Subscription extends Model
     public function subscribable()
     {
         return $this->morphTo();
+    }
+
+    public function plan()
+    {
+        return $this->belongsTo(plan::class);
     }
 }

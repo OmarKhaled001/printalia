@@ -30,18 +30,18 @@
     <meta name="twitter:image" content="https://example.com/assets/media/og-image.jpg" />
     <meta name="twitter:site" content="@Printalia" />
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/media/icon.png" />
-    <link rel="stylesheet" href="assets/css/vendor/bootstrap.rtl.min.css" />
-    <link rel="stylesheet" href="assets/css/vendor/font-awesome.css" />
-    <link rel="stylesheet" href="assets/css/vendor/slick.css" />
-    <link rel="stylesheet" href="assets/css/vendor/slick-theme.css" />
-    <link rel="stylesheet" href="assets/css/vendor/sal.css" />
-    <link rel="stylesheet" href="assets/css/vendor/magnific-popup.css" />
-    <link rel="stylesheet" href="assets/css/vendor/green-audio-player.min.css" />
-    <link rel="stylesheet" href="assets/css/vendor/odometer-theme-default.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets') }}/media/icon.png" />
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/bootstrap.rtl.min.css" />
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/font-awesome.css" />
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/slick.css" />
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/slick-theme.css" />
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/sal.css" />
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/magnific-popup.css" />
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/green-audio-player.min.css" />
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/odometer-theme-default.css" />
 
     <!-- Site Stylesheet -->
-    <link rel="stylesheet" href="assets/css/app.css" />
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/app.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet" />

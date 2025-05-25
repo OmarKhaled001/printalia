@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->morphs('subscribable'); // designer or factory
+            $table->foreignId('plan_id')->nullable()->constrained()->nullOnDelete();
+            $table->morphs('subscribable');
             $table->date('start_date');
             $table->date('end_date');
-            $table->string('status')->default('active'); // active - pending - cancelled
-            $table->string('receipt')->nullable(); // إيصال الدفع
-            $table->boolean('is_approved')->default(false); // مراجعة الإيصال
-            $table->text('notes')->nullable(); // ملاحظات
+            $table->string('status')->default('active');
+            $table->string('receipt')->nullable();
+            $table->boolean('is_approved')->default(false);
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

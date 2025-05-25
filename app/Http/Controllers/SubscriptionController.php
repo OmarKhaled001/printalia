@@ -2,13 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
 
 class SubscriptionController extends Controller
 {
+
+    function index($id)
+    {
+        $plan = Plan::find($id);
+
+        return view('site.checkout', compact('plan'));
+    }
 
     public function store(Request $request)
     {

@@ -38,8 +38,8 @@ class Factory extends Authenticatable
         return $this->hasMany(FactoryOrder::class);
     }
 
-    public function subscription(): MorphOne
+    public function subscriptions()
     {
-        return $this->morphOne(Subscription::class, 'subscribable');
+        return $this->morphMany(Subscription::class, 'subscribable');
     }
 }

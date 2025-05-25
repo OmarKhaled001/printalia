@@ -19,19 +19,20 @@ class EnsureDesignerIsVerified
     {
         $designer = auth('designer')->user();
 
-        // If authenticated but not verified, redirect to verification pending page
-        if (!$designer->is_verified && !$designer->is_verified) {
-            return redirect()->route('verification');
+        // 1. Not verified
+        if (!$designer->is_verified) {
+            return redirect()->route('designer.verification');
         }
-        // If authenticated but not verified, redirect to verification pending page
+
+        // 2. No active subscription
         if (!$designer->has_active_subscription) {
-            return redirect()->route('designer.subscribe.form');
+            return redirect()->route('designer.subscribe.form', ['designer' => $designer->id]);
         }
 
+        // 3. Subscription not approved
         $subscription = $designer->subscriptions()->latest()->first();
-
         if ($subscription && !$subscription->is_approved) {
-            return redirect()->route('verification-wait');
+            return redirect()->route('designer.verification.wait');
         }
 
         return $next($request);
