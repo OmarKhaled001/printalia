@@ -48,4 +48,21 @@ class Designer extends Authenticatable
     {
         return $this->subscriptions()->where('is_approved', true)->where('end_date', '>=', now())->latest()->first();
     }
+
+    public function designsUsedCount(): int
+    {
+        return $this->designs()->count();
+    }
+
+    public function remainingDesigns(): int
+    {
+        $plan = $this->activeSubscription()?->plan;
+        return max(0, ($plan->design_limit ?? 0) - $this->designsUsedCount());
+    }
+
+    public function daysLeftInSubscription(): int
+    {
+        $end = optional($this->activeSubscription())->end_date;
+        return now()->diffInDays($end, false);
+    }
 }

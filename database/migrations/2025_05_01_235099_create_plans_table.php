@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('duration')->default(30);
             $table->string('duration_unit')->default('day');
             $table->text('description')->nullable();
-            $table->integer('design_limit')->nullable();
+            $table->integer('design_count')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

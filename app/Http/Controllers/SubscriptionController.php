@@ -45,6 +45,6 @@ class SubscriptionController extends Controller
             ]);
         });
 
-        return back()->with('success', 'تم إرسال طلب الاشتراك بنجاح، سيتم مراجعته قريباً.');
+        return redirect()->route('designer.verification.wait');
     }
 }

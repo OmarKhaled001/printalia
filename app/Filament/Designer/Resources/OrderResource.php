@@ -10,6 +10,8 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\FactoryOrder;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Hidden;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -36,6 +38,7 @@ class OrderResource extends Resource
                             ->searchable()
                             ->preload()
                             ->createOptionForm([
+                                Hidden::make('designer_id')->default(Auth::user()->id),
                                 Forms\Components\TextInput::make('name')->label('الاسم')->required(),
                                 Forms\Components\TextInput::make('phone')->label('رقم الهاتف')->required(),
                             ])
