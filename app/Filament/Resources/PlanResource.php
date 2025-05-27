@@ -23,9 +23,10 @@ use Filament\Tables\Columns\BooleanColumn;
 class PlanResource extends Resource
 {
     protected static ?string $model = Plan::class;
-    protected static ?string $navigationIcon = 'heroicon-o-cube';
-    protected static ?string $navigationLabel = 'خطط الاشتراك';
+    protected static ?string $navigationIcon = 'heroicon-o-rocket-launch';
+    protected static ?string $navigationLabel = 'الخطط';
     protected static ?string $pluralLabel = 'الخطط';
+    protected static ?string $navigationGroup = 'المنتجات';
 
     public static function form(Form $form): Form
     {

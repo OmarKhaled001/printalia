@@ -12,22 +12,18 @@ class EnsureDesignerIsVerified
     {
         $designer = auth('designer')->user();
 
-        if (!$designer->is_verified) {
-            return redirect()->route('designer.verification');
+
+        // إذا لم يكن لديه اشتراك فعال
+        if (!$designer->is_verified && !$designer->has_active_subscription) {
+            return redirect()->route('designer.subscription-plans')
+                ->with('warning', 'يجب الاشتراك في إحدى الباقات للوصول إلى لوحة التحكم');
         }
 
-        $subscription = $designer->subscriptions()->latest()->first();
-
-        if (!$subscription) {
-            return redirect()->route('designer.subscribe.form', ['id' => 1]); // أو أي خطة افتراضية
-        }
-
-        if (!$subscription->is_approved) {
-            return redirect()->route('designer.verification.wait');
-        }
-
-        if ($subscription->end_date < now()) {
-            return redirect()->route('designer.subscribe.form', ['id' => $subscription->plan_id]);
+        // إذا انتهت صلاحية الاشتراك
+        $activeSubscription = $designer->activeSubscription();
+        if (!$activeSubscription) {
+            return redirect()->route('designer.subscription-plans')
+                ->with('error', 'انتهت صلاحية اشتراكك، يرجى تجديده');
         }
 
         return $next($request);

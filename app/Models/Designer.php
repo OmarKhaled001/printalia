@@ -34,6 +34,11 @@ class Designer extends Authenticatable
         return $this->hasMany(Customer::class);
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function designs()
     {
         return $this->hasMany(Design::class);

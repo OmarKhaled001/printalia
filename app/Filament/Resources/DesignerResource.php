@@ -17,6 +17,7 @@ use Filament\Forms\Components\MarkdownEditor;
 use App\Filament\Resources\DesignerResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DesignerResource\RelationManagers;
+use App\Filament\Resources\DesignerResource\RelationManagers\SubscriptionsRelationManager;
 
 class DesignerResource extends Resource
 {
@@ -174,7 +175,7 @@ class DesignerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            SubscriptionsRelationManager::class,
         ];
     }
 

@@ -35,5 +35,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'factory@printalia.com',
             'password' => Hash::make('password'),
         ]);
+
+        $this->call(PlanSeeder::class);
     }
 }

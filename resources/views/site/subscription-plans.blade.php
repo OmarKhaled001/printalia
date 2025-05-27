@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en">
-
+<html class="no-js" lang="ar">
 <head>
+    <!-- Meta Data -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Printalia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
+    <!-- SEO Meta Tags -->
     <meta name="description" content="Printalia هي منصة يمنية تتيح للمصممين تحويل تصاميمهم إلى منتجات مثل التيشيرتات والأكواب وبيعها بسهولة دون الحاجة لرأس مال، مع ربط مباشر بالمصانع." />
     <meta name="keywords" content="Printalia, منصة تصميم, طباعة عند الطلب, بيع تصاميم, موكابس, اليمن, مصممين مبتدئين, تصميم منتجات, تجارة إلكترونية, POD اليمن" />
     <meta name="author" content="Printalia Team" />
@@ -14,6 +15,7 @@
     <meta name="language" content="ar" />
     <meta name="theme-color" content="#FF5722" />
 
+    <!-- Open Graph Meta (Facebook & LinkedIn) -->
     <meta property="og:title" content="Printalia" />
     <meta property="og:description" content="حوّل تصاميمك إلى منتجات قابلة للبيع بسهولة، وابدأ مشروعك دون رأس مال عبر منصة Printalia اليمنية." />
     <meta property="og:image" content="https://example.com/assets/media/og-image.jpg" />
@@ -21,12 +23,14 @@
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ar_YE" />
 
+    <!-- Twitter Meta -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Printalia" />
     <meta name="twitter:description" content="منصة يمنية لتحويل التصاميم إلى منتجات قابلة للبيع مع ربط بالمصانع ونظام موكابس سهل للمصممين المبتدئين." />
     <meta name="twitter:image" content="https://example.com/assets/media/og-image.jpg" />
     <meta name="twitter:site" content="@Printalia" />
-    <link rel="shortcut icon" type="image/x-icon" href="assets/media/icon.png" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets') }}/media/icon.png" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/bootstrap.rtl.min.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/font-awesome.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/slick.css" />
@@ -36,6 +40,7 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/green-audio-player.min.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/odometer-theme-default.css" />
 
+    <!-- Site Stylesheet -->
     <link rel="stylesheet" href="{{ asset('assets') }}/css/app.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -50,72 +55,79 @@
             font-family: "Cairo", sans-serif !important;
         }
 
-        /* Adjustments for content fitting */
-        html,
-        body {
-            height: 100%;
-            /* Ensure html and body take full height */
-            margin: 0;
-            /* Remove default body margin */
-            padding: 0;
-            /* Remove default body padding */
-            overflow-x: hidden;
-            /* Prevent horizontal scroll */
-        }
-
-        #main-wrapper {
-            min-height: 100vh;
-            /* Ensure main-wrapper takes at least the full viewport height */
-            display: flex;
-            flex-direction: column;
-        }
-
-        .onepage-screen-area {
-            flex-grow: 1;
-            /* Allow the content area to grow and fill available space */
-            display: flex;
-            align-items: center;
-            /* Center content vertically */
-            justify-content: center;
-            /* Center content horizontally */
-            padding: 20px 0;
-            /* Add some vertical padding instead of large fixed margins */
-        }
-
-        .error-page .container {
-            flex-grow: 0;
-            /* Prevent the container from growing excessively */
-            padding: 0;
-            /* Remove default container padding if any is causing issues */
-        }
-
-        .error-page .row {
-            align-items: center;
-            /* Ensure vertical alignment of columns */
-            margin: 0;
-            /* Remove row margins */
-            width: 100%;
-            /* Ensure row takes full width */
-            justify-content: center;
-            /* Center content horizontally in the row */
-        }
-
-        .error-page .content,
-        .error-page .thumbnail {
-            padding: 20px;
-            /* Add some padding to the content and thumbnail for spacing */
-        }
-
-        /* Override the .m-0 class on #main-wrapper as it might interfere */
-        .main-wrapper.m-0 {
-            margin: 0 !important;
-        }
-
     </style>
 </head>
 
-<body class="h-100">
-    <div id="main-wrapper" class="main-wrapper m-0">
+<body class="sticky-header onepage-template">
+    <!--[if lte IE 9]>
+      <p class="browserupgrade">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="https://browsehappy.com/">upgrade your browser</a> to improve
+        your experience and security.
+      </p>
+    <![endif]-->
+    <a href="#main-wrapper" id="backto-top" class="back-to-top">
+        <i class="far fa-angle-double-up"></i>
+    </a>
+
+    <!-- Preloader Start Here -->
+    <div id="preloader"></div>
+    <!-- Preloader End Here -->
+
+    <div class="my_switcher d-none d-lg-block">
+        <ul>
+            <li title="Light Mode">
+                <a href="javascript:void(0)" class="setColor light" data-theme="light">
+                    <i class="fal fa-lightbulb-on"></i>
+                </a>
+            </li>
+            <li title="Dark Mode">
+                <a href="javascript:void(0)" class="setColor dark" data-theme="dark">
+                    <i class="fas fa-moon"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Case Study Modal Box -->
+    <div class="op-case-modal op-modal-wrap">
+        <div class="op-modal-inner">
+            <button class="close"><i class="far fa-times"></i></button>
+            <div class="op-modal-content">
+                <div class="case-content"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Case Study Modal Box -->
+
+    <!-- Portfolio Modal Box -->
+    <div class="op-portfolio-modal op-modal-wrap">
+        <div class="op-modal-inner">
+            <button class="close"><i class="far fa-times"></i></button>
+            <div class="op-modal-content">
+                <div class="portfolio-thumbnail"></div>
+                <div class="portfolio-content"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Portfolio Modal Box -->
+
+    <!-- Blog Modal Box -->
+    <div class="op-blog-modal op-modal-wrap">
+        <div class="op-modal-inner">
+            <button class="close"><i class="far fa-times"></i></button>
+            <div class="op-modal-content">
+                <div class="post-thumbnail"></div>
+                <div class="post-content"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Blog Modal Box -->
+
+    <div id="main-wrapper" class="main-wrapper">
+        <!--=====================================-->
+        <!--=        Header Area Start       	=-->
+        <!--=====================================-->
 
 
         <section class="error-page onepage-screen-area">
@@ -148,28 +160,12 @@
                 </li>
             </ul>
         </section>
+        @include('site.sections.plans')
 
 
 
+        @include('site.sections.footer')
     </div>
-
-    <script src="{{ asset('assets') }}/js/vendor/jquery.min.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/bootstrap.min.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/isotope.pkgd.min.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/imagesloaded.pkgd.min.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/odometer.min.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/jquery-appear.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/slick.min.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/sal.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/jquery.magnific-popup.min.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/js.cookie.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/jquery.style.switcher.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/jquery.countdown.min.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/tilt.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/green-audio-player.min.js"></script>
-    <script src="{{ asset('assets') }}/js/vendor/jquery.nav.js"></script>
-
-    <script src="{{ asset('assets') }}/js/app.js"></script>
+    @include('site.sections.script')
 </body>
-
 </html>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "57090553d5c3f1ef893cd89b3abf74a6",
+    "content-hash": "5b843ce6aec32aab81febc587267c0f2",
     "packages": [
         {
             "name": "alkoumi/filament-image-radio-button",

@@ -8,7 +8,10 @@ use App\Models\Design;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Support\HtmlString;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\View;
+use Filament\Forms\Components\Radio;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -36,51 +39,102 @@ class DesignResource extends Resource
     {
         return $form
             ->schema([
+
                 Wizard::make([
                     Step::make('اختيار الموكب')->schema([
-                        Select::make('product_id')
+                        Radio::make('product_id')
                             ->label('اختر المنتج (الموكب)')
                             ->options(
-                                \App\Models\Product::all()->pluck('name', 'id')
+                                \App\Models\Product::all()->mapWithKeys(function ($product) {
+                                    return [
+                                        $product->id => new HtmlString(
+                                            '<div class="flex flex-col items-center gap-2 p-2">' .
+                                                '<img src="' . asset('storage/' . $product->image_front) . '" class="w-24 object-contain" style="max-height:150px !important;">' .
+                                                '<span>' . $product->name . '</span>' .
+                                                '</div>'
+                                        )
+                                    ];
+                                })->toArray()
                             )
-                            ->getOptionLabelFromRecordUsing(fn($record) => $record->name)
-                            ->searchable()
+                            ->columns(3)
                             ->live()
-                            ->required()
                             ->afterStateUpdated(function ($state, Forms\Set $set) {
                                 $product = \App\Models\Product::find($state);
                                 $set('is_double_sided', $product?->is_double_sided ?? false);
+                                $set('background_image_front', $product?->image_front ?? '');
+                                $set('background_image_back', $product?->image_back ?? '');
                             })
-                            ->placeholder(null) // <=== هنا التعديل
-                            ->preload()
-                            ->columnSpanFull()
-                    ]),
+                            ->required()
+                            ->inlineLabel(false)
+                            ->columnSpanFull(),
 
+                        FileUpload::make('logo_front')
+                            ->label('الشعار الامامي')
+                            ->image()
+                            ->multiple(false)
+                            ->columnSpan(1)
+                            ->required()
+                            ->directory('designs')
+                            ->imageEditor()
+                            ->imageEditorViewportWidth('800')
+                            ->imageEditorViewportHeight('600'),
+
+                        FileUpload::make('logo_back')
+                            ->label('الشعار الخلفي')
+                            ->image()
+                            ->multiple(false)
+                            ->required()
+                            ->columnSpan(1)
+                            ->directory('designs')
+                            ->imageEditor()
+                            ->imageEditorViewportWidth('800')
+                            ->visible(fn($get) => $get('is_double_sided'))
+                            ->imageEditorViewportHeight('600'),
+
+                        Hidden::make('background_image_front'),
+                        Hidden::make('background_image_back'),
+                        Hidden::make('final_design_front'),
+                        Hidden::make('final_design_back'),
+
+                    ]),
 
                     Step::make('التصميم الأمامي')->schema([
-                        FileUpload::make('image_front')
-                            ->label('تحميل التصميم الأمامي')
-                            ->image()
-                            ->directory('designs')
-                            ->required()
-                            ->imageEditor()
-                            ->imageEditorViewportWidth('800')
-                            ->imageEditorViewportHeight('600')
-                            ->imageEditorMode(2)
-                            ->imageEditorEmptyFillColor('#f3f4f6'),
+                        View::make('components.design-editor-front')
+                            ->label('محرر الشعار والخلفية (أمامي)')
+                            ->viewData(fn($get) => [
+                                'background' => asset('storage/' . $get('background_image_front')),
+                                'logo' => $get('logo_front')
+                                    ? asset('storage/' . (
+                                        is_array($get('logo_front'))
+                                        ? ($get('logo_front')['path'] ?? $get('logo_front')['name'] ?? '')
+                                        : $get('logo_front')
+                                    ))
+                                    : '',
+
+                                'targetInputId' => 'final_design_front',
+                            ]),
                     ]),
 
+
                     Step::make('التصميم الخلفي')->schema([
-                        FileUpload::make('image_back')
-                            ->label('تحميل التصميم الخلفي')
-                            ->image()
-                            ->directory('designs')
-                            ->imageEditor()
-                            ->imageEditorViewportWidth('800')
-                            ->imageEditorViewportHeight('600')
-                            ->imageEditorMode(2)
-                            ->imageEditorEmptyFillColor('#f3f4f6'),
+                        View::make('components.design-editor-back')
+                            ->label('محرر الشعار والخلفية (خلفي)')
+                            ->viewData(fn($get) => [
+                                'background' => asset('storage/' . $get('background_image_back')),
+                                'logo' => $get('logo_back')
+                                    ? asset('storage/' . (
+                                        is_array($get('logo_back'))
+                                        ? ($get('logo_back')['path'] ?? $get('logo_back')['name'] ?? '')
+                                        : $get('logo_back')
+                                    ))
+                                    : '',
+
+                                'targetInputId' => 'final_design_back',
+                            ]),
                     ])->visible(fn($get) => $get('is_double_sided')),
+
+
+
 
                     Step::make('تفاصيل التصميم')->schema([
                         Grid::make(2)->schema([
@@ -181,6 +235,7 @@ class DesignResource extends Resource
             'index' => Pages\ListDesigns::route('/'),
             'create' => Pages\CreateDesign::route('/create'),
             'edit' => Pages\EditDesign::route('/{record}/edit'),
+
         ];
     }
 }

@@ -17,6 +17,8 @@ class Design extends Model
         'description',
         'rating',
         'is_published',
+        'logo_back',
+        'logo_front',
         'image_front',
         'image_back'
     ];

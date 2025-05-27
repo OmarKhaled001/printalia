@@ -84,7 +84,10 @@ class OrderResource extends Resource
                     ]),
             ]);
     }
-
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('designer_id', Auth::user('designer')->id);
+    }
     public static function table(Table $table): Table
     {
         return $table

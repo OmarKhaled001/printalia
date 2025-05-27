@@ -20,7 +20,10 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class);
     }
-
+    public function designer()
+    {
+        return $this->belongsTo(Designer::class);
+    }
     public function factoryOrders()
     {
         return $this->hasMany(FactoryOrder::class);

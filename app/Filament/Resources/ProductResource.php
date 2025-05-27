@@ -101,7 +101,7 @@ class ProductResource extends Resource
 
                 TextColumn::make('price')
                     ->label('السعر')
-                    ->money('EGP')
+                    ->suffix('ر.س')
                     ->sortable(),
 
                 IconColumn::make('is_double_sided')
