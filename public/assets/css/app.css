@@ -69,7 +69,7 @@ STYLESHEET INDEXING
     --color-light: #F0F8F2; /* أخضر فاتح */
     --color-dark: #1E3A1F; /* أخضر غامق جدا */
     --color-text-dark: #264D29; /* نص غامق مائل للأخضر */
-    --color-accent1: #B4E197; /* لون مكمّل فاتح */
+    --color-accent1: #1E3A1F; /* لون مكمّل فاتح */
     --color-accent2: #D7F4C2; /* لون زهري مخضر فاتح */
     --color-blue-shade: #feffc0; /* لون أزرق مخفف كمكمّل */
     --color-link: #3A9230; /* روابط بنفس درجة اللون الأساسي */
@@ -106,7 +106,7 @@ STYLESHEET INDEXING
 
     --transition: all 0.3s ease-in-out;
 
-    --font-body-1: 18px;
+    --font-body-1: 28px;
     --font-body-2: 16px;
     --font-body-3: 14px;
     --font-body-4: 12px;
@@ -3014,7 +3014,7 @@ Pagination
 
 .banner.banner-style-1 .banner-content .title {
     font-size: 78px;
-    line-height: 1;
+    line-height: 1.5;
 }
 
 @media only screen and (min-width: 1200px) and (max-width: 1599px) {
@@ -4188,10 +4188,13 @@ Pagination
 .pricing-table {
     background-color: var(--color-white);
     padding: 40px;
+    border: 1px solid var(--color-white);
+    box-shadow: #000000;
     border-radius: 30px;
     position: relative;
     margin-bottom: 30px;
     -webkit-transition: var(--transition);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: var(--transition);
 }
 
@@ -9699,7 +9702,7 @@ body.op-modal-open {
 }
 
 .active-dark-mode .axil-mainmenu.axil-sticky {
-    background-color: var(--dark-bg-color);
+    background-color: var( --dark-main-body);
 }
 
 .active-dark-mode .axil-mainmenu.axil-sticky .header-action .social-icon-list li a {
@@ -10399,7 +10402,7 @@ body.op-modal-open {
     Section Space
 -------------------------*/
 .section-padding {
-    padding: 140px 0 110px;
+    padding: 80px 0 90px;
 }
 
 @media only screen and (max-width: 1199px) {

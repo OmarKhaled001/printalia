@@ -22,7 +22,7 @@ class SubscriptionController extends Controller
     public function showSubscriptionForm($id)
     {
         if (auth('designer')->user()->has_active_subscription) {
-            return redirect()->route('designer.dashboard')
+            return redirect()->route('filament.designer.pages.dashboard')
                 ->with('info', 'لديك اشتراك نشط بالفعل');
         }
         $plan = Plan::find($id);
@@ -64,10 +64,11 @@ class SubscriptionController extends Controller
                     ->body("قام المصمم {$designer->name} بإرسال طلب اشتراك جديد")
                     ->success()
                     ->actions([
-                        Action::make('عرض الطلب')
-                            ->url(route('filament.admin.resources.subscriptions.edit', $subscription))
+                        Action::make('عرض المصمم')
+                            ->url(route('filament.admin.resources.designers.edit', $designer))
                             ->button()
                             ->color('primary'),
+
                     ])
                     ->sendToDatabase($admin);
             }

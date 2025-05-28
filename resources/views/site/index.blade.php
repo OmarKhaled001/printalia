@@ -48,7 +48,7 @@
     <style>
         * {
             direction: rtl;
-            text-align: right;
+            /* text-align: right; */
         }
 
         *:not(i):not(.fa):not([class*="fa-"]) {

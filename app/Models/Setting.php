@@ -18,6 +18,12 @@ class Setting extends Model
         Cache::forget('settings');
     }
 
+
+    public static function get($key, $default = null)
+    {
+        return optional(static::where('key', $key)->first())->value ?? $default;
+    }
+
     protected static function boot()
     {
         parent::boot();

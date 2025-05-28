@@ -29,16 +29,13 @@
                                  <a href="#op-home">الرئيسية</a>
                              </li>
                              <li>
-                                 <a href="#op-service">الخدمات</a>
+                                 <a href="#op-about">عنا</a>
                              </li>
                              <li>
-                                 <a href="#op-about">رؤيتنا</a>
+                                 <a href="#op-vision">رؤيتنا</a>
                              </li>
                              <li>
                                  <a href="#op-pricing">الاشتركات</a>
-                             </li>
-                             <li>
-                                 <a href="#op-contact">تواصل معنا</a>
                              </li>
                              @if (Auth::guard('designer')->check())
                              <li class="header-btn">

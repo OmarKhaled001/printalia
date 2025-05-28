@@ -6,18 +6,11 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="footer-copyright">
-                        <span class="copyright-text">© 2022. All rights reserved by
-                            <a href="#">Axilthemes</a>.</span>
+                        <span class="copyright-text">© 2025. All rights reserved by
+                            <a href="#">Printalia</a>.</span>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="footer-bottom-link">
-                        <ul class="list-unstyled">
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms of Use</a></li>
-                        </ul>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>

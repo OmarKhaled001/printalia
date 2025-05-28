@@ -2,7 +2,7 @@
 use App\Models\Plan;
 $plans = Plan::where('is_active', true)->get();
 @endphp
-<section class="section bg-color-light section-padding" id="op-pricing">
+<section class="section  section-padding" id="op-pricing">
     <div class="container">
         <div class="section-heading mb-0 text-center">
             <h2 class="text-center">خطط الأسعار</h2>
