@@ -6,6 +6,7 @@ use App\Enums\StatusTypes;
 use App\Enums\FactoryOrderStatus;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Actions\Action;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class FactoryOrder extends Model
@@ -41,11 +42,23 @@ class FactoryOrder extends Model
                 $newFactory = Factory::whereNotIn('id', $excludedFactoryIds)->inRandomOrder()->first();
 
                 if ($newFactory) {
-                    FactoryOrder::create([
+                    $newOrder = FactoryOrder::create([
                         'order_id' => $order->id,
                         'factory_id' => $newFactory->id,
                         'status' => 'pending',
                     ]);
+                    \Filament\Notifications\Notification::make()
+                        ->title('طلب  جديد')
+                        ->success()
+                        ->actions([
+                            Action::make('عرض الطلب')
+                                ->url(route('filament.factory.resources.factory-orders.view', $newOrder))
+                                ->button()
+                                ->color('primary'),
+
+
+                        ])
+                        ->sendToDatabase($newFactory);
                 } else {
                     Log::warning("No available factory to reassign order ID {$order->id}");
                 }

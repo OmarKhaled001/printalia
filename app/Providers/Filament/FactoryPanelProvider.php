@@ -30,6 +30,8 @@ class FactoryPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Green,
             ])
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s')
             ->brandLogo(asset('logo.png'))->brandLogoHeight('2.2rem')
             ->font('cairo')
             ->discoverResources(in: app_path('Filament/Factory/Resources'), for: 'App\\Filament\\Factory\\Resources')

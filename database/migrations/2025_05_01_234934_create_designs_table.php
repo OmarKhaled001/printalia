@@ -20,6 +20,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('rating')->nullable();
             $table->boolean('is_published')->default(true);
+            $table->string('logo_front')->nullable();
+            $table->string('logo_back')->nullable();
             $table->string('image_front')->nullable();
             $table->string('image_back')->nullable();
             $table->timestamps();

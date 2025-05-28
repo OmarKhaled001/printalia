@@ -16,6 +16,16 @@ class Product extends Model
         return $this->hasMany(Design::class);
     }
 
+
+    public static function generateSku(): string
+    {
+        do {
+            $sku = 'PRD-' . strtoupper(str()->random(8));
+        } while (self::where('sku', $sku)->exists());
+
+        return $sku;
+    }
+
     protected static function boot()
     {
         parent::boot();

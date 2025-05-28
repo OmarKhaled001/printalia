@@ -60,8 +60,6 @@ class FactoryOrderResource extends Resource
                     ->requiresConfirmation()
                     ->action(function (FactoryOrder $record) {
                         $record->update(['status' => StatusTypes::Rejected]);
-
-                        \App\Services\FactoryOrderService::sendToRandomFactory($record->order);
                     })
                     ->color('danger'),
                 Tables\Actions\ViewAction::make()

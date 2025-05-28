@@ -43,6 +43,7 @@ class OrderResource extends Resource
                                 Forms\Components\TextInput::make('phone')->label('رقم الهاتف')->required(),
                             ])
                             ->required(),
+                        Hidden::make('designer_id')->default(Auth::user()->id),
 
 
                         Forms\Components\Select::make('design_id')
