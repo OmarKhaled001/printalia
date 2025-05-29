@@ -44,7 +44,7 @@ class SubscriptionController extends Controller
             $receiptPath = $request->file('receipt')->store('receipts', 'public');
 
             $startDate = now();
-            $endDate = $startDate->copy()->addDays($plan->duration);
+            $endDate = $startDate->copy()->addDays((int) $plan->duration);
 
             $subscription = $designer->subscriptions()->create([
                 'plan_id' => $plan->id,
