@@ -128,7 +128,7 @@
                                 <h6 class="fw-bold text-dark"> حول مبلغ {{ $plan->price }} </h6><img class="duration" src="{{ asset('assets/media/Saudi_Riyal_Symbol.svg') }}" alt="ريال سعودي" style="width: 20px;" />
 
                             </div>
-                            <h6 class="fw-bold text-dark"> علي كود 0514505045256 </h6>
+                            <h6 class="fw-bold text-dark"> علي كود {{$settings::get('bank_code',"")}} </h6>
                             <form method="POST" action="{{ route('designer.subscribe') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">

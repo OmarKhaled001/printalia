@@ -8,6 +8,7 @@
                            {{$settings::get('hero_section_description',
                            "صمّم منتجك، ضعه على موكاب جاهز، واربطه مباشرة مع المصنع وابدأ
                            البيع من دون رأس مال")}}
+
                        </span>
                        <a href="#op-pricing" class="axil-btn btn-fill-primary btn-large">ابدأ الآن</a>
                    </div>

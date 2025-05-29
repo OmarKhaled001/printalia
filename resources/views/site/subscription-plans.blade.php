@@ -138,7 +138,6 @@
                             <h2 class="title">مرحبا {{ explode(' ', auth('designer')->user()->name)[0] }}</h2>
                             <h4 class="title"> انت غير مشترك الان! </h4>
                             <h5> فعليك الاشتراك من جديد او تجديد اشتراكك </h5>
-                            <a href="{{ route('home') }}" class="axil-btn btn-fill-primary">الرئيسية</a>
                         </div>
                     </div>
                     <div class="col-lg-6">
