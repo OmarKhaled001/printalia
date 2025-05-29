@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('profile')->nullable();
             $table->text('attachments')->nullable();
             $table->boolean('has_active_subscription')->default(false);
+            $table->rememberToken();
             $table->timestamps();
         });
     }
