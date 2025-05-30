@@ -5,6 +5,7 @@ namespace App\Filament\Designer\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Design;
+use Nette\Utils\Image;
 use App\Models\Product;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -48,7 +49,7 @@ class DesignResource extends Resource
             ->schema([
                 Wizard::make([
                     Step::make('product_selection')
-                        ->label('الخطوة 1: اختيار المنتج والشعارات')
+                        ->label('المنتج والشعارات')
                         ->schema([
                             Radio::make('product_id')
                                 ->label('اختر المنتج')
@@ -81,56 +82,59 @@ class DesignResource extends Resource
                                 ->required()
                                 ->inlineLabel(false)
                                 ->columnSpanFull(),
+                            // Grid::make()->schema([
+                            //     FileUpload::make('logo_front')
+                            //         ->label('الشعار الأمامي')
+                            //         ->image()
+                            //         ->directory('designs/logos')
+                            //         ->maxSize(2048) // 2MB
+                            //         ->acceptedFileTypes(['image/png', 'image/jpeg'])
+                            //         ->imageResizeMode('cover')
+                            //         ->imageResizeTargetHeight('500')
+                            //         ->getUploadedFileNameForStorageUsing(
+                            //             fn(TemporaryUploadedFile $file): string => self::generateLogoFilename($file)
+                            //         )
+                            //         ->imageEditor()
+                            //         ->live()
+                            //         ->required()
+                            //         ->multiple(false)
+                            //         ->disk('public')
+                            //         ->columnSpan(1)
+                            //         ->helperText('ارفع الشعار الأمامي للمنتج (PNG أو JPEG، الحجم الأقصى 2MB)'),
 
-                            FileUpload::make('logo_front')
-                                ->label('الشعار الأمامي')
-                                ->image()
-                                ->directory('designs/logos')
-                                ->maxSize(2048) // 2MB
-                                ->acceptedFileTypes(['image/png', 'image/jpeg'])
-                                ->imageResizeMode('cover')
-                                ->imageResizeTargetHeight('500')
-                                ->getUploadedFileNameForStorageUsing(
-                                    fn(TemporaryUploadedFile $file): string => self::generateLogoFilename($file)
-                                )
-                                ->imageEditor()
-                                ->live()
-                                ->required()
-                                ->multiple(false)
-                                ->disk('public')
-                                ->columnSpan(1)
-                                ->helperText('ارفع الشعار الأمامي للمنتج (PNG أو JPEG، الحجم الأقصى 2MB)'),
+                            //     FileUpload::make('logo_back')
+                            //         ->label('الشعار الخلفي')
+                            //         ->image()
+                            //         ->directory('designs/logos')
+                            //         ->maxSize(2048) // 2MB
+                            //         ->acceptedFileTypes(['image/png', 'image/jpeg'])
+                            //         ->imageResizeMode('cover')
+                            //         ->imageResizeTargetHeight('500')
+                            //         ->getUploadedFileNameForStorageUsing(
+                            //             fn(TemporaryUploadedFile $file): string => self::generateLogoFilename($file)
+                            //         )
+                            //         ->imageEditor()
+                            //         ->live()
+                            //         ->required()
+                            //         ->multiple(false)
+                            //         ->disk('public')
+                            //         ->columnSpan(1)
+                            //         ->visible(fn(Get $get) => $get('is_double_sided'))
+                            //         ->helperText('ارفع الشعار الخلفي للمنتج (PNG أو JPEG، الحجم الأقصى 2MB)'),
 
-                            FileUpload::make('logo_back')
-                                ->label('الشعار الخلفي')
-                                ->image()
-                                ->directory('designs/logos')
-                                ->maxSize(2048) // 2MB
-                                ->acceptedFileTypes(['image/png', 'image/jpeg'])
-                                ->imageResizeMode('cover')
-                                ->imageResizeTargetHeight('500')
-                                ->getUploadedFileNameForStorageUsing(
-                                    fn(TemporaryUploadedFile $file): string => self::generateLogoFilename($file)
-                                )
-                                ->imageEditor()
-                                ->live()
-                                ->required()
-                                ->multiple(false)
-                                ->disk('public')
-                                ->columnSpan(1)
-                                ->visible(fn(Get $get) => $get('is_double_sided'))
-                                ->helperText('ارفع الشعار الخلفي للمنتج (PNG أو JPEG، الحجم الأقصى 2MB)'),
-
+                            // ])->columnSpan(2),
                             Hidden::make('is_double_sided')->default(false),
                             Hidden::make('background_image_front'),
                             Hidden::make('background_image_back'),
                             Hidden::make('image_front')->id('data.image_front'),
-                            Hidden::make('image_front')->id('data\.image_front'),
                             Hidden::make('image_back')->id('data.image_back'),
+                            Hidden::make('logo_front'),
+                            Hidden::make('logo_back'),
+
                         ]),
 
                     Step::make('front_design')
-                        ->label('الخطوة 2: التصميم الأمامي')
+                        ->label('التصميم الأمامي')
                         ->schema([
                             View::make('components.design-editor')
                                 ->label('محرر التصميم الأمامي')
@@ -160,7 +164,7 @@ class DesignResource extends Resource
                         ]),
 
                     Step::make('back_design')
-                        ->label('الخطوة 3: التصميم الخلفي')
+                        ->label('التصميم الخلفي')
                         ->schema([
                             View::make('components.design-editor')
                                 ->label('محرر التصميم الخلفي')
@@ -191,7 +195,7 @@ class DesignResource extends Resource
                         ->visible(fn(Get $get) => $get('is_double_sided')),
 
                     Step::make('design_details')
-                        ->label('الخطوة 4: التفاصيل والنشر')
+                        ->label('النشر')
                         ->schema([
                             Grid::make(2)->schema([
                                 TextInput::make('title')
@@ -254,9 +258,20 @@ class DesignResource extends Resource
     {
         $extension = $file->getClientOriginalExtension();
         $filename = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
-        $newFilename = "designs/logos/logo_{$filename}_" . now()->timestamp . ".{$extension}";
-        Log::info("Generated logo filename: {$newFilename}");
-        return $newFilename;
+        $dateFolder = now()->format('Y/m/d');
+
+        return "designs/logos/{$dateFolder}/logo_{$filename}_" . now()->timestamp . ".{$extension}";
+    }
+
+    protected function normalizeLogoData($input): string
+    {
+        try {
+            $decoded = is_string($input) ? json_decode($input, true) : $input;
+            return json_encode(array_values((array) $decoded)); // تأكد أنها قائمة مرتبة
+        } catch (\Throwable $e) {
+            Log::warning("Invalid logo data format: " . $e->getMessage());
+            return '[]';
+        }
     }
 
     /**
@@ -264,81 +279,80 @@ class DesignResource extends Resource
      */
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        // Handle logo front
-        if (isset($data['logo_front'])) {
-            $logo_front = is_array($data['logo_front']) ? reset($data['logo_front']) : $data['logo_front'];
-            if ($logo_front && str_starts_with($logo_front, 'designs/logos/')) {
-                Log::info("Processing logo_front: {$logo_front}");
-                $data['logo_front'] = $this->processUploadedLogo($logo_front);
-            } else {
-                Log::error("Invalid or empty logo_front: " . json_encode($logo_front));
-                $data['logo_front'] = null;
-            }
+        // Handle front design
+        if (!empty($data['image_front'])) {
+            $data['image_front'] = $this->processDesignImage(
+                $data['image_front'],
+                'front',
+                $data['product_id']
+            );
         }
 
-        // Handle logo back
-        if (isset($data['logo_back']) && $data['is_double_sided']) {
-            $logo_back = is_array($data['logo_back']) ? reset($data['logo_back']) : $data['logo_back'];
-            if ($logo_back && str_starts_with($logo_back, 'designs/logos/')) {
-                Log::info("Processing logo_back: {$logo_back}");
-                $data['logo_back'] = $this->processUploadedLogo($logo_back);
-            } else {
-                Log::error("Invalid or empty logo_back: " . json_encode($logo_back));
-                $data['logo_back'] = null;
-            }
-        }
-
-        // Save design images
-        $data['image_front'] = $this->saveBase64Image($data['image_front'] ?? null, 'designs/final');
-        if ($data['is_double_sided'] ?? false) {
-            $data['image_back'] = $this->saveBase64Image($data['image_back'] ?? null, 'designs/final');
+        // Handle back design
+        if (!empty($data['is_double_sided']) && !empty($data['image_back'])) {
+            $data['image_back'] = $this->processDesignImage(
+                $data['image_back'],
+                'back',
+                $data['product_id']
+            );
         }
 
         return $data;
     }
 
-    /**
-     * Process uploaded logo file
-     */
-    protected function processUploadedLogo(string $path): string
+    protected function processDesignImage(string $base64, string $type, int $productId): string
     {
-        $newPath = 'designs/logos/' . basename($path);
-        Log::info("Attempting to move logo from: {$path} to {$newPath}");
+        try {
+            $product = Product::findOrFail($productId);
+            $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64));
 
-        if (Storage::disk('public')->exists($path)) {
-            Storage::disk('public')->move($path, $newPath);
-            Log::info("Logo successfully moved to: {$newPath}");
-        } else {
-            Log::error("Logo file not found at: {$path}");
-            $newPath = $path; // Fallback to original path if move fails
+            $path = "designs/{$type}/" . now()->format('Y/m/d') . '/' . Str::uuid() . '.png';
+
+            Storage::disk('public')->put($path, $imageData);
+
+            return $path;
+        } catch (\Exception $e) {
+            Log::error("Design image save failed: " . $e->getMessage());
+            throw new \Exception("فشل حفظ التصميم، الرجاء المحاولة مرة أخرى");
         }
-
-        return $newPath;
     }
 
-    /**
-     * Save base64 image to storage
-     */
-    protected function saveBase64Image(?string $base64Data, string $directory): ?string
-    {
-        if (empty($base64Data) || !str_contains($base64Data, 'base64')) {
-            Log::warning("No valid base64 data provided for saving in {$directory}");
-            return null;
-        }
 
+    protected function saveDesignImage(string $base64Data, string $type): string
+    {
         try {
-            $imageData = base64_decode(
-                preg_replace('#^data:image/\w+;base64,#i', '', $base64Data)
-            );
-            $filename = rtrim($directory, '/') . '/' . Str::uuid() . '.png';
+            $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Data));
+            $datePath = now()->format('Y/m/d');
+            $filename = "designs/{$type}/{$datePath}/" . Str::uuid() . '.png';
             Storage::disk('public')->put($filename, $imageData);
-            Log::info("Base64 image saved: {$filename}");
             return $filename;
         } catch (\Exception $e) {
-            Log::error("Failed to save base64 image in {$directory}: " . $e->getMessage());
-            return null;
+            Log::error("Failed to save {$type} design image: " . $e->getMessage());
+            throw $e;
         }
     }
+
+
+    protected function mutateFormDataBeforeUpdate(array $data): array
+    {
+        // إذا تم تعديل التصميم الأمامي
+        if (!empty($data['image_front']) && str_starts_with($data['image_front'], 'data:image/')) {
+            $data['image_front'] = $this->saveDesignImage($data['image_front'], 'front');
+        }
+
+        // إذا تم تعديل التصميم الخلفي
+        if (!empty($data['is_double_sided']) && !empty($data['image_back']) && str_starts_with($data['image_back'], 'data:image/')) {
+            $data['image_back'] = $this->saveDesignImage($data['image_back'], 'back');
+        }
+
+        // تأكيد حفظ أسماء الشعارات بصيغة JSON
+        $data['logo_front'] = $this->normalizeLogoData($data['logo_front'] ?? null);
+        $data['logo_back'] = $this->normalizeLogoData($data['logo_back'] ?? null);
+
+        return $data;
+    }
+
+
 
     /**
      * Filter designs by authenticated designer

@@ -8,13 +8,14 @@ use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Actions\Action;
 use Filament\Support\Colors\Color;
+use Illuminate\Support\Facades\Auth;
 use Orion\FilamentGreeter\GreeterPlugin;
-use Filament\Pages\Auth\RegisterDesigner;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use App\Http\Middleware\EnsureDesignerIsVerified;
 use Filament\Http\Middleware\AuthenticateSession;
+use App\Filament\Designer\Resources\RegisterDesigner;
 use Hydrat\TableLayoutToggle\TableLayoutTogglePlugin;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -22,7 +23,6 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use Illuminate\Support\Facades\Auth;
 
 class DesignerPanelProvider extends PanelProvider
 {
@@ -91,7 +91,7 @@ class DesignerPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
-                EnsureDesignerIsVerified::class,
+                // EnsureDesignerIsVerified::class,
                 Authenticate::class,
             ]);
     }

@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "fabric": "^6.6.6",
+        "interactjs": "^1.10.27",
         "tui-image-editor": "^3.15.3"
     }
 }

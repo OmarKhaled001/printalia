@@ -11,6 +11,7 @@ class Product extends Model
 
     protected $fillable = ['name', 'sku', 'price', 'description', 'is_double_sided', 'is_published', 'image_front', 'image_back'];
 
+
     public function designs()
     {
         return $this->hasMany(Design::class);
