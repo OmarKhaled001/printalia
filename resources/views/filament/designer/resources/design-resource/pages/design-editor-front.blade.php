@@ -1,56 +1,65 @@
 <x-filament-panels::page>
-    <div>
-        <div id="editor-front" style="height: 600px; width: 800px"></div>
-        <input type="hidden" id="{{ $targetInputId }}" name="{{ $targetInputId }}" x-model="data">
-    </div>
+    <x-filament::page>
+        <h2 class="text-xl font-bold mb-4">تصميم موكب مع لوجو</h2>
 
-    @once
-    @push('scripts')
-    <script src="{{ asset('path/to/tui-image-editor.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('path/to/tui-image-editor.css') }}">
-    @endpush
-    @endonce
+        <input type="file" id="logoInput" class="mb-4" />
+        <canvas id="mockupCanvas" width="800" height="600" class="border"></canvas>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('editor-front');
-            const background = "{{ $background }}";
-            const logo = "{{ $logo }}";
-            const targetInputId = "{{ $targetInputId }}";
+        <button onclick="saveMockup()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
+            احفظ التصميم
+        </button>
 
-            const editor = new tui.ImageEditor(container, {
-                includeUI: {
-                    loadImage: {
-                        path: background
-                        , name: 'background'
-                    , }
-                    , theme: {
-                        'common.bi.image': ''
-                        , 'common.bisize.width': '0px'
-                        , 'common.backgroundImage': 'none'
-                    , }
-                    , menu: ['shape', 'filter']
-                    , initMenu: 'filter'
-                    , uiSize: {
-                        width: '800px'
-                        , height: '600px'
-                    }
-                }
-                , cssMaxWidth: 800
-                , cssMaxHeight: 600
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.min.js"></script>
+        <script>
+            const canvas = new fabric.Canvas('mockupCanvas');
+
+            // تحميل صورة الموكب
+            fabric.Image.fromURL('/mockups/tshirt.png', function(img) {
+                img.selectable = false;
+                canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
             });
 
-            // إضافة الشعار كطبقة قابلة للتعديل
-            editor.addImageObject(logo).then(objectProps => {
-                editor.setActiveObject(objectProps.id);
+            // رفع اللوجو
+            document.getElementById('logoInput').addEventListener('change', function(e) {
+                const reader = new FileReader();
+                reader.onload = function(f) {
+                    fabric.Image.fromURL(f.target.result, function(img) {
+                        img.scale(0.3);
+                        img.set({
+                            left: 100
+                            , top: 100
+                        });
+                        canvas.add(img).setActiveObject(img);
+                    });
+                };
+                reader.readAsDataURL(e.target.files[0]);
             });
 
-            // حفظ التصميم عند التحديث
-            editor.on('objectActivated', () => {
-                const dataURL = editor.toDataURL();
-                document.getElementById(targetInputId).value = dataURL;
-            });
-        });
+            function saveMockup() {
+                const data = canvas.toJSON();
 
-    </script>
+                fetch('{{ route("mockup.generate") }}', {
+                        method: 'POST'
+                        , headers: {
+                            'Content-Type': 'application/json'
+                            , 'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                        , body: JSON.stringify({
+                            canvas: data
+                        })
+                    })
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'mockup.png';
+                        a.click();
+                    });
+            }
+
+        </script>
+    </x-filament::page>
+
+
 </x-filament-panels::page>

@@ -59,8 +59,8 @@ class DesignResource extends Resource
                                         ->mapWithKeys(function ($product) {
                                             return [
                                                 $product->id => new HtmlString(
-                                                    '<div class="flex flex-col items-center gap-2 p-2 border rounded-md hover:border-primary-500 cursor-pointer">' .
-                                                        '<img src="' . asset('storage/' . $product->image_front) . '" class="w-24 h-36 object-contain" alt="' . e($product->name) . '">' .
+                                                    '<div class="flex flex-col items-center gap-2 p-2  rounded-md hover:border-primary-500 cursor-pointer">' .
+                                                        '<img src="' . asset('storage/' . $product->image_front) . '" class="w-12 h-18 object-contain" alt="' . e($product->name) . '">' .
                                                         '<span>' . e($product->name) . '</span>' .
                                                         '</div>'
                                                 )

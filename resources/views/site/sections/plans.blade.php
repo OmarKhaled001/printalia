@@ -19,7 +19,7 @@ $plans = Plan::where('is_active', true)->get();
                         <div class="price-wrap">
                             <div class="monthly-pricing d-flex align-items-center gap-1 justify-content-center">
                                 <span class="amount">{{ number_format($plan->price, 2) }}</span>
-                                <img class="duration" src="{{ asset('assets/media/Saudi_Riyal_Symbol.svg') }}" alt="ريال سعودي" style="width: 30px;" />
+                                <img class="amount" src="{{ asset('assets/media/Saudi_Riyal_Symbol.svg') }}" alt="ريال سعودي" style="width: 30px;" />
                                 <span class="duration">/شهرياً</span>
                             </div>
                         </div>
@@ -44,10 +44,10 @@ $plans = Plan::where('is_active', true)->get();
 
     <ul class="shape-group-3 list-unstyled">
         <li class="shape shape-1">
-            <img src="assets/media/others/line-1.png" alt="شكل" />
+            <img src="{{ asset('assets') }}/media/others/line-1.png" alt="شكل" />
         </li>
         <li class="shape shape-2">
-            <img src="assets/media/others/bubble-4.png" alt="شكل" />
+            <img src="{{ asset('assets') }}/media/others/bubble-4.png" alt="شكل" />
         </li>
     </ul>
 </section>
