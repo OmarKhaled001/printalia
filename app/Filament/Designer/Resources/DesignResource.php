@@ -42,158 +42,135 @@ class DesignResource extends Resource
     protected static ?string $modelLabel = 'تصميم';
     protected static ?string $pluralModelLabel = 'التصاميم';
     protected static ?string $navigationLabel = 'التصاميم';
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Wizard::make([
+                    // الخطوة 1: اختيار المنتج والشعارات
                     Step::make('product_selection')
                         ->label('المنتج والشعارات')
                         ->schema([
                             Radio::make('product_id')
                                 ->label('اختر المنتج')
-                                ->options(
-                                    Product::query()
-                                        ->select('id', 'name', 'image_front')
+                                ->options(function () {
+                                    return Product::query()
+                                        ->select('id', 'name', 'image_front', 'is_double_sided', 'image_back')
                                         ->get()
                                         ->mapWithKeys(function ($product) {
                                             return [
                                                 $product->id => new HtmlString(
-                                                    '<div class="flex flex-col items-center gap-2 p-2  rounded-md hover:border-primary-500 cursor-pointer">' .
+                                                    '<div class="flex flex-col items-center gap-2 p-2 rounded-md hover:border-primary-500 cursor-pointer">' .
                                                         '<img src="' . asset('storage/' . $product->image_front) . '" class="w-12 h-18 object-contain" alt="' . e($product->name) . '">' .
                                                         '<span>' . e($product->name) . '</span>' .
                                                         '</div>'
                                                 )
                                             ];
-                                        })->toArray()
-                                )
+                                        })->toArray();
+                                })
                                 ->columns(3)
                                 ->live()
-                                ->afterStateUpdated(function ($state, Set $set) {
-                                    $product = Product::find($state);
-                                    $set('is_double_sided', $product?->is_double_sided ?? false);
-                                    $set('background_image_front', $product?->image_front ?? '');
-                                    $set('background_image_back', $product?->image_back ?? '');
-                                    $set('sale_price', null);
-                                    $set('profit', 0);
-                                    Log::info("Product selected: ID {$state}, Double-sided: " . ($product?->is_double_sided ? 'Yes' : 'No'));
+                                ->afterStateUpdated(function ($state, Forms\Set $set) {
+                                    if ($state) {
+                                        $product = Product::find($state);
+                                        $set('is_double_sided', $product?->is_double_sided ?? false);
+                                        $set('background_image_front', $product?->image_front ?? null);
+                                        $set('background_image_back', $product?->image_back ?? null);
+                                        $set('sale_price', null); // يمكنك تعيين قيمة افتراضية من المنتج
+                                        $set('profit', 0);
+                                        Log::info("Product selected: ID {$state}, Double-sided: " . ($product?->is_double_sided ? 'Yes' : 'No') . ", Front: " . $product?->image_front . ", Back: " . $product?->image_back);
+                                    } else {
+                                        $set('is_double_sided', false);
+                                        $set('background_image_front', null);
+                                        $set('background_image_back', null);
+                                        $set('sale_price', null);
+                                        $set('profit', 0);
+                                        Log::info("Product selection cleared.");
+                                    }
                                 })
                                 ->required()
                                 ->inlineLabel(false)
                                 ->columnSpanFull(),
-                            // Grid::make()->schema([
-                            //     FileUpload::make('logo_front')
-                            //         ->label('الشعار الأمامي')
-                            //         ->image()
-                            //         ->directory('designs/logos')
-                            //         ->maxSize(2048) // 2MB
-                            //         ->acceptedFileTypes(['image/png', 'image/jpeg'])
-                            //         ->imageResizeMode('cover')
-                            //         ->imageResizeTargetHeight('500')
-                            //         ->getUploadedFileNameForStorageUsing(
-                            //             fn(TemporaryUploadedFile $file): string => self::generateLogoFilename($file)
-                            //         )
-                            //         ->imageEditor()
-                            //         ->live()
-                            //         ->required()
-                            //         ->multiple(false)
-                            //         ->disk('public')
-                            //         ->columnSpan(1)
-                            //         ->helperText('ارفع الشعار الأمامي للمنتج (PNG أو JPEG، الحجم الأقصى 2MB)'),
 
-                            //     FileUpload::make('logo_back')
-                            //         ->label('الشعار الخلفي')
-                            //         ->image()
-                            //         ->directory('designs/logos')
-                            //         ->maxSize(2048) // 2MB
-                            //         ->acceptedFileTypes(['image/png', 'image/jpeg'])
-                            //         ->imageResizeMode('cover')
-                            //         ->imageResizeTargetHeight('500')
-                            //         ->getUploadedFileNameForStorageUsing(
-                            //             fn(TemporaryUploadedFile $file): string => self::generateLogoFilename($file)
-                            //         )
-                            //         ->imageEditor()
-                            //         ->live()
-                            //         ->required()
-                            //         ->multiple(false)
-                            //         ->disk('public')
-                            //         ->columnSpan(1)
-                            //         ->visible(fn(Get $get) => $get('is_double_sided'))
-                            //         ->helperText('ارفع الشعار الخلفي للمنتج (PNG أو JPEG، الحجم الأقصى 2MB)'),
-
-                            // ])->columnSpan(2),
+                            // الحقول المخفية التي يتم تحديثها بواسطة Radio
                             Hidden::make('is_double_sided')->default(false),
                             Hidden::make('background_image_front'),
                             Hidden::make('background_image_back'),
-                            Hidden::make('image_front')->id('data.image_front'),
-                            Hidden::make('image_back')->id('data.image_back'),
+
+                            // هذه الحقول ستستقبل البيانات من مكون design-editor
+                            Hidden::make('image_front')->id('data.image_front'), // Data URL للصورة المدمجة
+                            Hidden::make('image_back')->id('data.image_back'),   // Data URL للصورة المدمجة
+
+                            // هذه الحقول ستستقبل قائمة مسارات الشعارات كـ JSON string array
                             Hidden::make('logo_front'),
                             Hidden::make('logo_back'),
-
                         ]),
 
+                    // الخطوة 2: التصميم الأمامي
                     Step::make('front_design')
                         ->label('التصميم الأمامي')
                         ->schema([
                             View::make('components.design-editor')
-                                ->label('محرر التصميم الأمامي')
-                                ->viewData(function (Get $get) {
-                                    $logo_front = $get('logo_front');
-                                    Log::info('logo_front value: ' . json_encode($logo_front));
-
-                                    $logo_path = is_array($logo_front) ? (reset($logo_front) ?: null) : $logo_front;
-                                    if ($logo_path && !str_starts_with($logo_path, 'designs/logos/')) {
-                                        Log::warning("Invalid logo_front path: {$logo_path}");
-                                        $logo_path = null;
+                                ->viewData(function (Forms\Get $get, ?Design $record) {
+                                    $bgFrontPath = $get('background_image_front');
+                                    // عند التعديل، حاول جلب الشعارات المحفوظة من النموذج
+                                    $initialLogos = [];
+                                    if ($record && $record->logo_front) {
+                                        try {
+                                            $decodedLogos = json_decode($record->logo_front, true);
+                                            if (is_array($decodedLogos)) {
+                                                $initialLogos = $decodedLogos;
+                                            }
+                                        } catch (\Throwable $e) {
+                                            Log::warning("Failed to decode initial logo_front for design {$record->id}: " . $e->getMessage());
+                                        }
                                     }
 
-                                    $logo_url = $logo_path ? asset('storage/' . $logo_path) : null;
-                                    Log::info('logo_front URL: ' . ($logo_url ?? 'null'));
+                                    Log::info("Front design editor: Background='{$bgFrontPath}', Initial Logos: " . json_encode($initialLogos));
 
                                     return [
-                                        'background' => $get('background_image_front')
-                                            ? asset('storage/' . $get('background_image_front'))
-                                            : null,
-                                        'logo' => $logo_url,
+                                        'background' => $bgFrontPath ? asset('storage/' . $bgFrontPath) : null,
                                         'targetInputId' => 'data.image_front',
                                         'canvasId' => 'front-canvas',
+                                        'initialLogos' => $initialLogos, // تمرير الشعارات الأولية كـ array
                                     ];
                                 })
                                 ->columnSpanFull(),
                         ]),
 
+                    // الخطوة 3: التصميم الخلفي (يظهر مشروطًا)
                     Step::make('back_design')
                         ->label('التصميم الخلفي')
                         ->schema([
                             View::make('components.design-editor')
-                                ->label('محرر التصميم الخلفي')
-                                ->viewData(function (Get $get) {
-                                    $logo_back = $get('logo_back');
-                                    Log::info('logo_back value: ' . json_encode($logo_back));
-
-                                    $logo_path = is_array($logo_back) ? (reset($logo_back) ?: null) : $logo_back;
-                                    if ($logo_path && !str_starts_with($logo_path, 'designs/logos/')) {
-                                        Log::warning("Invalid logo_back path: {$logo_path}");
-                                        $logo_path = null;
+                                ->viewData(function (Forms\Get $get, ?Design $record) {
+                                    $bgBackPath = $get('background_image_back');
+                                    $initialLogos = [];
+                                    if ($record && $record->logo_back) {
+                                        try {
+                                            $decodedLogos = json_decode($record->logo_back, true);
+                                            if (is_array($decodedLogos)) {
+                                                $initialLogos = $decodedLogos;
+                                            }
+                                        } catch (\Throwable $e) {
+                                            Log::warning("Failed to decode initial logo_back for design {$record->id}: " . $e->getMessage());
+                                        }
                                     }
 
-                                    $logo_url = $logo_path ? asset('storage/' . $logo_path) : null;
-                                    Log::info('logo_back URL: ' . ($logo_url ?? 'null'));
+                                    Log::info("Back design editor: Background='{$bgBackPath}', Initial Logos: " . json_encode($initialLogos));
 
                                     return [
-                                        'background' => $get('background_image_back')
-                                            ? asset('storage/' . $get('background_image_back'))
-                                            : null,
-                                        'logo' => $logo_url,
+                                        'background' => $bgBackPath ? asset('storage/' . $bgBackPath) : null,
                                         'targetInputId' => 'data.image_back',
                                         'canvasId' => 'back-canvas',
+                                        'initialLogos' => $initialLogos, // تمرير الشعارات الأولية كـ array
                                     ];
                                 })
                                 ->columnSpanFull(),
                         ])
-                        ->visible(fn(Get $get) => $get('is_double_sided')),
+                        ->visible(fn(Forms\Get $get) => $get('is_double_sided')), // يظهر فقط إذا كان المنتج ذا وجهين
 
+                    // الخطوة 4: تفاصيل التصميم والنشر
                     Step::make('design_details')
                         ->label('النشر')
                         ->schema([
@@ -211,7 +188,7 @@ class DesignResource extends Resource
                                     ->prefix('ر.س')
                                     ->minValue(0)
                                     ->live(debounce: 500)
-                                    ->afterStateUpdated(function ($state, Get $get, Set $set) {
+                                    ->afterStateUpdated(function ($state, Forms\Get $get, Forms\Set $set) {
                                         $product = Product::find($get('product_id'));
                                         $productPrice = $product?->price ?? 0;
                                         $set('profit', (float)$state - (float)$productPrice);
@@ -219,17 +196,17 @@ class DesignResource extends Resource
                                     })
                                     ->columnSpan(1),
 
-                                Placeholder::make('price')
+                                Placeholder::make('product_price')
                                     ->label('سعر التكلفة')
                                     ->content(
-                                        fn(Get $get) => number_format(Product::find($get('product_id'))?->price ?? 0, 2) . ' ر.س'
+                                        fn(Forms\Get $get) => number_format(Product::find($get('product_id'))?->price ?? 0, 2) . ' ر.س'
                                     )
                                     ->columnSpan(1),
 
                                 Placeholder::make('profit')
                                     ->label('إجمالي المكسب المتوقع')
                                     ->content(
-                                        fn(Get $get) => number_format(max(($get('sale_price') ?? 0) - (Product::find($get('product_id'))?->price ?? 0), 0), 2) . ' ر.س'
+                                        fn(Forms\Get $get) => number_format(max(($get('sale_price') ?? 0) - (Product::find($get('product_id'))?->price ?? 0), 0), 2) . ' ر.س'
                                     )
                                     ->columnSpan(1),
                             ]),
@@ -251,150 +228,70 @@ class DesignResource extends Resource
             ]);
     }
 
-    /**
-     * Generate unique filename for logo upload
-     */
-    protected static function generateLogoFilename(TemporaryUploadedFile $file): string
-    {
-        $extension = $file->getClientOriginalExtension();
-        $filename = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
-        $dateFolder = now()->format('Y/m/d');
-
-        return "designs/logos/{$dateFolder}/logo_{$filename}_" . now()->timestamp . ".{$extension}";
-    }
-
-    protected function normalizeLogoData($input): string
-    {
-        try {
-            $decoded = is_string($input) ? json_decode($input, true) : $input;
-            return json_encode(array_values((array) $decoded)); // تأكد أنها قائمة مرتبة
-        } catch (\Throwable $e) {
-            Log::warning("Invalid logo data format: " . $e->getMessage());
-            return '[]';
-        }
-    }
-
-    /**
-     * Process form data before creation
-     */
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        // Handle front design
-        if (!empty($data['image_front'])) {
-            $data['image_front'] = $this->processDesignImage(
-                $data['image_front'],
-                'front',
-                $data['product_id']
-            );
-        }
-
-        // Handle back design
-        if (!empty($data['is_double_sided']) && !empty($data['image_back'])) {
-            $data['image_back'] = $this->processDesignImage(
-                $data['image_back'],
-                'back',
-                $data['product_id']
-            );
-        }
-
-        return $data;
-    }
-
-    protected function processDesignImage(string $base64, string $type, int $productId): string
-    {
-        try {
-            $product = Product::findOrFail($productId);
-            $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64));
-
-            $path = "designs/{$type}/" . now()->format('Y/m/d') . '/' . Str::uuid() . '.png';
-
-            Storage::disk('public')->put($path, $imageData);
-
-            return $path;
-        } catch (\Exception $e) {
-            Log::error("Design image save failed: " . $e->getMessage());
-            throw new \Exception("فشل حفظ التصميم، الرجاء المحاولة مرة أخرى");
-        }
-    }
-
-
-    protected function saveDesignImage(string $base64Data, string $type): string
-    {
-        try {
-            $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Data));
-            $datePath = now()->format('Y/m/d');
-            $filename = "designs/{$type}/{$datePath}/" . Str::uuid() . '.png';
-            Storage::disk('public')->put($filename, $imageData);
-            return $filename;
-        } catch (\Exception $e) {
-            Log::error("Failed to save {$type} design image: " . $e->getMessage());
-            throw $e;
-        }
-    }
-
-
-    protected function mutateFormDataBeforeUpdate(array $data): array
-    {
-        // إذا تم تعديل التصميم الأمامي
-        if (!empty($data['image_front']) && str_starts_with($data['image_front'], 'data:image/')) {
-            $data['image_front'] = $this->saveDesignImage($data['image_front'], 'front');
-        }
-
-        // إذا تم تعديل التصميم الخلفي
-        if (!empty($data['is_double_sided']) && !empty($data['image_back']) && str_starts_with($data['image_back'], 'data:image/')) {
-            $data['image_back'] = $this->saveDesignImage($data['image_back'], 'back');
-        }
-
-        // تأكيد حفظ أسماء الشعارات بصيغة JSON
-        $data['logo_front'] = $this->normalizeLogoData($data['logo_front'] ?? null);
-        $data['logo_back'] = $this->normalizeLogoData($data['logo_back'] ?? null);
-
-        return $data;
-    }
-
-
-
-    /**
-     * Filter designs by authenticated designer
-     */
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->where('designer_id', Auth::id());
-    }
-
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_front')
-                    ->label('صورة التصميم')
-                    ->size(60),
-
                 Tables\Columns\TextColumn::make('title')
                     ->label('عنوان التصميم')
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('product.name')
-                    ->label('اسم المنتج')
+                    ->searchable()
                     ->sortable(),
-
+                Tables\Columns\ImageColumn::make('image_front')
+                    ->label('صورة الواجهة الأمامية')
+                    ->disk('public')
+                    ->size(50),
+                Tables\Columns\ImageColumn::make('image_back')
+                    ->label('صورة الواجهة الخلفية')
+                    ->disk('public')
+                    ->size(50)
+                    ->toggleable(isToggledHiddenByDefault: true), // يمكن إخفاؤها افتراضياً
+                Tables\Columns\TextColumn::make('product.name')
+                    ->label('المنتج')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('sale_price')
                     ->label('سعر البيع')
+                    ->money('SAR') // تنسيق العملة
                     ->sortable(),
-
                 Tables\Columns\IconColumn::make('is_published')
-                    ->label('منشور؟')
+                    ->label('منشور')
                     ->boolean(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('تاريخ الإنشاء')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('آخر تحديث')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                Tables\Filters\TernaryFilter::make('is_published')
+                    ->label('حالة النشر')
+                    ->boolean()
+                    ->trueLabel('المنشورة')
+                    ->falseLabel('غير المنشورة')
+                    ->placeholder('الكل'),
+                // يمكن إضافة فلاتر أخرى للمنتجات أو المصممين إذا لزم الأمر
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->label(false),
-                Tables\Actions\DeleteAction::make()->label(false),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()->label('حذف المحدد'),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
@@ -403,7 +300,145 @@ class DesignResource extends Resource
             'index' => Pages\ListDesigns::route('/'),
             'create' => Pages\CreateDesign::route('/create'),
             'edit' => Pages\EditDesign::route('/{record}/edit'),
-
         ];
+    }
+
+    /**
+     * Process Data URL image and save to storage.
+     *
+     * @param string $base64Data The base64 encoded image data.
+     * @param string $type The type of design (e.g., 'front', 'back').
+     * @return string The stored image path relative to the storage disk.
+     * @throws \Exception If saving the image fails.
+     */
+    protected function saveDesignImage(string $base64Data, string $type): string
+    {
+        try {
+            // Remove data URI scheme (e.g., "data:image/png;base64,")
+            $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Data));
+
+            if ($imageData === false) {
+                throw new \Exception("Failed to decode base64 image data.");
+            }
+
+            $datePath = now()->format('Y/m/d');
+            $filename = "designs/{$type}/{$datePath}/" . Str::uuid() . '.png'; // Using PNG for consistency
+
+            Storage::disk('public')->put($filename, $imageData);
+            return $filename;
+        } catch (\Exception $e) {
+            Log::error("Failed to save {$type} design image: " . $e->getMessage());
+            Notification::make()
+                ->title('خطأ في حفظ التصميم')
+                ->body('فشل حفظ الصورة، الرجاء المحاولة مرة أخرى.')
+                ->danger()
+                ->send();
+            throw $e; // إعادة رمي الاستثناء للسماح لـ Filament بالتعامل معه
+        }
+    }
+
+    /**
+     * Normalize logo data from form input to a JSON array.
+     * Ensures consistent storage of logo paths.
+     *
+     * @param mixed $input The raw input from the 'logo_front' or 'logo_back' hidden field.
+     * @return string A JSON string representing an array of logo paths.
+     */
+    protected function normalizeLogoData($input): string
+    {
+        // إذا كانت القيمة بالفعل مصفوفة، فقط قم بترميزها كـ JSON
+        if (is_array($input)) {
+            return json_encode(array_values($input)); // تأكد أنها قائمة مرتبة
+        }
+
+        // إذا كانت سلسلة نصية، حاول فك تشفيرها
+        if (is_string($input)) {
+            try {
+                $decoded = json_decode($input, true);
+                // تأكد أن النتيجة مصفوفة بعد فك التشفير
+                if (is_array($decoded)) {
+                    return json_encode(array_values($decoded));
+                }
+            } catch (\Throwable $e) {
+                Log::warning("Invalid logo data format during decode: " . $e->getMessage() . " Input: " . $input);
+            }
+        }
+        // في حال فشل الفك أو كانت القيمة غير صالحة، أعد مصفوفة JSON فارغة
+        return '[]';
+    }
+
+    /**
+     * Mutate form data before creating a new record.
+     * Processes design images and normalizes logo data.
+     */
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        // معالجة التصميم الأمامي
+        if (!empty($data['image_front']) && Str::startsWith($data['image_front'], 'data:image/')) {
+            $data['image_front'] = $this->saveDesignImage($data['image_front'], 'front');
+        } else {
+            // إذا لم يتم إنشاء تصميم جديد أو كانت البيانات فارغة، قم بتعيينها إلى null
+            $data['image_front'] = null;
+        }
+
+        // معالجة التصميم الخلفي إذا كان المنتج ذا وجهين
+        if (!empty($data['is_double_sided']) && !empty($data['image_back']) && Str::startsWith($data['image_back'], 'data:image/')) {
+            $data['image_back'] = $this->saveDesignImage($data['image_back'], 'back');
+        } else {
+            $data['image_back'] = null;
+        }
+
+        // تأكيد حفظ أسماء الشعارات بصيغة JSON
+        $data['logo_front'] = $this->normalizeLogoData($data['logo_front'] ?? null);
+        $data['logo_back'] = $this->normalizeLogoData($data['logo_back'] ?? null);
+
+        // إزالة الحقول المؤقتة غير المرتبطة بقاعدة البيانات
+        unset($data['background_image_front']);
+        unset($data['background_image_back']);
+        unset($data['is_double_sided']);
+
+        return $data;
+    }
+
+    /**
+     * Mutate form data before updating an existing record.
+     * Processes design images (only if they are new Data URLs) and normalizes logo data.
+     */
+    protected function mutateFormDataBeforeUpdate(array $data): array
+    {
+        // إذا تم تعديل التصميم الأمامي (أي أنه لا يزال Data URL)
+        if (!empty($data['image_front']) && Str::startsWith($data['image_front'], 'data:image/')) {
+            $data['image_front'] = $this->saveDesignImage($data['image_front'], 'front');
+        } else if (empty($data['image_front'])) {
+            // إذا تم مسح التصميم الأمامي من الكانفاس (أو لم يتم تعديله ولم يكن هناك تصميم سابق)
+            $data['image_front'] = null;
+        }
+        // إذا لم يتم تعديل التصميم الأمامي (أي أنه مسار ملف محفوظ بالفعل)، لا تفعل شيئًا
+
+        // إذا تم تعديل التصميم الخلفي
+        if (!empty($data['is_double_sided']) && !empty($data['image_back']) && Str::startsWith($data['image_back'], 'data:image/')) {
+            $data['image_back'] = $this->saveDesignImage($data['image_back'], 'back');
+        } else if (empty($data['image_back'])) {
+            $data['image_back'] = null;
+        }
+
+        // تأكيد حفظ أسماء الشعارات بصيغة JSON
+        $data['logo_front'] = $this->normalizeLogoData($data['logo_front'] ?? null);
+        $data['logo_back'] = $this->normalizeLogoData($data['logo_back'] ?? null);
+
+        // إزالة الحقول المؤقتة غير المرتبطة بقاعدة البيانات
+        unset($data['background_image_front']);
+        unset($data['background_image_back']);
+        unset($data['is_double_sided']);
+
+        return $data;
+    }
+
+    /**
+     * Filter designs by authenticated designer
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('designer_id', Auth::id());
     }
 }

@@ -42,6 +42,7 @@ class DesignerPanelProvider extends PanelProvider
             ->path('designer')
             ->login()
             ->registration(RegisterDesigner::class)
+            ->profile()
             ->authGuard('designer')
             ->font('cairo')
             ->colors([
