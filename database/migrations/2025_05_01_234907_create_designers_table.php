@@ -22,7 +22,7 @@ return new class extends Migration
             $table->boolean('is_verified')->default(false);
             $table->boolean('is_active')->default(false);
             $table->string('profile')->nullable();
-            $table->text('attachments')->nullable();
+            $table->json('attachments')->nullable();
             $table->boolean('has_active_subscription')->default(false);
             $table->rememberToken();
             $table->timestamps();

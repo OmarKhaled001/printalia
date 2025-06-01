@@ -191,6 +191,12 @@ class RegisterDesigner extends SimplePage // Renamed for clarity, assuming you'l
                             ->dehydrated(false),
                     ])->columns(1), // You can organize fields into columns within a step
                     Wizard\Step::make('التوثيق')->schema([
+                           FileUpload::make('profile')
+                            ->label('صورة البطاقة')
+                            ->preserveFileNames() // Optional: keeps original file names
+                            ->directory('designer-profile') // Optional: specifies a directory within storage
+                            ->multiple() // Optional: allows multiple files if needed
+                            ->image(), // Optional: restricts to image files
                         TextInput::make('national_id')
                             ->label('الهوية الوطنية')
                             ->maxLength(255)
