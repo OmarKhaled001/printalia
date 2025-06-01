@@ -21,31 +21,60 @@ class ViewFactoryOrder extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-
-            Action::make('finished')
-                ->label('تم الانتهاء')
-                ->visible(fn(FactoryOrder $record) => $record->status != StatusTypes::Finished)
+            Action::make('accept')
+                ->label('قبول')
+                ->visible(
+                    fn(FactoryOrder $record): bool =>
+                    $record->status === StatusTypes::Pending
+                )
                 ->action(function (FactoryOrder $record) {
-                    $record->update(['status' => StatusTypes::Finished]);
-                    $record->order->update(['factory_id' => $record->factory_id]);
+                    $record->update([
+                        'status' => StatusTypes::Accepted
+                    ]);
+                    $record->order->update([
+                        'factory_id' => $record->factory_id
+                    ]);
                     Notification::make()
                         ->success()
-                        ->title('تم بنجاح')->send();
+                        ->title('تم قبول الطلب بنجاح')
+                        ->send();
                 })
                 ->color('success'),
 
-            Action::make('accept')
+            Action::make('reject')
                 ->label('رفض')
-                ->visible(fn(FactoryOrder $record) => $record->status != StatusTypes::Rejected)
+                ->visible(
+                    fn(FactoryOrder $record): bool =>
+                    $record->status === StatusTypes::Pending
+                )
                 ->action(function (FactoryOrder $record) {
-                    $record->update(['status' => StatusTypes::Rejected]);
-                    $record->order->update(['factory_id' => $record->factory_id]);
+                    $record->update([
+                        'status' => StatusTypes::Rejected
+                    ]);
                     Notification::make()
-                        ->success()
-                        ->title('تم بنجاح')->send();
+                        ->danger()
+                        ->title('تم رفض الطلب')
+                        ->send();
                 })
                 ->color('danger'),
 
+            Action::make('finished')
+                ->label('تم الانتهاء')
+                ->visible(
+                    fn(FactoryOrder $record): bool =>
+                    $record->status === StatusTypes::Accepted
+                )
+                ->action(function (FactoryOrder $record) {
+                    $record->update([
+                        'status' => StatusTypes::Finished
+                    ]);
+                    Notification::make()
+                        ->success()
+                        ->title('تم إنهاء الطلب بنجاح')
+                        ->send();
+                })
+                ->color('primary')
+                ->icon('heroicon-s-check'),
         ];
     }
 

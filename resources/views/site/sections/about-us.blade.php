@@ -28,11 +28,7 @@
 
     <div class="container" id="op-vision">
         <div class="row align-items-xl-center">
-            <div class="col-lg-6 sal-animate" data-sal="slide-right" data-sal-duration="1000">
-                <div class="case-study-featured-thumb">
-                    <img class="paralax-image" style="max-height: 600px;" src="{{ asset('storage/' . $settings::get('vision_section_image', '/media/others/mockup.png')) }}" alt="تصميم المنتج" style="will-change: transform; transform: perspective(1000px) rotateX(0deg) rotateY(0deg);" />
-                </div>
-            </div>
+
             <div class="col-xl-5 col-lg-6 offset-xl-1 sal-animate" data-sal="slide-right" data-sal-duration="1000" data-sal-delay="200">
                 <div class="case-study-featured">
                     <div class="section-heading heading-right">
@@ -49,6 +45,11 @@
 
                              ")}} </p>
                     </div>
+                </div>
+            </div>
+            <div class="col-lg-6 sal-animate" data-sal="slide-right" data-sal-duration="1000">
+                <div class="case-study-featured-thumb">
+                    <img class="paralax-image" style="max-height: 600px;" src="{{ asset('storage/' . $settings::get('vision_section_image', '/media/others/mockup.png')) }}" alt="تصميم المنتج" style="will-change: transform; transform: perspective(1000px) rotateX(0deg) rotateY(0deg);" />
                 </div>
             </div>
 

@@ -47,7 +47,8 @@ class DesignerPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Green,
             ])
-
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s')
             ->plugins([
                 TableLayoutTogglePlugin::make(),
                 GreeterPlugin::make()
@@ -91,7 +92,7 @@ class DesignerPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
-                // EnsureDesignerIsVerified::class,
+                EnsureDesignerIsVerified::class,
                 Authenticate::class,
             ]);
     }

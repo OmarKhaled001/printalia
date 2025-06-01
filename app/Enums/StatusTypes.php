@@ -59,4 +59,10 @@ enum StatusTypes: int implements HasLabel, HasColor
     {
         return $this === self::Rejected;
     }
+
+
+    public function isFinished(): bool
+    {
+        return $this === self::Finished;
+    }
 }

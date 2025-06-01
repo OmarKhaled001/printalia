@@ -16,7 +16,7 @@ class StatsOverview extends BaseWidget
         $plan = $subscription?->plan;
 
         $used = $designer->designsUsedCount();
-        $limit = $plan->design_count ?? 0;
+        $limit = $plan->design_count ??  "غير محدود";
         $remaining = $designer->remainingDesigns();
         $daysLeft = $designer->daysLeftInSubscription();
         $ordersCount = $designer->customers()->withCount('orders')->get()->sum('orders_count');
@@ -24,13 +24,10 @@ class StatsOverview extends BaseWidget
         $customersCount = $designer->customers()->count();
 
         // ✅ أرباح الطلبات المنتهية فقط
-        $finishedOrdersTotal = \App\Models\FactoryOrder::whereHas('order.customer', function ($q) use ($designer) {
-            $q->where('designer_id', $designer->id);
-        })
-            ->where('status', StatusTypes::Finished)
-            ->with('order')
+        $finishedOrdersTotal = \App\Models\Transaction::where('designer_id', $designer->id)
+            ->where('status', StatusTypes::Pending)
             ->get()
-            ->sum(fn($factoryOrder) => $factoryOrder->order?->total ?? 0);
+            ->sum('amount');
         $referralEarnings = 00.0;
 
         return [
@@ -51,7 +48,7 @@ class StatsOverview extends BaseWidget
                 ->color('info'),
 
             Stat::make('أرباح الطلبات المنتهية', number_format($finishedOrdersTotal, 2) . ' ر.س')
-                ->description('فقط الطلبات التي تم إنهاؤها في المصانع')
+                ->description('فقط الطلبات التي تم إنهاؤها في المصانع ولم يتم تحويل ربحها')
                 ->color('success'),
 
             Stat::make('أرباح الإحالة', number_format($referralEarnings, 2) . ' ر.س')

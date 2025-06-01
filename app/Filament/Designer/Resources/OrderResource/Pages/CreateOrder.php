@@ -26,30 +26,30 @@ class CreateOrder extends CreateRecord
 
         if ($factory) {
             $newOrder = FactoryOrder::create([
-                'order_id' => $order->id,
+                'order_id'   => $order->id,
                 'factory_id' => $factory->id,
-                'status' => StatusTypes::Pending->value,
+                'status'     => StatusTypes::Pending->value,
             ]);
 
             Notification::make()
-                ->title('طلب اشتراك جديد')
-                ->body("تصنيع عدد {$newOrder->order->name} من {$newOrder->quantity} بسعر {$newOrder->price} للواحد")
+                ->title('طلب جديد للتصنيع')
+                ->body("تم إرسال طلب تصنيع لمنتج: {$order->name} بعدد: {$order->quantity} قطعة.")
                 ->success()
                 ->actions([
-                    Action::make('عرض الطلب')
+                    Action::make('عرض التفاصيل')
                         ->url(route('filament.factory.resources.factory-orders.view', ['record' => $newOrder]))
                         ->button()
                         ->color('primary'),
-                    Action::make('accept')
-                        ->label('قبول')
-                        ->action(function () use ($newOrder) {
-                            $newOrder->update(['status' => StatusTypes::Accepted]);
-                            $newOrder->order->update(['factory_id' => $newOrder->factory_id]);
-                        })
-                        ->button()
-                        ->color('primary'),
+
+
                 ])
                 ->sendToDatabase($factory);
+        } else {
+            Notification::make()
+                ->title('لم يتم العثور على مصنع')
+                ->body('عذراً، لا يوجد مصنع متاح حالياً لاستلام هذا الطلب.')
+                ->danger()
+                ->sendToDatabase(auth()->user());
         }
     }
 }

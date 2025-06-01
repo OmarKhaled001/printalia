@@ -4,9 +4,9 @@
          <div class="container">
              <div class="header-navbar">
                  <div class="header-logo">
-                     <a href="onepage-1.html"><img class="light-version-logo" src="{{ asset('assets') }}/media/logo.png" width="160px" alt="logo" /></a>
-                     <a href="onepage-1.html"><img class="dark-version-logo" src="{{ asset('assets') }}/media/logo.png" width="160px" alt="logo" /></a>
-                     <a href="onepage-1.html"><img class="sticky-logo" src="{{ asset('assets') }}/media/logo.png" width="160px" alt="logo" /></a>
+                     <a href="{{ route('home') }}"><img class="light-version-logo" src="{{ asset('assets') }}/media/logo.png" width="160px" alt="logo" /></a>
+                     <a href="{{ route('home') }}"><img class="dark-version-logo" src="{{ asset('assets') }}/media/logo.png" width="160px" alt="logo" /></a>
+                     <a href="{{ route('home') }}"><img class="sticky-logo" src="{{ asset('assets') }}/media/logo.png" width="160px" alt="logo" /></a>
                  </div>
                  <div class="header-main-nav">
                      <!-- Start Mainmanu Nav -->
@@ -14,7 +14,7 @@
                          <div class="d-block d-lg-none">
                              <div class="mobile-nav-header">
                                  <div class="mobile-nav-logo">
-                                     <a href="onepage-1.html">
+                                     <a href="{{ route('home') }}">
                                          <img class="light-mode" src="{{ asset('assets') }}/media/logo.png" width="160px" alt="Site Logo" />
                                          <img class="dark-mode" src="{{ asset('assets') }}/media/logo.png" width="160px" alt="Site Logo" />
                                      </a>
@@ -59,7 +59,7 @@
                                  <span></span>
                              </button>
                          </li>
-                         <li class="my_switcher d-block d-lg-none">
+                         <li class="my_switcher d-block d-lg-none mx-2">
                              <ul>
                                  <li title="Light Mode">
                                      <a href="javascript:void(0)" class="setColor light" data-theme="light">
