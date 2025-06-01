@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use App\Observers\SubscriptionObserver;
 use Illuminate\Support\ServiceProvider;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+            Schema::defaultStringLength(191);
+
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch->locales(['ar', 'en'])->displayLocale('ar')->visible(false);
         });
