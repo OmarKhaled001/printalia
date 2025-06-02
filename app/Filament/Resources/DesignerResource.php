@@ -10,6 +10,7 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
@@ -76,24 +77,23 @@ class DesignerResource extends Resource
                     ->columnSpan(12)
                     ->maxLength(500),
 
-                Forms\Components\TextInput::make('password')
-                    ->password()
+                TextInput::make('password')
                     ->label('كلمة المرور')
-                    ->columnSpan(6)
-                    ->required(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
-                    ->confirmed()
-                    ->hidden('edit')
-                    ->dehydrateStateUsing(fn($state) => \Illuminate\Support\Facades\Hash::make($state))
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('password_confirmation')
                     ->password()
-                    ->label('تأكيد كلمة المرور')
+                    ->required()
+                    ->confirmed()
                     ->columnSpan(6)
-                    ->hidden('edit')
-                    ->required(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
-                    ->dehydrated(false),
+                    ->maxLength(50)
+                    ->dehydrated() // مهم لتخزين القيمة
+                    ->mutateDehydratedStateUsing(fn($state) => bcrypt($state)),
 
+                TextInput::make('password_confirmation')
+                    ->label('تأكيد كلمة المرور')
+                    ->password()
+                    ->required()
+                    ->columnSpan(6)
+                    ->maxLength(50)
+                    ->dehydrated(false), // لا تحفظ قيمة التأكيد في DB
                 FileUpload::make('attachments')
                     ->directory('designers')
                     ->multiple()
