@@ -72,20 +72,22 @@ class FactoryResource extends Resource
                         ->maxLength(50),
                     TextInput::make('password')
                         ->label('كلمة المرور')
-                        ->columnSpan(6)
-                        ->confirmed()
-                        ->required()
-
                         ->password()
-                        ->maxLength(50),
+                        ->required()
+                        ->confirmed()
+                        ->columnSpan(6)
+                        ->maxLength(50)
+                        ->dehydrated() // مهم لتخزين القيمة
+                        ->mutateDehydratedStateUsing(fn($state) => bcrypt($state)),
 
                     TextInput::make('password_confirmation')
                         ->label('تأكيد كلمة المرور')
                         ->password()
-                        ->columnSpan(6)
                         ->required()
+                        ->columnSpan(6)
+                        ->maxLength(50)
+                        ->dehydrated(false), // لا تحفظ قيمة التأكيد في DB
 
-                        ->maxLength(20),
                 ])->columnSpan(8),
 
                 MarkdownEditor::make('address')
