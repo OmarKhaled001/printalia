@@ -2,15 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Factory extends Authenticatable
+class Factory extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable;
 
+    public function canAccessPanel(\Filament\Panel $panel): bool
+    {
+        return true;
+    }
     protected $fillable = [
         'name',
         'email',
