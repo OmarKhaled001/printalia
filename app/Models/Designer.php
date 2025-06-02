@@ -25,6 +25,14 @@ class Designer extends Authenticatable
         'has_active_subscription'
     ];
 
+    protected $casts = [
+    'is_verified' => 'boolean',
+    'is_active' => 'boolean',
+    'has_active_subscription' => 'boolean',
+    'attachments' => 'array',
+    ];
+
+
     protected $hidden = [
         'password',
     ];
