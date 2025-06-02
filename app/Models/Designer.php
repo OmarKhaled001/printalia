@@ -6,16 +6,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Filament\Models\Contracts\FilamentUser;
 
-class Designer extends Authenticatable implements FilamentUser
+class Designer extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    public function canAccessPanel(\Filament\Panel $panel): bool
-    {
-        return true;
-    }
     protected $fillable = [
         'name',
         'email',
