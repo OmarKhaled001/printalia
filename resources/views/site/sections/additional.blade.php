@@ -1,6 +1,6 @@
-  @if($settings::get('about_section_is_visible') && $settings::get('vision_section_is_visible'))
+  @if($settings::get('additional_1_section_is_visible') || $settings::get('additional_2_section_is_visible'))
   <section class="section-padding case-study-brief">
-      @if($settings::get('about_section_is_visible'))
+      @if($settings::get('additional_1_section_is_visible'))
 
       <div class="container" id="op-about">
           <div class="row align-items-xl-center">
@@ -9,18 +9,18 @@
                   <div class="case-study-featured">
                       <div class="section-heading heading-right">
                           <h1 class="title" style="text-align: start !important;">
-                              {{$settings::get('about_section_title',
+                              {{$settings::get('additional_1_section_title',
                              "من نحن ؟")}}
                           </h1>
-                          <p style="text-align: start !important; font-size:21px;">
-                              {{$settings::get('about_section_description',
-                             "نحن فريق يمني شغوف بالتقنية وريادة الأعمال، أطلقنا منصة برنتاليا كحل مبتكر في مجال التجارة الالكترونية لصناعة براند خاص فيك بدون مخاطرة وراس مال . مهمتنا هي تمكين كل مبدع أو رائد أعمال طموح من دخول عالم التجارة الإلكترونية بوسائل ذكية وآمنة")}} </p>
+                          <div style="text-align: start !important; font-size:21px;">
+                              {{$settings::get('additional_1_section_description',
+                             "نحن فريق يمني شغوف بالتقنية وريادة الأعمال، أطلقنا منصة برنتاليا كحل مبتكر في مجال التجارة الالكترونية لصناعة براند خاص فيك بدون مخاطرة وراس مال . مهمتنا هي تمكين كل مبدع أو رائد أعمال طموح من دخول عالم التجارة الإلكترونية بوسائل ذكية وآمنة")}} </div>
                       </div>
                   </div>
               </div>
               <div class="col-lg-6 sal-animate" data-sal="slide-right" data-sal-duration="1000">
                   <div class="case-study-featured-thumb">
-                      <img class="paralax-image" style="max-height: 600px;" src="{{ asset('storage/' . $settings::get('about_section_image', '/media/others/mockup.png')) }}" alt="تصميم المنتج" style="will-change: transform; transform: perspective(1000px) rotateX(0deg) rotateY(0deg);" />
+                      <img class="paralax-image" style="max-height: 600px;" src="{{ asset('storage/' . $settings::get('additional_1_section_image', '/media/others/mockup.png')) }}" alt="تصميم المنتج" style="will-change: transform; transform: perspective(1000px) rotateX(0deg) rotateY(0deg);" />
 
                   </div>
               </div>
@@ -28,7 +28,7 @@
       </div>
       @endif
 
-      @if($settings::get('vision_section_is_visible'))
+      @if($settings::get('additional_2_section_is_visible'))
 
       <div class="container" id="op-vision">
           <div class="row align-items-xl-center">
@@ -37,20 +37,20 @@
                   <div class="case-study-featured">
                       <div class="section-heading heading-right">
                           <h1 class="title" style="text-align: start !important;">
-                              {{$settings::get('vision_section_title',
+                              {{$settings::get('additional_2_section_title',
                              "
                              رؤيتنا
                              ")}}
                           </h1>
-                          <div style="text-align: start !important; font-size:21px;">
-                              {{$settings::get('vision_section_description',
-                             "أن نفتح آفاق التجارة الإلكترونية في اليمن، ونمكّن المبدعين من تحويل أفكارهم إلى علامات تجارية ناجحة بدون تعقيدات أو تكاليف عالية.")}} </div>
+                          <p style="text-align: start !important; font-size:21px;">
+                              {{$settings::get('additional_2_section_description',
+                             "أن نفتح آفاق التجارة الإلكترونية في اليمن، ونمكّن المبدعين من تحويل أفكارهم إلى علامات تجارية ناجحة بدون تعقيدات أو تكاليف عالية.")}} </p>
                       </div>
                   </div>
               </div>
               <div class="col-lg-6 sal-animate" data-sal="slide-right" data-sal-duration="1000">
                   <div class="case-study-featured-thumb">
-                      <img class="paralax-image" style="max-height: 600px;" src="{{ asset('storage/' . $settings::get('vision_section_image', '/media/others/mockup.png')) }}" alt="تصميم المنتج" style="will-change: transform; transform: perspective(1000px) rotateX(0deg) rotateY(0deg);" />
+                      <img class="paralax-image" style="max-height: 600px;" src="{{ asset('storage/' . $settings::get('additional_2_section_image', '/media/others/mockup.png')) }}" alt="تصميم المنتج" style="will-change: transform; transform: perspective(1000px) rotateX(0deg) rotateY(0deg);" />
                   </div>
               </div>
 

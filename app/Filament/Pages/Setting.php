@@ -4,11 +4,14 @@ namespace App\Filament\Pages;
 
 use Filament\Forms\Form;
 use Filament\Pages\Page;
+use App\Models\BankAccount;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Group;
 use Illuminate\Support\Facades\Cache;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -40,6 +43,7 @@ class Setting extends Page implements HasForms
         return 'الإعدادات ';
     }
 
+    public $bank_accounts;
     public $logo;
     public $icon;
     public $site_title;
@@ -49,22 +53,41 @@ class Setting extends Page implements HasForms
     public $present_earn;
     public $hero_section_title;
     public $hero_section_description;
+    public $hero_section_is_visible;
     public $hero_section_image;
     public $about_section_title;
     public $about_section_description;
+    public $about_section_is_visible;
     public $about_section_image;
     public $vision_section_title;
     public $vision_section_description;
+    public $vision_section_is_visible;
     public $vision_section_image;
+    public $additional_1_section_title;
+    public $additional_1_section_description;
+    public $additional_1_section_is_visible;
+    public $additional_1_section_image;
+    public $additional_2_section_title;
+    public $additional_2_section_description;
+    public $additional_2_section_is_visible;
+    public $additional_2_section_image;
     public $contact_phone;
     public $contact_email;
     public $contact_zip_code;
     public $contact_address;
     public $facebook_link;
-    public $insta_link;
+    public $instagram_link;
 
     public function mount()
     {
+
+        $bankAccounts = \App\Models\BankAccount::all(['name', 'code'])->map(function ($account) {
+            return [
+                'name' => $account->name,
+                'code' => $account->code,
+            ];
+        })->toArray();
+
         $this->form->fill([
             'logo' => \App\Models\Setting::where('key', 'logo')->value('value'),
             'icon' => \App\Models\Setting::where('key', 'icon')->value('value'),
@@ -75,19 +98,32 @@ class Setting extends Page implements HasForms
             'present_earn' => \App\Models\Setting::where('key', 'present_earn')->value('value'),
             'hero_section_title' => \App\Models\Setting::where('key', 'hero_section_title')->value('value'),
             'hero_section_description' => \App\Models\Setting::where('key', 'hero_section_description')->value('value'),
+            'hero_section_is_visible' => \App\Models\Setting::where('key', 'hero_section_is_visible')->value('value'),
             'hero_section_image' => \App\Models\Setting::where('key', 'hero_section_image')->value('value'),
             'about_section_title' => \App\Models\Setting::where('key', 'about_section_title')->value('value'),
             'about_section_description' => \App\Models\Setting::where('key', 'about_section_description')->value('value'),
             'about_section_image' => \App\Models\Setting::where('key', 'about_section_image')->value('value'),
+            'about_section_is_visible' => \App\Models\Setting::where('key', 'about_section_is_visible')->value('value'),
             'vision_section_title' => \App\Models\Setting::where('key', 'vision_section_title')->value('value'),
             'vision_section_description' => \App\Models\Setting::where('key', 'vision_section_description')->value('value'),
+            'vision_section_is_visible' => \App\Models\Setting::where('key', 'vision_section_is_visible')->value('value'),
             'vision_section_image' => \App\Models\Setting::where('key', 'vision_section_image')->value('value'),
+            'additional_1_section_title' => \App\Models\Setting::where('key', 'additional_1_section_title')->value('value'),
+            'additional_1_section_description' => \App\Models\Setting::where('key', 'additional_1_section_description')->value('value'),
+            'additional_1_section_is_visible' => \App\Models\Setting::where('key', 'additional_1_section_is_visible')->value('value'),
+            'additional_1_section_image' => \App\Models\Setting::where('key', 'additional_1_section_image')->value('value'),
+            'additional_2_section_title' => \App\Models\Setting::where('key', 'additional_2_section_title')->value('value'),
+            'additional_2_section_description' => \App\Models\Setting::where('key', 'additional_2_section_description')->value('value'),
+            'additional_2_section_is_visible' => \App\Models\Setting::where('key', 'additional_2_section_is_visible')->value('value'),
+            'additional_2_section_image' => \App\Models\Setting::where('key', 'additional_2_section_image')->value('value'),
             'contact_phone' => \App\Models\Setting::where('key', 'contact_phone')->value('value'),
             'contact_email' => \App\Models\Setting::where('key', 'contact_email')->value('value'),
             'contact_zip_code' => \App\Models\Setting::where('key', 'contact_zip_code')->value('value'),
             'contact_address' => \App\Models\Setting::where('key', 'contact_address')->value('value'),
             'facebook_link' => \App\Models\Setting::where('key', 'facebook_link')->value('value'),
-            'insta_link' => \App\Models\Setting::where('key', 'insta_link')->value('value'),
+            'instagram_link' => \App\Models\Setting::where('key', 'instagram_link')->value('value'),
+            'bank_accounts' => $bankAccounts,
+
         ]);
     }
 
@@ -103,6 +139,8 @@ class Setting extends Page implements HasForms
                     Tab::make('إعدادات الموقع')
                         ->icon('heroicon-o-globe-alt')
                         ->schema([
+
+
                             TextInput::make('site_title')
                                 ->label('عنوان الموقع')
                                 ->placeholder('مثال: Printalia - منصة الربح من التصميم والطباعة')
@@ -137,24 +175,52 @@ class Setting extends Page implements HasForms
                     Tab::make('نظام التربح')
                         ->icon('heroicon-o-currency-dollar')
                         ->schema([
-                            TextInput::make('bank_code')
-                                ->label('كود التحويل البنكي')
-                                ->placeholder('مثال: 123456789'),
+                            Repeater::make('bank_accounts')
+                                ->label('الحسابات البنكية')
+                                ->schema([
+                                    TextInput::make('name')
+                                        ->label('اسم الحساب')
+                                        ->required(),
 
-                            Textarea::make('present_earn')
+                                    TextInput::make('code')
+                                        ->label('كود الحساب')
+                                        ->required(),
+                                ])
+                                ->columns(2)
+                                ->minItems(1) // 👈 هذا هو السطر الذي يفرض وجود عنصر واحد على الأقل
+                                ->itemLabel(fn(array $state): ?string => $state['name'] ?? null),
+
+                            TextInput::make('present_earn')
                                 ->label('نسبة أرباح المصمم')
-                                ->placeholder('مثال: يحصل المصمم على 30٪ من قيمة الطلب')
-                                ->rows(3),
+                                ->placeholder('مثال: 30')
+                                ->numeric()
+                                ->minValue(0)
+                                ->maxValue(100)
+                                ->suffix('%')
+                                ->required()
+                                ->rules([
+                                    'numeric',
+                                    'min:0',
+                                    'max:100'
+                                ])
+                                ->validationMessages([
+                                    'numeric' => 'يجب أن تكون القيمة رقمية',
+                                    'min' => 'لا يمكن أن تكون النسبة أقل من 0%',
+                                    'max' => 'لا يمكن أن تكون النسبة أكثر من 100%'
+                                ]),
                         ])->columns(2),
 
                     Tab::make('الترحيب')
                         ->icon('heroicon-o-photo')
                         ->schema([
+
                             Group::make()->schema([
                                 TextInput::make('hero_section_title')->label('العنوان'),
                                 Textarea::make('hero_section_description')->label('الوصف'),
                             ]),
                             FileUpload::make('hero_section_image')->label('الصورة')->directory('settings'),
+                            Toggle::make('hero_section_is_visible')->label('فعال ؟')->columns(2),
+
                         ])->columns(2),
 
                     Tab::make('من نحن')
@@ -164,7 +230,10 @@ class Setting extends Page implements HasForms
                                 TextInput::make('about_section_title')->label('العنوان'),
                                 Textarea::make('about_section_description')->label('الوصف'),
                             ]),
+
                             FileUpload::make('about_section_image')->label('الصورة')->directory('settings'),
+                            Toggle::make('about_section_is_visible')->label('فعال ؟')->columns(2),
+
                         ])->columns(2),
 
                     Tab::make('رؤيتنا')
@@ -174,7 +243,35 @@ class Setting extends Page implements HasForms
                                 TextInput::make('vision_section_title')->label('العنوان'),
                                 Textarea::make('vision_section_description')->label('الوصف'),
                             ]),
+
                             FileUpload::make('vision_section_image')->label('الصورة')->directory('settings'),
+                            Toggle::make('vision_section_is_visible')->label('فعال ؟')->columns(2),
+
+                        ])->columns(2),
+                    Tab::make('إضافي 1')
+                        ->icon('heroicon-o-folder-plus')
+                        ->schema([
+                            Group::make()->schema([
+                                TextInput::make('additional_1_section_title')->label('العنوان'),
+                                Textarea::make('additional_1_section_description')->label('الوصف'),
+                            ]),
+
+                            FileUpload::make('additional_1_section_image')->label('الصورة')->directory('settings'),
+                            Toggle::make('additional_1_section_is_visible')->label('فعال ؟')->columns(2),
+
+                        ])->columns(2),
+
+                    Tab::make('إضافي 2')
+                        ->icon('heroicon-o-folder-plus')
+                        ->schema([
+                            Group::make()->schema([
+                                TextInput::make('additional_2_section_title')->label('العنوان'),
+                                Textarea::make('additional_2_section_description')->label('الوصف'),
+                            ]),
+
+                            FileUpload::make('additional_2_section_image')->label('الصورة')->directory('settings'),
+                            Toggle::make('additional_2_section_is_visible')->label('فعال ؟')->columns(2),
+
                         ])->columns(2),
 
                     Tab::make('التواصل')
@@ -185,7 +282,7 @@ class Setting extends Page implements HasForms
                             Textarea::make('contact_address')->label('العنوان'),
                             TextInput::make('contact_zip_code')->label('الرمز البريدي'),
                             TextInput::make('facebook_link')->label('رابط الفيس بوك')->url(),
-                            TextInput::make('insta_link')->label('رابط الانستجرام')->url(),
+                            TextInput::make('instagram_link')->label('رابط الانستجرام')->url(),
                         ])->columns(2),
                 ])
         ]);
@@ -195,6 +292,18 @@ class Setting extends Page implements HasForms
     {
         $data = $this->form->getState();
 
+        if (isset($data['bank_accounts'])) {
+            BankAccount::truncate();
+
+            foreach ($data['bank_accounts'] as $account) {
+                BankAccount::create([
+                    'name' => $account['name'],
+                    'code' => $account['code']
+                ]);
+            }
+
+            unset($data['bank_accounts']);
+        }
         foreach ($data as $key => $value) {
             \App\Models\Setting::updateOrCreate(
                 ['key' => $key],

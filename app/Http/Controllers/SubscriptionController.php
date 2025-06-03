@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Plan;
 use App\Models\Setting;
+use App\Models\BankAccount;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,8 +29,9 @@ class SubscriptionController extends Controller
                 ->with('info', 'لديك اشتراك نشط بالفعل');
         }
         $plan = Plan::find($id);
+        $bankAccounts = BankAccount::where('is_active', true)->get();
 
-        return view('site.checkout', compact('plan'));
+        return view('site.checkout', compact('plan', 'bankAccounts'));
     }
 
     public function processSubscription(Request $request)

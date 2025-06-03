@@ -133,6 +133,7 @@
         @include('site.sections.header')
         @include('site.sections.hero')
         @include('site.sections.about-us')
+        @include('site.sections.additional')
         @include('site.sections.plans')
 
 

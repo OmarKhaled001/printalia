@@ -1,3 +1,4 @@
+   @if($settings::get('hero_section_is_visible'))
    <section class="banner banner-style-1" id="op-home">
        <div class="container">
            <div class="row align-items-end align-items-xl-start">
@@ -51,3 +52,4 @@
            </li>
        </ul>
    </section>
+   @endif
