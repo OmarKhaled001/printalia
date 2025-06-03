@@ -26,9 +26,10 @@ class StatsOverview extends BaseWidget
         // ✅ أرباح الطلبات المنتهية فقط
         $finishedOrdersTotal = \App\Models\Transaction::where('designer_id', $designer->id)
             ->where('status', StatusTypes::Pending)
+            ->where('type', \App\Enums\TransactionType::PROFIT)
             ->get()
             ->sum('amount');
-        $referralEarnings = 00.0;
+        $referralEarnings =  $designer->getPendingReferralEarnings();
 
         return [
             Stat::make('التصاميم المستخدمة', "$used / $limit")

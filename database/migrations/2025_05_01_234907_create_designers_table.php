@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('profile')->nullable();
             $table->json('attachments')->nullable();
             $table->boolean('has_active_subscription')->default(false);
+            $table->string('referral_code')->unique()->nullable();
+            $table->foreignId('referred_by')->nullable()->constrained('designers')->nullOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });

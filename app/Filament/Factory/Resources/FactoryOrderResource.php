@@ -91,7 +91,7 @@ class FactoryOrderResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('factory_id', auth('factory')->id())->where('status', StatusTypes::Pending->value)->count();
+        return static::getModel()::where('factory_id', auth('factory')->id())->where('status', StatusTypes::Pending)->count();
     }
 
     public static function getNavigationBadgeColor(): ?string

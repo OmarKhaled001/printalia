@@ -13,15 +13,12 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->foreignId('factory_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('designer_id')->nullable()->constrained()->onDelete('set null');
-
+            $table->unsignedTinyInteger('type')->default(0)->index();
             $table->unsignedTinyInteger('status')->default(0)->index();
             $table->string('receipt_image')->nullable();
             $table->decimal('amount', 10, 2);
-
             $table->timestamps();
         });
     }

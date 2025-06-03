@@ -29,6 +29,7 @@ class TransactionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('order.id')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->label('رقم الطلب'),
 
                 Tables\Columns\TextColumn::make('factory.name')
@@ -37,6 +38,7 @@ class TransactionResource extends Resource
                         ? route('filament.admin.resources.factories.edit', $record->factory)
                         : null)
                     ->openUrlInNewTab()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->color('primary'),
 
                 Tables\Columns\TextColumn::make('designer.name')
@@ -50,6 +52,10 @@ class TransactionResource extends Resource
                 Tables\Columns\TextColumn::make('amount')
                     ->label('المبلغ')
                     ->money('SAR'),
+
+                Tables\Columns\TextColumn::make('type')
+                    ->label('النوع')
+                    ->badge(),
 
                 Tables\Columns\TextColumn::make('status')
                     ->label('الحالة')

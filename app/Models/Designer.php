@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\StatusTypes;
+use Illuminate\Support\Str;
+use App\Enums\TransactionType;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Designer extends Authenticatable
 {
@@ -22,7 +25,9 @@ class Designer extends Authenticatable
         'is_active',
         'profile',
         'attachments',
-        'has_active_subscription'
+        'has_active_subscription',
+        'referral_code',
+        'referred_by',
     ];
 
     protected $casts = [
@@ -47,6 +52,11 @@ class Designer extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
     public function designs()
     {
         return $this->hasMany(Design::class);
@@ -60,6 +70,16 @@ class Designer extends Authenticatable
     public function activeSubscription()
     {
         return $this->subscriptions()->where('is_approved', true)->where('end_date', '>=', now())->latest()->first();
+    }
+
+    public function referrer()
+    {
+        return $this->belongsTo(Designer::class, 'referred_by');
+    }
+
+    public function referrals()
+    {
+        return $this->hasMany(Designer::class, 'referred_by');
     }
 
     public function designsUsedCount(): int
@@ -77,5 +97,41 @@ class Designer extends Authenticatable
     {
         $end = optional($this->activeSubscription())->end_date;
         return now()->diffInDays($end, false);
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($designer) {
+            if (empty($designer->referral_code)) {
+                $designer->referral_code = self::generateUniqueReferralCode();
+            }
+        });
+    }
+
+
+    public static function generateUniqueReferralCode(): string
+    {
+        do {
+            $code = strtoupper(Str::random(6));
+        } while (self::where('referral_code', $code)->exists());
+
+        return $code;
+    }
+
+    public function getPendingReferralEarnings(): float
+    {
+        return $this->transactions()
+            ->where('type', TransactionType::REFERRAL)
+            ->where('status', StatusTypes::Pending)
+            ->sum('amount');
+    }
+
+
+    public function getFinishedReferralEarnings(): float
+    {
+        return $this->transactions()
+            ->where('type', TransactionType::REFERRAL)
+            ->where('status', StatusTypes::Finished)
+            ->sum('amount');
     }
 }

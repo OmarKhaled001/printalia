@@ -45,16 +45,20 @@ class TransactionResource extends Resource
                 Tables\Columns\TextColumn::make('order.customer.name')
                     ->label('العميل')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('factory.name')
                     ->label('المصنع')
-                    ->color('primary'),
+                    ->color('primary')->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('amount')
                     ->label('المبلغ')
                     ->money('SAR')
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('type')
+                    ->label('النوع')
+                    ->badge(),
 
                 Tables\Columns\TextColumn::make('status')
                     ->label('الحالة')
@@ -71,8 +75,7 @@ class TransactionResource extends Resource
                     ->options([
                         '0' => 'قيد الانتظار',
                         '3' => 'منتهي',
-                    ])
-                    ->default('0'),
+                    ]),
 
                 Filter::make('created_at')
                     ->label('فلترة بالتاريخ')

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\StatusTypes;
+use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -16,12 +17,14 @@ class Transaction extends Model
         'factory_id',
         'designer_id',
         'status',
+        'type',
         'receipt_image',
         'amount',
     ];
 
     protected $casts = [
         'status' => StatusTypes::class,
+        'type' => TransactionType::class,
     ];
 
 

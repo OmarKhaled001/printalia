@@ -57,6 +57,7 @@ class FactoryOrder extends Model
                     'designer_id' => $order->designer_id,
                     'amount' => $profit,
                     'status' => \App\Enums\StatusTypes::Pending,
+                    'type' => \App\Enums\TransactionType::PROFIT,
                 ]);
 
 

@@ -56,19 +56,22 @@ class DesignerPanelProvider extends PanelProvider
                     ->message('مرحباً بك،')
                     ->name(text: fn() => Auth::user('designer')->name)
                     ->title(text: fn() => "اشتراكك الحالي:" . Auth::user('designer')->activeSubscription()?->plan->name)
-                    // ->avatar(
-                    //     size: 'w-16 h-16',
-                    //     url: auth('designer')->user()->profile
-                    //         ? asset('storage/' . auth('designer')->user()->profile)
-                    //         : 'https://ui-avatars.com/api/?name=' . urlencode(auth('designer')->user()->name)
-                    // )
-                    ->action(
-                        Action::make('copy-referral')
-                            ->label('نسخ رابط الإحالة')
-                            ->icon('heroicon-o-clipboard')
-                            ->color('primary')
 
-                    )
+                    //         ->action(
+                    //             Action::make('copy-referral')
+                    //                 ->label('نسخ رابط الإحالة')
+                    //                 ->icon('heroicon-o-clipboard')
+                    //                 ->color('primary')
+                    //                 ->extraAttributes([
+                    //                     'x-data' => '{}',
+                    //                     'x-on:click' => "
+                    //     navigator.clipboard.writeText(@js(url('/register-designer?ref=' . auth('designer')->user()?->referral_code)))
+
+                    // ",
+                    //                 ])
+                    //         )
+
+
                     ->sort(-1)
                     ->columnSpan('full'),
 

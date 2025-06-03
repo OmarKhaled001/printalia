@@ -59,10 +59,21 @@ class RegisterDesigner extends SimplePage // Renamed for clarity, assuming you'l
 
         $this->callHook('beforeFill');
 
+        if (request()->has('ref')) {
+            $referralCode = request()->get('ref');
+
+            $referrer = Designer::where('referral_code', $referralCode)->first();
+
+            if ($referrer) {
+                $this->data['referred_by'] = $referrer->id;
+            }
+        }
+
         $this->form->fill();
 
         $this->callHook('afterFill');
     }
+
 
     public function register(): ?RegistrationResponse
     {
@@ -272,6 +283,8 @@ class RegisterDesigner extends SimplePage // Renamed for clarity, assuming you'l
     {
         // No specific mutation needed here, as password hashing is done in handleRegistration
         // and other fields map directly.
+        $data['referred_by'] = $this->data['referred_by'] ?? null;
+
         return $data;
     }
 }
