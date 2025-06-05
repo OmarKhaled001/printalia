@@ -19,6 +19,11 @@ class Plan extends Model
         'is_active',
     ];
 
+    protected $casts = [
+        'duration' => 'integer',
+    ];
+
+
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
@@ -26,11 +31,13 @@ class Plan extends Model
 
     public function calculateEndDate($startDate)
     {
+        $duration = (int) $this->duration;
+
         return match ($this->duration_unit) {
-            'day', 'days' => $startDate->copy()->addDays($this->duration),
-            'month', 'months' => $startDate->copy()->addMonths($this->duration),
-            'year', 'years' => $startDate->copy()->addYears($this->duration),
-            default => $startDate->copy()->addDays($this->duration),
+            'day', 'days' => $startDate->copy()->addDays($duration),
+            'month', 'months' => $startDate->copy()->addMonths($duration),
+            'year', 'years' => $startDate->copy()->addYears($duration),
+            default => $startDate->copy()->addDays($duration),
         };
     }
 }
