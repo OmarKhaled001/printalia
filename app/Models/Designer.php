@@ -97,14 +97,18 @@ class Designer extends Authenticatable
     {
         $plan = $this->activeSubscription()?->plan;
 
-        $limit = $plan->design_limit ?? null;
-
-        // إذا كانت الخطة غير محدودة (مثلاً null أو -1)
-        if ($limit <= -1) {
-            return null; // أو يمكن ترجمتها إلى "غير محدود"
+        if (!$plan) {
+            return 0;
         }
 
-        return $limit - $this->designsUsedCount();
+        // لو الخطة غير محدودة
+        if ($plan->is_infinity) {
+            return null; // تعني "غير محدود"
+        }
+
+        $limit = (int) ($plan->design_count ?? 0);
+
+        return max(0, $limit - $this->designsUsedCount());
     }
 
 

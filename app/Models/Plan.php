@@ -17,6 +17,7 @@ class Plan extends Model
         'description',
         'design_count',
         'is_active',
+        'is_infinity',
     ];
 
     protected $casts = [

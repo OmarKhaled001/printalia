@@ -29,18 +29,27 @@ class DesignController extends Controller
         $data['profit'] = $request->sale_price - $product->price;
         $data['designer_id'] =  auth('designer')->user()->id;
 
-        // Check design limit
         $remainingDesigns = $designer->remainingDesigns();
 
-        if ($remainingDesigns === 0) {
+        if (!is_null($remainingDesigns) && $remainingDesigns <= 0) {
+            $message = "لقد استهلكت عدد التصاميم المتاحة لك في الاشتراك الحالي";
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $message,
+                ], 422);
+            }
+
             Notification::make()
                 ->title('حدث خطأ')
-                ->body("لقد استهلكت عدد التصاميم المتاحة لك في الاشتراك الحالي")
+                ->body($message)
                 ->danger()
                 ->send();
 
             return back()->withInput();
         }
+
 
 
         // Upload images
