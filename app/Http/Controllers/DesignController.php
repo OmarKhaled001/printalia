@@ -27,7 +27,7 @@ class DesignController extends Controller
         $designer = Auth::user('designer');
         $product = Product::find($request->product_id);
         $data['profit'] = $request->sale_price - $product->price;
-        $data['designer_id'] = $designer->id;
+        $data['designer_id'] =  Auth::user('designer')->id;
 
         // Check design limit
         $remainingDesigns = $designer->remainingDesigns();
