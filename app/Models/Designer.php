@@ -45,6 +45,9 @@ class Designer extends Authenticatable
         'password',
     ];
 
+    protected $guard = 'designer';
+
+
     public function customers()
     {
         return $this->hasMany(Customer::class);

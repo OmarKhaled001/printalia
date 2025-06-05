@@ -27,6 +27,9 @@ class Factory extends Authenticatable
         'has_active_subscription'
     ];
 
+    protected $guard = 'factory';
+
+
     protected $hidden = [
         'password',
     ];
