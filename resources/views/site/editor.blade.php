@@ -212,7 +212,7 @@
             padding: 10px;
             overflow-y: auto;
             box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-            height: 200px;
+            height: 400px;
             z-index: 20;
             transform: translateY(100%);
             transition: transform 0.3s ease;
