@@ -4,33 +4,24 @@
     <!-- Meta Data -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Printalia</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>{{ $settings::get('site_title', 'Printalia - منصة التصميم والطباعة حسب الطلب') }}</title>
+    <meta name="description" content="{{ $settings::get('site_description', 'منصة يمنية متخصصة في تصميم وبيع المنتجات المطبوعة حسب الطلب') }}">
+    <meta name="keywords" content="{{ $settings::get('site_keywords', 'Printalia, برنتاليا, تصميم منتجات, طباعة حسب الطلب, يمن') }}">
 
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Printalia هي منصة يمنية تتيح للمصممين تحويل تصاميمهم إلى منتجات مثل التيشيرتات والأكواب وبيعها بسهولة دون الحاجة لرأس مال، مع ربط مباشر بالمصانع." />
-    <meta name="keywords" content="Printalia, منصة تصميم, طباعة عند الطلب, بيع تصاميم, موكابس, اليمن, مصممين مبتدئين, تصميم منتجات, تجارة إلكترونية, POD اليمن" />
-    <meta name="author" content="Printalia Team" />
-    <meta name="robots" content="index, follow" />
-    <meta name="language" content="ar" />
-    <meta name="theme-color" content="#FF5722" />
+    <!-- Open Graph / Facebook Meta Tags (لتحسين المشاركة على السوشيال ميديا) -->
+    <meta property="og:title" content="{{ $settings::get('site_title', 'Printalia') }}">
+    <meta property="og:description" content="{{ $settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('images/logo-social-share.png') }}">
 
-    <!-- Open Graph Meta (Facebook & LinkedIn) -->
-    <meta property="og:title" content="Printalia" />
-    <meta property="og:description" content="حوّل تصاميمك إلى منتجات قابلة للبيع بسهولة، وابدأ مشروعك دون رأس مال عبر منصة Printalia اليمنية." />
-    <meta property="og:image" content="https://example.com/assets/media/og-image.jpg" />
-    <meta property="og:url" content="https://example.com" />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="ar_YE" />
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $settings::get('site_title', 'Printalia') }}">
+    <meta name="twitter:description" content="{{ $settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
 
-    <!-- Twitter Meta -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Printalia" />
-    <meta name="twitter:description" content="منصة يمنية لتحويل التصاميم إلى منتجات قابلة للبيع مع ربط بالمصانع ونظام موكابس سهل للمصممين المبتدئين." />
-    <meta name="twitter:image" content="https://example.com/assets/media/og-image.jpg" />
-    <meta name="twitter:site" content="@Printalia" />
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets') }}/media/icon.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ $settings::get('icon') ? asset('storage/' . $settings::get('icon')) : asset('assets/media/icon.png') }}" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/bootstrap.rtl.min.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/font-awesome.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/slick.css" />
@@ -55,10 +46,90 @@
             font-family: "Cairo", sans-serif !important;
         }
 
+        /* تحسينات للجوال */
+        body {
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .error-page {
+            flex: 1;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .error-page .container {
+            height: 100%;
+        }
+
+        .error-page .row {
+            min-height: calc(100vh - 200px);
+            align-items: center;
+        }
+
+        .error-page .content {
+            padding: 20px 0;
+        }
+
+        .error-page .thumbnail img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        @media (max-width: 992px) {
+            .error-page .row {
+                flex-direction: column-reverse;
+                text-align: center;
+            }
+
+            .error-page .content {
+                padding-top: 30px;
+                text-align: center;
+            }
+
+            .error-page .thumbnail {
+                margin-top: 30px;
+                max-width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .my_switcher {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .error-page .content h2.title {
+                font-size: 1.8rem;
+            }
+
+            .error-page .content h4.title {
+                font-size: 1.4rem;
+            }
+
+            .error-page .content h5 {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px !important;
+            }
+        }
+
     </style>
 </head>
 
-<body class="sticky-header onepage-template">
+<body class="onepage-template">
     <!--[if lte IE 9]>
       <p class="browserupgrade">
         You are using an <strong>outdated</strong> browser. Please
@@ -66,9 +137,6 @@
         your experience and security.
       </p>
     <![endif]-->
-    <a href="#main-wrapper" id="backto-top" class="back-to-top">
-        <i class="far fa-angle-double-up"></i>
-    </a>
 
     <!-- Preloader Start Here -->
     <div id="preloader"></div>
@@ -89,60 +157,24 @@
         </ul>
     </div>
 
-    <!-- Case Study Modal Box -->
-    <div class="op-case-modal op-modal-wrap">
-        <div class="op-modal-inner">
-            <button class="close"><i class="far fa-times"></i></button>
-            <div class="op-modal-content">
-                <div class="case-content"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Case Study Modal Box -->
-
-    <!-- Portfolio Modal Box -->
-    <div class="op-portfolio-modal op-modal-wrap">
-        <div class="op-modal-inner">
-            <button class="close"><i class="far fa-times"></i></button>
-            <div class="op-modal-content">
-                <div class="portfolio-thumbnail"></div>
-                <div class="portfolio-content"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Portfolio Modal Box -->
-
-    <!-- Blog Modal Box -->
-    <div class="op-blog-modal op-modal-wrap">
-        <div class="op-modal-inner">
-            <button class="close"><i class="far fa-times"></i></button>
-            <div class="op-modal-content">
-                <div class="post-thumbnail"></div>
-                <div class="post-content"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Blog Modal Box -->
-
     <div id="main-wrapper" class="main-wrapper">
         <!--=====================================-->
         <!--=        Header Area Start       	=-->
         <!--=====================================-->
 
-
         <section class="error-page onepage-screen-area">
             <div class="container">
-                <div class="row align-items-center py-5 px-2">
-                    <div class="col-lg-6">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 order-lg-2">
                         <div class="content" data-sal="slide-up" data-sal-duration="800" data-sal-delay="400">
                             <h2 class="title">مرحبا {{ explode(' ', auth('designer')->user()->name)[0] }}</h2>
                             <h4 class="title"> انت غير مشترك الان! </h4>
                             <h5> فعليك الاشتراك من جديد او تجديد اشتراكك </h5>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 order-lg-1">
                         <div class="thumbnail" data-sal="zoom-in" data-sal-duration="800" data-sal-delay="400">
-                            <img src="{{ asset('assets') }}/media/others/subscription.png" alt="404">
+                            <img src="{{ asset('assets') }}/media/others/subscription.png" alt="404" class="img-fluid">
                         </div>
                     </div>
                 </div>
@@ -159,12 +191,11 @@
                 </li>
             </ul>
         </section>
+
         @include('site.sections.plans')
-
-
-
         @include('site.sections.footer')
     </div>
+
     @include('site.sections.script')
 </body>
 </html>

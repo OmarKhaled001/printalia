@@ -82,6 +82,8 @@ class DesignerResource extends Resource
                     ->password()
                     ->required()
                     ->confirmed()
+                    ->hidden('edit')
+
                     ->columnSpan(6)
                     ->maxLength(50)
                     ->dehydrated() // مهم لتخزين القيمة
@@ -91,6 +93,7 @@ class DesignerResource extends Resource
                     ->label('تأكيد كلمة المرور')
                     ->password()
                     ->required()
+                    ->hidden('edit')
                     ->columnSpan(6)
                     ->maxLength(50)
                     ->dehydrated(false), // لا تحفظ قيمة التأكيد في DB
@@ -104,11 +107,11 @@ class DesignerResource extends Resource
                 Toggle::make('is_verified')
                     ->label('تم التحقق')
                     ->columnSpan(4),
-                Toggle::make('has_active_subscription')
-                    ->columnSpan(4)
-                    ->label('مشترك'),
+                // Toggle::make('has_active_subscription')
+                //     ->columnSpan(4)
+                //     ->label('مشترك'),
 
-                Toggle::make('is_verified')
+                Toggle::make('is_active')
                     ->columnSpan(4)
                     ->label('مفعل'),
             ])
@@ -144,9 +147,9 @@ class DesignerResource extends Resource
                     ->boolean()
                     ->label('تم التحقق'),
 
-                Tables\Columns\IconColumn::make('has_active_subscription')
-                    ->boolean()
-                    ->label('مشترك'),
+                // Tables\Columns\IconColumn::make('has_active_subscription')
+                //     ->boolean()
+                //     ->label('مشترك'),
 
                 Tables\Columns\IconColumn::make('is_verified')
                     ->boolean()

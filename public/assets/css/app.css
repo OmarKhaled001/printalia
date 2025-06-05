@@ -9379,7 +9379,7 @@ body.op-modal-open {
 .active-dark-mode {
     color-scheme: dark;
     --dark-main-body: #212121;
-    --dark-bg-color: var(--color-dark);
+    --dark-bg-color: #212121;
     --dark-body-text: #D3D3D4;
     --dark-title-light: #D3D3D4;
     --dark-solid-btn: var(--color-ghost);

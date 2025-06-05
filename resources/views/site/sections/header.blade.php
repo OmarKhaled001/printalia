@@ -4,9 +4,9 @@
          <div class="container">
              <div class="header-navbar">
                  <div class="header-logo">
-                     <a href="{{ route('home') }}"><img class="light-version-logo" src="{{ asset('assets') }}/media/logo.png" width="160px" alt="logo" /></a>
-                     <a href="{{ route('home') }}"><img class="dark-version-logo" src="{{ asset('assets') }}/media/logo.png" width="160px" alt="logo" /></a>
-                     <a href="{{ route('home') }}"><img class="sticky-logo" src="{{ asset('assets') }}/media/logo.png" width="160px" alt="logo" /></a>
+                     <a href="{{ route('home') }}"><img class="light-version-logo" src="{{$settings::get('icon') ? asset('storage/' .$settings::get('logo')) : asset('assets/media/logo.png') }}" width="160px" alt="logo" /></a>
+                     <a href="{{ route('home') }}"><img class="dark-version-logo" src="{{$settings::get('icon') ? asset('storage/' .$settings::get('logo')) : asset('assets/media/logo.png') }}" width="160px" alt="logo" /></a>
+                     <a href="{{ route('home') }}"><img class="sticky-logo" src="{{$settings::get('icon') ? asset('storage/' .$settings::get('logo')) : asset('assets/media/logo.png') }}" width="160px" alt="logo" /></a>
                  </div>
                  <div class="header-main-nav">
                      <!-- Start Mainmanu Nav -->
@@ -15,8 +15,8 @@
                              <div class="mobile-nav-header">
                                  <div class="mobile-nav-logo">
                                      <a href="{{ route('home') }}">
-                                         <img class="light-mode" src="{{ asset('assets') }}/media/logo.png" width="160px" alt="Site Logo" />
-                                         <img class="dark-mode" src="{{ asset('assets') }}/media/logo.png" width="160px" alt="Site Logo" />
+                                         <img class="light-mode" src="{{$settings::get('icon') ? asset('storage/' .$settings::get('logo')) : asset('assets/media/logo.png') }}" width="160px" alt="Site Logo" />
+                                         <img class="dark-mode" src="{{$settings::get('icon') ? asset('storage/' .$settings::get('logo')) : asset('assets/media/logo.png') }}" width="160px" alt="Site Logo" />
                                      </a>
                                  </div>
                                  <button class="mobile-menu-close" data-bs-dismiss="offcanvas">
@@ -29,7 +29,7 @@
                                  <a href="#op-home">الرئيسية</a>
                              </li>
                              <li>
-                                 <a href="#op-about">عنا</a>
+                                 <a href="#op-about">من نحن</a>
                              </li>
                              <li>
                                  <a href="#op-vision">رؤيتنا</a>

@@ -16,12 +16,24 @@ class Design extends Model
         'sale_price',
         'title',
         'description',
-        'rating',
+        'rating', // Assuming you might add this later
         'is_published',
-        'logo_back',
-        'logo_front',
-        'image_front',
-        'image_back'
+        'logo_back',   // Will store JSON string or be cast to array
+        'logo_front',  // Will store JSON string or be cast to array
+        'image_front', // Will store path to the final composite image (transparent)
+        'image_back'   // Will store path to the final composite image (transparent)
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_published' => 'boolean',
+        'sale_price' => 'float',
+        'logo_front' => 'array', // Automatically encodes/decodes JSON
+        'logo_back' => 'array',  // Automatically encodes/decodes JSON
     ];
 
     protected $appends = ['front_image_url', 'back_image_url'];
@@ -38,7 +50,8 @@ class Design extends Model
 
     public function designer()
     {
-        return $this->belongsTo(Designer::class);
+        // Assuming you have a User model or a specific Designer model
+        return $this->belongsTo(User::class, 'designer_id'); // Or Designer::class
     }
 
     public function product()
@@ -48,6 +61,7 @@ class Design extends Model
 
     public function orders()
     {
+        // Assuming you have an Order model
         return $this->hasMany(Order::class);
     }
 }

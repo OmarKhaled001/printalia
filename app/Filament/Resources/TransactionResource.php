@@ -94,7 +94,7 @@ class TransactionResource extends Resource
 
                         Notification::make()
                             ->title('مبارك')
-                            ->body("تم تحويل ربحك من الطلب #{$record->order->id} إلى حسابك. الربح: { $record->amount} ريال.")
+                            ->body("تم تحويل ربحك من الطلب  إلى حسابك. الربح: { $record->amount} ريال.")
                             ->success()
                             ->sendToDatabase($record->designer);
                     })

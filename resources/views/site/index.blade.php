@@ -4,33 +4,23 @@
     <!-- Meta Data -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Printalia</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>{{$settings::get('site_title', 'Printalia - منصة التصميم والطباعة حسب الطلب') }}</title>
+    <meta name="description" content="{{$settings::get('site_description', 'منصة يمنية متخصصة في تصميم وبيع المنتجات المطبوعة حسب الطلب') }}">
+    <meta name="keywords" content="{{$settings::get('site_keywords', 'Printalia, برنتاليا, تصميم منتجات, طباعة حسب الطلب, يمن') }}">
 
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Printalia هي منصة يمنية تتيح للمصممين تحويل تصاميمهم إلى منتجات مثل التيشيرتات والأكواب وبيعها بسهولة دون الحاجة لرأس مال، مع ربط مباشر بالمصانع." />
-    <meta name="keywords" content="Printalia, منصة تصميم, طباعة عند الطلب, بيع تصاميم, موكابس, اليمن, مصممين مبتدئين, تصميم منتجات, تجارة إلكترونية, POD اليمن" />
-    <meta name="author" content="Printalia Team" />
-    <meta name="robots" content="index, follow" />
-    <meta name="language" content="ar" />
-    <meta name="theme-color" content="#FF5722" />
+    <!-- Open Graph / Facebook Meta Tags (لتحسين المشاركة على السوشيال ميديا) -->
+    <meta property="og:title" content="{{$settings::get('site_title', 'Printalia') }}">
+    <meta property="og:description" content="{{$settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('images/logo-social-share.png') }}">
 
-    <!-- Open Graph Meta (Facebook & LinkedIn) -->
-    <meta property="og:title" content="Printalia" />
-    <meta property="og:description" content="حوّل تصاميمك إلى منتجات قابلة للبيع بسهولة، وابدأ مشروعك دون رأس مال عبر منصة Printalia اليمنية." />
-    <meta property="og:image" content="https://example.com/assets/media/og-image.jpg" />
-    <meta property="og:url" content="https://example.com" />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="ar_YE" />
-
-    <!-- Twitter Meta -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Printalia" />
-    <meta name="twitter:description" content="منصة يمنية لتحويل التصاميم إلى منتجات قابلة للبيع مع ربط بالمصانع ونظام موكابس سهل للمصممين المبتدئين." />
-    <meta name="twitter:image" content="https://example.com/assets/media/og-image.jpg" />
-    <meta name="twitter:site" content="@Printalia" />
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{$settings::get('site_title', 'Printalia') }}">
+    <meta name="twitter:description" content="{{$settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets') }}/media/icon.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{$settings::get('icon') ? asset('storage/' .$settings::get('icon')) : asset('assets/media/icon.png') }}" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/bootstrap.rtl.min.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/font-awesome.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/slick.css" />

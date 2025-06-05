@@ -75,6 +75,20 @@ class ViewFactoryOrder extends ViewRecord
                 })
                 ->color('primary')
                 ->icon('heroicon-s-check'),
+
+            Action::make('download_image')
+                ->label('تحميل التصميم')
+                ->icon('heroicon-o-arrow-down-tray') // أيقونة التحميل
+                ->color('success')
+                ->visible(
+                    fn(FactoryOrder $record): bool =>
+                    $record->status === StatusTypes::Accepted
+                )
+                ->hidden(fn($record) => !$record->order->design->image_front) // يخفي الزر إذا لم توجد صورة
+                ->action(function ($record) {
+                    // يمكنك هنا تنفيذ شيء مثل تتبع المشاركة أو فتح الصورة
+                    return response()->download(storage_path('app/public/' . $record->order->design->logo_front));
+                }),
         ];
     }
 
@@ -110,6 +124,7 @@ class ViewFactoryOrder extends ViewRecord
 
             Section::make('صور التصميم')->schema([
                 Split::make([
+
                     ImageEntry::make('order.design.image_front')
                         ->label('الصورة الأمامية')
                         ->disk('public')
@@ -119,31 +134,6 @@ class ViewFactoryOrder extends ViewRecord
                         ->extraAttributes(['onclick' => 'window.open(this.src)'])
                         ->hidden(fn($record) => empty($record->order->design->image_front)),
 
-                    TextEntry::make('download_front')
-                        ->label('')
-                        ->formatStateUsing(fn($record) => '<a href="' . asset('storage/' . $record->order->design->image_front) . '" download="' . ($record->order->design->title ?? 'design') . '_front.jpg" class="text-primary-500 hover:underline">⬇️ تحميل</a>')
-                        ->html()
-                        ->hidden(fn($record) => empty($record->order->design->image_front)),
-
-                    ImageEntry::make('order.design.image_back')
-                        ->label('الصورة الخلفية')
-                        ->disk('public')
-                        ->visibility('public')
-                        ->height(300)
-                        ->extraImgAttributes(['class' => 'cursor-zoom-in'])
-                        ->extraAttributes(['onclick' => 'window.open(this.src)'])
-                        ->hidden(fn($record) => empty($record->order->design->image_back)),
-
-                    TextEntry::make('download_back')
-                        ->label('')
-                        ->formatStateUsing(fn($record) => '<a href="' . asset('storage/' . $record->order->design->image_back) . '" download="' . ($record->order->design->title ?? 'design') . '_back.jpg" class="text-primary-500 hover:underline">⬇️ تحميل</a>')
-                        ->html()
-                        ->hidden(fn($record) => empty($record->order->design->image_back)),
-
-                    TextEntry::make('no_images')
-                        ->label('')
-                        ->default('لا توجد صور تصميم متاحة.')
-                        ->hidden(fn($record) => !empty($record->order->design->image_front) || !empty($record->order->design->image_back)),
                 ])->grow(false),
             ]),
         ]);

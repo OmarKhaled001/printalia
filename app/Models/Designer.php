@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Enums\StatusTypes;
 use Illuminate\Support\Str;
 use App\Enums\TransactionType;
+use Illuminate\Support\Facades\Storage;
+use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,6 +26,7 @@ class Designer extends Authenticatable
         'is_verified',
         'is_active',
         'profile',
+        'avatar_url',
         'attachments',
         'has_active_subscription',
         'referral_code',

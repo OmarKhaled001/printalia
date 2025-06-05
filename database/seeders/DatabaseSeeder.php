@@ -24,19 +24,8 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        Designer::create([
-            'name' => 'Designer',
-            'email' => 'designer@printalia.com',
-            'password' => Hash::make('password'),
-        ]);
-
-        Factory::create([
-            'name' => 'Factory',
-            'email' => 'factory@printalia.com',
-            'password' => Hash::make('password'),
-        ]);
-
         $this->call(PlanSeeder::class);
+        $this->call(FactorySeeder::class);
         $this->call(SettingsSeeder::class);
     }
 }

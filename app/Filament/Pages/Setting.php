@@ -155,7 +155,6 @@ class Setting extends Page implements HasForms
                                 ->placeholder('Printalia هي منصة تربط المصممين بمصانع الطباعة في اليمن. صمّم، سوّق، واربح بكل سهولة.')
                                 ->rows(4)
                                 ->columnSpanFull()
-                                ->maxLength(160)
                                 ->required(),
 
                             FileUpload::make('logo')

@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
+use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Factory extends Authenticatable
 {
@@ -20,6 +22,7 @@ class Factory extends Authenticatable
         'password',
         'is_verified',
         'logo',
+        'avatar_url',
         'attachments',
         'has_active_subscription'
     ];

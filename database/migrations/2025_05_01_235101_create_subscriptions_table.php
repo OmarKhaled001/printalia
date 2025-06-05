@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\BankAccount;
+use App\Models\Plan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,12 +15,14 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('plan_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(Plan::class)->nullable();
+            $table->foreignIdFor(BankAccount::class)->nullable();
             $table->morphs('subscribable');
             $table->date('start_date');
             $table->date('end_date');
             $table->string('status')->default('active');
             $table->string('receipt')->nullable();
+            $table->decimal('amount', 10, 2);
             $table->boolean('is_approved')->default(false);
             $table->text('notes')->nullable();
             $table->timestamps();

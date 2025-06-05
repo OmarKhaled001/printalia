@@ -32,7 +32,8 @@ class PlanResource extends Resource
     {
         return $form->schema([
             TextInput::make('name')->label('اسم الخطة')->required(),
-            TextInput::make('price')->label('السعر')->numeric()->required(),
+            TextInput::make('price')->label('السعر')->suffix('ر.س')
+                ->numeric()->required(),
             TextInput::make('duration')->label('المدة')->numeric()->required(),
             Select::make('duration_unit')->label('وحدة المدة')
                 ->options([
@@ -52,7 +53,7 @@ class PlanResource extends Resource
     {
         return $table->columns([
             TextColumn::make('name')->label('الاسم')->searchable(),
-            TextColumn::make('price')->label('السعر'),
+            TextColumn::make('price')->label('السعر')->money('SAR'),
             TextColumn::make('duration')->label('المدة'),
             TextColumn::make('duration_unit')->label('الوحدة'),
             TextColumn::make('design_count')->label('حد التصاميم'),

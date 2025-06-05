@@ -46,6 +46,7 @@ class ProductResource extends Resource
                     ->label('سعر التصنيع')
                     ->numeric()
                     ->step(0.01)
+                    ->suffix('ر.س')
                     ->columnSpan(6),
 
                 Toggle::make('is_double_sided')

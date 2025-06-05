@@ -16,7 +16,6 @@ class FactoryOrder extends Model
 
     protected $fillable = ['order_id', 'factory_id', 'status'];
 
-
     protected $casts = [
         'status' => StatusTypes::class,
     ];
@@ -38,6 +37,7 @@ class FactoryOrder extends Model
             $designer = $order->designer;
             $factory = $factoryOrder->factory;
 
+            // 1. عند قبول الطلب من المصنع
             if ($factoryOrder->isDirty('status') && $factoryOrder->status->isConfirmed()) {
                 Notification::make()
                     ->title('تم قبول الطلب من المصنع')
@@ -46,7 +46,45 @@ class FactoryOrder extends Model
                     ->sendToDatabase($designer);
             }
 
-            // 2. عند انتهاء التنفيذ - تسجيل حوالة + إشعارات
+            // 2. عند رفض الطلب من المصنع
+            if ($factoryOrder->isDirty('status') && $factoryOrder->status->isRejected()) {
+                // البحث عن مصنع عشوائي آخر
+                $newFactory = Factory::where('id', '!=', $factory->id)
+                    ->inRandomOrder()
+                    ->first();
+
+                if ($newFactory) {
+                    // إنشاء طلب جديد للمصنع الجديد
+                    $newFactoryOrder = self::create([
+                        'order_id' => $order->id,
+                        'factory_id' => $newFactory->id,
+                        'status' => StatusTypes::Pending,
+                    ]);
+
+                    // إشعار للمصمم
+                    Notification::make()
+                        ->title('تم إعادة توجيه الطلب')
+                        ->body("تم رفض الطلب #{$order->id} من المصنع {$factory->name} وتم إرساله إلى المصنع {$newFactory->name}")
+                        ->warning()
+                        ->sendToDatabase($designer);
+
+                    // إشعار للمصنع الجديد
+                    Notification::make()
+                        ->title('طلب جديد يحتاج إلى مراجعة')
+                        ->body("تم إرسال طلب جديد رقم #{$order->id} إليك")
+                        ->success()
+                        ->sendToDatabase($newFactory->user);
+                } else {
+                    // في حالة عدم وجود مصانع أخرى
+                    Notification::make()
+                        ->title('لا يوجد مصانع متاحة')
+                        ->body("تم رفض الطلب #{$order->id} من المصنع {$factory->name} ولا يوجد مصانع أخرى متاحة")
+                        ->danger()
+                        ->sendToDatabase($designer);
+                }
+            }
+
+            // 3. عند انتهاء التنفيذ
             if ($factoryOrder->isDirty('status') && $factoryOrder->status->isFinished()) {
                 $profit = ($order->price - $order->design->product->price) * $order->quantity;
 
@@ -60,15 +98,15 @@ class FactoryOrder extends Model
                     'type' => \App\Enums\TransactionType::PROFIT,
                 ]);
 
-
                 // إشعار للمصمم
                 Notification::make()
                     ->title('تم تحويل الربح للمنصة')
                     ->body("تم تحويل ربحك من الطلب #{$order->id} إلى المنصة. الربح: {$profit} ريال.")
                     ->success()
                     ->sendToDatabase($designer);
-                foreach (\App\Models\User::all() as $admin) {
 
+                // إشعار للمدراء
+                foreach (\App\Models\User::all() as $admin) {
                     if ($admin) {
                         Notification::make()
                             ->title('ربح جديد لمصمم')

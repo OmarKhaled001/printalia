@@ -6,10 +6,13 @@ use Filament\Forms;
 use Filament\Tables;
 use App\Models\Order;
 use App\Models\Design;
+use App\Models\Product;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\FactoryOrder;
 use Filament\Resources\Resource;
+use Illuminate\Support\HtmlString;
+use Filament\Forms\Components\Radio;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Tables\Columns\TextColumn;
@@ -32,25 +35,30 @@ class OrderResource extends Resource
             ->schema([
                 Forms\Components\Grid::make(2)
                     ->schema([
-                        Forms\Components\Select::make('customer_id')
-                            ->label('العميل')
-                            ->relationship('customer', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->createOptionForm([
-                                Hidden::make('designer_id')->default(Auth::user()->id),
-                                Forms\Components\TextInput::make('name')->label('الاسم')->required(),
-                                Forms\Components\TextInput::make('phone')->label('رقم الهاتف')->required(),
-                            ])
-                            ->required(),
-                        Hidden::make('designer_id')->default(Auth::user()->id),
 
 
-                        Forms\Components\Select::make('design_id')
-                            ->label('التصميم')
-                            ->relationship('design', 'title')
+                        Radio::make('design_id')
+                            ->label('اختر التصميم')
+                            ->options(
+                                Design::query()
+                                    ->whereNotNull('image_front') // Ignore designs without a front image
+                                    ->select('id', 'title', 'image_front')
+                                    ->get()
+                                    ->mapWithKeys(function ($design) {
+                                        return [
+                                            $design->id => new HtmlString(
+                                                '<div class="flex flex-col items-center gap-2 p-2 rounded-md hover:border-primary-500 cursor-pointer">' .
+                                                    // Adjusted image size: w-20 h-24 (approx 80px x 96px) for readability
+                                                    '<img src="' . asset('storage/' . $design->image_front) . '" class="w-20 h-24 object-contain" alt="' . e($design->title) . '">' .
+                                                    '<span>' . e($design->title) . '</span>' .
+                                                    '</div>'
+                                            )
+                                        ];
+                                    })->toArray()
+                            )
+                            ->columns(4) // Changed to 4 columns
+                            ->live()
                             ->required()
-                            ->reactive()
                             ->afterStateUpdated(function ($state, callable $set, callable $get) {
                                 $design = \App\Models\Design::find($state);
                                 if ($design) {
@@ -60,7 +68,26 @@ class OrderResource extends Resource
                                     $set('price', 0);
                                     $set('total', 0);
                                 }
-                            }),
+                            })
+                            ->inlineLabel(false)
+                            ->columnSpanFull(),
+
+                        Forms\Components\Select::make('customer_id')
+                            ->label('العميل')
+                            ->relationship('customer', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->createOptionForm([
+                                Hidden::make('designer_id')->default(Auth::user()->id),
+                                Forms\Components\TextInput::make('name')->label('الاسم')->required(),
+                                Forms\Components\Textarea::make('address')->label('العنوان')->required(),
+                                Forms\Components\TextInput::make('phone')->label('رقم الهاتف')->required(),
+                            ])
+                            ->required(),
+                        Hidden::make('designer_id')->default(Auth::user()->id),
+
+
+
 
                         Forms\Components\TextInput::make('quantity')
                             ->label('الكمية')

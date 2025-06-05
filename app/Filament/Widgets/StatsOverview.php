@@ -19,8 +19,7 @@ class StatsOverview extends BaseWidget
 
         $monthlyRevenue = Subscription::where('is_approved', true)
             ->whereBetween('start_date', [now()->startOfMonth(), now()->endOfMonth()])
-            ->join('plans', 'subscriptions.plan_id', '=', 'plans.id')
-            ->sum('plans.price');
+            ->sum('amount');
 
         $totalDesigners = Designer::count();
         $activeDesigners = Designer::where('is_active', true)

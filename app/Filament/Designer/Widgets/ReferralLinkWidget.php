@@ -28,7 +28,11 @@ class ReferralLinkWidget extends Widget
 
     public function getReferralCount(): int
     {
-        return  Auth::guard('designer')->user()->referrals()->count();
+        return Auth::guard('designer')->user()->referrals()
+            ->whereHas('subscriptions', function ($query) {
+                $query->where('is_approved', true);
+            })
+            ->count();
     }
 
     public function getPendingReferralEarnings(): float

@@ -1,32 +1,25 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="ar">
 
 <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Printalia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>{{ $settings::get('site_title', 'Printalia - منصة التصميم والطباعة حسب الطلب') }}</title>
+    <meta name="description" content="{{ $settings::get('site_description', 'منصة يمنية متخصصة في تصميم وبيع المنتجات المطبوعة حسب الطلب') }}">
+    <meta name="keywords" content="{{ $settings::get('site_keywords', 'Printalia, برنتاليا, تصميم منتجات, طباعة حسب الطلب, يمن') }}">
 
-    <meta name="description" content="Printalia هي منصة يمنية تتيح للمصممين تحويل تصاميمهم إلى منتجات مثل التيشيرتات والأكواب وبيعها بسهولة دون الحاجة لرأس مال، مع ربط مباشر بالمصانع." />
-    <meta name="keywords" content="Printalia, منصة تصميم, طباعة عند الطلب, بيع تصاميم, موكابس, اليمن, مصممين مبتدئين, تصميم منتجات, تجارة إلكترونية, POD اليمن" />
-    <meta name="author" content="Printalia Team" />
-    <meta name="robots" content="index, follow" />
-    <meta name="language" content="ar" />
-    <meta name="theme-color" content="#FF5722" />
+    <!-- Open Graph / Facebook Meta Tags (لتحسين المشاركة على السوشيال ميديا) -->
+    <meta property="og:title" content="{{ $settings::get('site_title', 'Printalia') }}">
+    <meta property="og:description" content="{{ $settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('images/logo-social-share.png') }}">
 
-    <meta property="og:title" content="Printalia" />
-    <meta property="og:description" content="حوّل تصاميمك إلى منتجات قابلة للبيع بسهولة، وابدأ مشروعك دون رأس مال عبر منصة Printalia اليمنية." />
-    <meta property="og:image" content="https://example.com/assets/media/og-image.jpg" />
-    <meta property="og:url" content="https://example.com" />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="ar_YE" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Printalia" />
-    <meta name="twitter:description" content="منصة يمنية لتحويل التصاميم إلى منتجات قابلة للبيع مع ربط بالمصانع ونظام موكابس سهل للمصممين المبتدئين." />
-    <meta name="twitter:image" content="https://example.com/assets/media/og-image.jpg" />
-    <meta name="twitter:site" content="@Printalia" />
-    <link rel="shortcut icon" type="image/x-icon" href="assets/media/icon.png" />
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $settings::get('site_title', 'Printalia') }}">
+    <meta name="twitter:description" content="{{ $settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ $settings::get('icon') ? asset('storage/' . $settings::get('icon')) : asset('assets/media/icon.png') }}" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/bootstrap.rtl.min.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/font-awesome.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/slick.css" />
@@ -41,86 +34,215 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet" />
     <style>
+        /* Apply border-box to all elements for consistent sizing */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        /* RTL direction and text alignment */
         * {
             direction: rtl;
             text-align: right;
         }
 
+        /* Apply Cairo font to all non-icon elements */
         *:not(i):not(.fa):not([class*="fa-"]) {
             font-family: "Cairo", sans-serif !important;
         }
 
-        /* Adjustments for content fitting */
+        /* Ensure html and body take full height and prevent horizontal overflow */
         html,
         body {
             height: 100%;
-            /* Ensure html and body take full height */
             margin: 0;
-            /* Remove default body margin */
             padding: 0;
-            /* Remove default body padding */
             overflow-x: hidden;
-            /* Prevent horizontal scroll */
         }
 
+        /* Main wrapper to ensure full height and contain content */
         #main-wrapper {
             min-height: 100vh;
-            /* Ensure main-wrapper takes at least the full viewport height */
+            /* Takes at least the full viewport height */
             display: flex;
+            /* Use flexbox for layout */
             flex-direction: column;
+            /* Stack children vertically */
+            overflow-y: auto;
+            /* Allow vertical scrolling if content exceeds height */
+            overflow-x: hidden;
+            /* Prevent horizontal scrolling within main wrapper */
+            -webkit-overflow-scrolling: touch;
+            /* Smoother scrolling on iOS */
         }
 
+        /* Section containing the main content, uses flex to center its content */
         .onepage-screen-area {
             flex-grow: 1;
-            /* Allow the content area to grow and fill available space */
+            /* Allows this section to grow and fill available space */
             display: flex;
+            /* Use flexbox for content centering */
             align-items: center;
             /* Center content vertically */
             justify-content: center;
             /* Center content horizontally */
             padding: 20px 0;
-            /* Add some vertical padding instead of large fixed margins */
+            /* Add vertical padding around the content */
         }
 
+        /* Adjustments for the container within the error page */
         .error-page .container {
             flex-grow: 0;
-            /* Prevent the container from growing excessively */
+            /* Prevent the container from expanding unnecessarily */
             padding: 0;
-            /* Remove default container padding if any is causing issues */
+            /* Remove default padding from container */
+            width: 100%;
+            /* Ensure container takes full width */
         }
 
+        /* Adjustments for the row within the error page */
         .error-page .row {
             align-items: center;
-            /* Ensure vertical alignment of columns */
+            /* Vertically align items in the row */
             margin: 0;
-            /* Remove row margins */
+            /* Remove default row margins */
             width: 100%;
             /* Ensure row takes full width */
             justify-content: center;
             /* Center content horizontally in the row */
         }
 
+        /* Padding for content and thumbnail sections */
         .error-page .content,
         .error-page .thumbnail {
-            padding: 20px;
-            /* Add some padding to the content and thumbnail for spacing */
+            padding: 15px;
+            /* Add some padding for internal spacing */
         }
 
-        /* Override the .m-0 class on #main-wrapper as it might interfere */
+        /* Ensure images scale down responsibly */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            /* Removes extra space below images */
+        }
+
+        /* Override specific Bootstrap .m-0 on #main-wrapper to ensure no margins */
         .main-wrapper.m-0 {
             margin: 0 !important;
+        }
+
+        /* Media queries for fine-tuning on smaller devices */
+        @media (max-width: 768px) {
+            .error-page .title {
+                font-size: 1.8rem;
+                /* Adjust title size for tablets */
+            }
+
+            .error-page h4 {
+                font-size: 1.3rem;
+            }
+
+            .error-page h5 {
+                font-size: 1.1rem;
+            }
+
+            /* Adjust padding on the row for medium screens */
+            .row.p-sm-5 {
+                padding: 2rem !important;
+                /* Reduce overall padding for tablets */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .error-page .title {
+                font-size: 1.5rem;
+                /* Further adjust title size for phones */
+            }
+
+            .error-page h4 {
+                font-size: 1.1rem;
+            }
+
+            .error-page h5 {
+                font-size: 0.9rem;
+            }
+
+            /* Adjust padding on the row for very small screens */
+            .row.p-3 {
+                padding: 1rem !important;
+                /* Minimum padding for mobile */
+            }
+
+            /* Stack columns on extra small devices */
+            .error-page .col-lg-6 {
+                margin-bottom: 20px;
+                /* Add space between stacked columns */
+            }
+
+            .error-page .col-lg-6:last-child {
+                margin-bottom: 0;
+                /* No margin after the last stacked column */
+            }
         }
 
     </style>
 </head>
 
-<body class="h-100">
+<body class="onepage-template">
+    <a href="#main-wrapper" id="backto-top" class="back-to-top">
+        <i class="far fa-angle-double-up"></i>
+    </a>
+
+    <div id="preloader"></div>
+    <div class="my_switcher d-none d-lg-block">
+        <ul>
+            <li title="Light Mode">
+                <a href="javascript:void(0)" class="setColor light" data-theme="light">
+                    <i class="fal fa-lightbulb-on"></i>
+                </a>
+            </li>
+            <li title="Dark Mode">
+                <a href="javascript:void(0)" class="setColor dark" data-theme="dark">
+                    <i class="fas fa-moon"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="op-case-modal op-modal-wrap">
+        <div class="op-modal-inner">
+            <button class="close"><i class="far fa-times"></i></button>
+            <div class="op-modal-content">
+                <div class="case-content"></div>
+            </div>
+        </div>
+    </div>
+    <div class="op-portfolio-modal op-modal-wrap">
+        <div class="op-modal-inner">
+            <button class="close"><i class="far fa-times"></i></button>
+            <div class="op-modal-content">
+                <div class="portfolio-thumbnail"></div>
+                <div class="portfolio-content"></div>
+            </div>
+        </div>
+    </div>
+    <div class="op-blog-modal op-modal-wrap">
+        <div class="op-modal-inner">
+            <button class="close"><i class="far fa-times"></i></button>
+            <div class="op-modal-content">
+                <div class="post-thumbnail"></div>
+                <div class="post-content"></div>
+            </div>
+        </div>
+    </div>
     <div id="main-wrapper" class="main-wrapper m-0">
 
 
         <section class="error-page onepage-screen-area">
             <div class="container">
-                <div class="row align-items-center p-5">
+                <div class="row align-items-center p-sm-5 p-3">
                     <div class="col-lg-6">
                         <div class="content" data-sal="slide-up" data-sal-duration="800" data-sal-delay="400">
                             <h2 class="title">مرحبا {{ explode(' ', auth('designer')->user()->name)[0] }}</h2>

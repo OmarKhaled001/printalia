@@ -14,9 +14,9 @@ class SettingsSeeder extends Seeder
     public function run(): void
     {
         DB::table('settings')->insert([
-            ['id' => 1, 'key' => 'site_title', 'value' => 'Printalia', 'created_at' => '2025-05-28 08:29:47', 'updated_at' => '2025-05-28 08:29:47'],
-            ['id' => 2, 'key' => 'site_keywords', 'value' => '', 'created_at' => '2025-05-28 08:29:47', 'updated_at' => '2025-05-28 08:29:47'],
-            ['id' => 3, 'key' => 'site_description', 'value' => 'Printalia', 'created_at' => '2025-05-28 08:29:47', 'updated_at' => '2025-05-28 08:29:47'],
+            ['id' => 1, 'key' => 'site_title', 'value' => 'Printalia - برنتاليا', 'created_at' => '2025-05-28 08:29:47', 'updated_at' => '2025-05-28 08:29:47'],
+            ['id' => 2, 'key' => 'site_keywords', 'value' =>  'Printalia, برنتاليا, منصة يمنية, تصميم منتجات, طباعة, تسويق إلكتروني, مصانع يمنية, طلبات جماعية, أرباح من التصميم, عمولة تسويقية, طباعة التيشيرتات, طباعة الأكواب, منتجات مخصصة, مشاريع رقمية, فرص عمل يمنية, تمكين الشباب, ريادة أعمال, دخل إضافي, تسويق بالعمولة, طباعة حسب الطلب, Dropshipping يمني, print on demand', 'created_at' => '2025-05-28 08:29:47', 'updated_at' => '2025-05-28 08:29:47'],
+            ['id' => 3, 'key' => 'site_description', 'value' => 'منصة **Printalia** (برنتاليا) - أول منصة يمنية متخصصة في **تصميم وبيع المنتجات المطبوعة حسب الطلب**. ساعد المصانع المحلية واربح عمولات من خلال تسويق التيشيرتات، الأكواب، الهدايا، والمزيد. انضم الآن وابدأ رحلتك في عالم ريادة الأعمال الرقمية!', 'created_at' => '2025-05-28 08:29:47', 'updated_at' => '2025-05-28 08:29:47'],
             ['id' => 4, 'key' => 'logo', 'value' => 'settings/01JWBB3MGQVXBHJWTAGVRGGCE2.png', 'created_at' => '2025-05-28 08:29:47', 'updated_at' => '2025-05-28 08:40:41'],
             ['id' => 5, 'key' => 'icon', 'value' => 'settings/01JWBB3MHHESPY32YEJVDGS0B4.png', 'created_at' => '2025-05-28 08:29:47', 'updated_at' => '2025-05-28 08:40:41'],
             ['id' => 6, 'key' => 'bank_code', 'value' => '951248792975785', 'created_at' => '2025-05-28 08:29:47', 'updated_at' => '2025-05-28 08:40:41'],

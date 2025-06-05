@@ -71,17 +71,25 @@ class SubscriptionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('subscribable.name')->label('المستخدم'),
+
+                Tables\Columns\TextColumn::make('subscribable.name')
+                    ->label('اسم المصمم')
+                    ->url(fn($record) => $record->designer
+                        ? route('filament.admin.resources.designers.edit', $record->designer)
+                        : null)
+                    ->openUrlInNewTab()
+                    ->color('primary'),
                 TextColumn::make('plan.name')->label('الخطة'),
-                BooleanColumn::make('is_approved')->label('تمت الموافقة'),
+                TextColumn::make('account.name')->label('الحساب'),
+                TextColumn::make('amount')->label('المبلغ')->money('SAR'),
                 TextColumn::make('status')->badge()->label('الحالة'),
                 TextColumn::make('start_date')->date()->label('تاريخ الاشتراك'),
                 TextColumn::make('end_date')->date()->label('تاريخ الانتهاء'),
                 ImageColumn::make('receipt')->label('إيصال التحويل')->disk('public'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\EditAction::make(),
+                // Tables\Actions\ViewAction::make(),
             ])
             ->filters([]);
     }
