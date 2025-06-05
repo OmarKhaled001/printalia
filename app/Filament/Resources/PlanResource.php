@@ -46,6 +46,7 @@ class PlanResource extends Resource
             TextInput::make('design_count')->label('حد التصاميم')->numeric()->nullable(),
             Textarea::make('description')->label('الوصف')->rows(3)->nullable(),
             Toggle::make('is_active')->label('نشطة'),
+            Toggle::make('is_infinity')->label('غير محدودة'),
         ]);
     }
 

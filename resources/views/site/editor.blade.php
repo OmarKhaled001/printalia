@@ -379,7 +379,7 @@
 
             .product-grid {
                 grid-template-columns: repeat(2, 1fr);
-                height: auto;
+                height: 30%;
                 max-height: calc(100vh - 200px);
             }
 

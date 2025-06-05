@@ -90,8 +90,17 @@ class Designer extends Authenticatable
 
     public function designsUsedCount(): int
     {
-        return $this->designs()->count();
+        $subscription = $this->activeSubscription();
+
+        if (!$subscription) {
+            return 0;
+        }
+
+        return $this->designs()
+            ->whereBetween('created_at', [$subscription->start_date, $subscription->end_date])
+            ->count();
     }
+
 
     public function remainingDesigns(): ?int
     {

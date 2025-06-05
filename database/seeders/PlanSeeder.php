@@ -37,6 +37,7 @@ class PlanSeeder extends Seeder
             'description' => 'عدد لا نهائي من التصميمات لمدة شهر',
             'design_count' => null,
             'is_active' => true,
+            'is_infinity' => true,
         ]);
     }
 }

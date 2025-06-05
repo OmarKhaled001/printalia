@@ -17,6 +17,7 @@ use Illuminate\Support\HtmlString;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\View;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Filament\Forms\Components\Radio;
@@ -84,9 +85,8 @@ class DesignResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->label(false), // View button
-                Tables\Actions\DeleteAction::make()->label(false), // Delete button without label
                 Action::make('download_image')
-                    ->label(false)
+                    ->label('تحميل')
                     ->icon('heroicon-o-arrow-down-tray') // أيقونة التحميل
                     ->color('success')
                     ->hidden(fn($record) => !$record->image_front) // يخفي الزر إذا لم توجد صورة
@@ -96,6 +96,25 @@ class DesignResource extends Resource
                     }),
 
             ])
+            ->filter(
+
+                Filter::make('subscription_range')
+                    ->label('تصاميم الاشتراك الحالي')
+                    ->query(function (Builder $query) {
+                        $designer = auth('designer')->user();
+                        $subscription = $designer->activeSubscription();
+
+                        if (!$subscription) {
+                            return $query->whereRaw('0 = 1'); // لا شيء
+                        }
+
+                        return $query->whereBetween('created_at', [
+                            $subscription->start_date,
+                            $subscription->end_date,
+                        ]);
+                    })
+                    ->default()
+            )
             ->bulkActions([]);
     }
 
