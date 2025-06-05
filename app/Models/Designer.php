@@ -97,7 +97,7 @@ class Designer extends Authenticatable
     {
         $plan = $this->activeSubscription()?->plan;
 
-        $limit = $plan->design_limit ?? 0;
+        $limit = $plan->design_limit ?? null;
 
         // إذا كانت الخطة غير محدودة (مثلاً null أو -1)
         if (is_null($limit) || $limit == -1) {
