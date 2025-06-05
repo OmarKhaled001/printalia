@@ -32,7 +32,7 @@ class DesignController extends Controller
         // Check design limit
         $remainingDesigns = $designer->remainingDesigns();
 
-        if ($remainingDesigns <= 0) {
+        if (!is_null($remainingDesigns) && $remainingDesigns <= 0) {
             Notification::make()
                 ->title('حدث خطأ')
                 ->body("لقد استهلكت عدد التصاميم المتاحة لك في الاشتراك الحالي")
@@ -41,6 +41,7 @@ class DesignController extends Controller
 
             return back()->withInput();
         }
+
 
         // Upload images
         $imageFields = ['logo_front', 'logo_back', 'image_front', 'image_back'];

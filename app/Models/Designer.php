@@ -90,11 +90,20 @@ class Designer extends Authenticatable
         return $this->designs()->count();
     }
 
-    public function remainingDesigns(): int
+    public function remainingDesigns(): ?int
     {
         $plan = $this->activeSubscription()?->plan;
-        return max(0, ($plan->design_limit ?? 0) - $this->designsUsedCount());
+
+        $limit = $plan->design_limit ?? 0;
+
+        // إذا كانت الخطة غير محدودة (مثلاً null أو -1)
+        if (is_null($limit) || $limit == -1) {
+            return null; // أو يمكن ترجمتها إلى "غير محدود"
+        }
+
+        return max(0, $limit - $this->designsUsedCount());
     }
+
 
     public function daysLeftInSubscription(): int
     {
