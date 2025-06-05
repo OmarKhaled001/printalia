@@ -33,9 +33,18 @@ class DesignController extends Controller
         $remainingDesigns = $designer->remainingDesigns();
 
         if (!is_null($remainingDesigns) && $remainingDesigns <= 0) {
+            $message = "لقد استهلكت عدد التصاميم المتاحة لك في الاشتراك الحالي";
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $message,
+                ], 422);
+            }
+
             Notification::make()
                 ->title('حدث خطأ')
-                ->body("لقد استهلكت عدد التصاميم المتاحة لك في الاشتراك الحالي")
+                ->body($message)
                 ->danger()
                 ->send();
 
