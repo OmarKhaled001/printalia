@@ -100,11 +100,11 @@ class Designer extends Authenticatable
         $limit = $plan->design_limit ?? null;
 
         // إذا كانت الخطة غير محدودة (مثلاً null أو -1)
-        if (is_null($limit) || $limit == -1) {
+        if ($limit <= -1) {
             return null; // أو يمكن ترجمتها إلى "غير محدود"
         }
 
-        return max(0, $limit - $this->designsUsedCount());
+        return $limit - $this->designsUsedCount();
     }
 
 
