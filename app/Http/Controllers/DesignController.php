@@ -24,7 +24,7 @@ class DesignController extends Controller
             'image_back'    => 'nullable|image|max:4096'
         ]);
 
-        $designer = Auth::user('design');
+        $designer = Auth::user('designer');
         $product = Product::find($request->product_id);
         $data['profit'] = $request->sale_price - $product->price;
         $data['designer_id'] = $designer->id;
