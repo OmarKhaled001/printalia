@@ -24,10 +24,10 @@ class DesignController extends Controller
             'image_back'    => 'nullable|image|max:4096'
         ]);
 
-        $designer = Auth::user('designer');
+        $designer = auth('designer')->user();
         $product = Product::find($request->product_id);
         $data['profit'] = $request->sale_price - $product->price;
-        $data['designer_id'] =  Auth::user('designer')->id;
+        $data['designer_id'] =  auth('designer')->user()->id;
 
         // Check design limit
         $remainingDesigns = $designer->remainingDesigns();
