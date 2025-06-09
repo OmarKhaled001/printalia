@@ -84,23 +84,27 @@ class DesignResource extends Resource
                     ->boolean(),
             ])
             ->filter(
+                [
 
-                Filter::make('subscription_range')
-                    ->label('تصاميم الاشتراك الحالي')
-                    ->query(function (Builder $query) {
-                        $designer = auth('designer')->user();
-                        $subscription = $designer->activeSubscription();
+                    Filter::make('subscription_range')
+                        ->label('تصاميم الاشتراك الحالي')
+                        ->query(function (Builder $query) {
+                            $designer = auth('designer')->user();
+                            $subscription = $designer->activeSubscription();
 
-                        if (!$subscription) {
-                            return $query->whereRaw('0 = 1'); // لا شيء
-                        }
+                            if (!$subscription) {
+                                return $query->whereRaw('0 = 1'); // لا شيء
+                            }
 
-                        return $query->whereBetween('created_at', [
-                            $subscription->start_date,
-                            $subscription->end_date,
-                        ]);
-                    })
-                    ->default()
+                            return $query->whereBetween('created_at', [
+                                $subscription->start_date,
+                                $subscription->end_date,
+                            ]);
+                        })
+                        ->default()
+                ]
+
+
             )
             ->actions([
                 Tables\Actions\ViewAction::make()->label(false), // View button
