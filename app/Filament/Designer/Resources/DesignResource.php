@@ -83,19 +83,6 @@ class DesignResource extends Resource
                     ->label('منشور؟')
                     ->boolean(),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make()->label(false), // View button
-                Action::make('download_image')
-                    ->label('تحميل')
-                    ->icon('heroicon-o-arrow-down-tray') // أيقونة التحميل
-                    ->color('success')
-                    ->hidden(fn($record) => !$record->image_front) // يخفي الزر إذا لم توجد صورة
-                    ->action(function ($record) {
-                        // يمكنك هنا تنفيذ شيء مثل تتبع المشاركة أو فتح الصورة
-                        return response()->download(storage_path('app/public/' . $record->image_front));
-                    }),
-
-            ])
             ->filter(
 
                 Filter::make('subscription_range')
@@ -115,6 +102,20 @@ class DesignResource extends Resource
                     })
                     ->default()
             )
+            ->actions([
+                Tables\Actions\ViewAction::make()->label(false), // View button
+                Action::make('download_image')
+                    ->label('تحميل')
+                    ->icon('heroicon-o-arrow-down-tray') // أيقونة التحميل
+                    ->color('success')
+                    ->hidden(fn($record) => !$record->image_front) // يخفي الزر إذا لم توجد صورة
+                    ->action(function ($record) {
+                        // يمكنك هنا تنفيذ شيء مثل تتبع المشاركة أو فتح الصورة
+                        return response()->download(storage_path('app/public/' . $record->image_front));
+                    }),
+
+            ])
+
             ->bulkActions([]);
     }
 
