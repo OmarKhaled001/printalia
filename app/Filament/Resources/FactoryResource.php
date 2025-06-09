@@ -75,8 +75,6 @@ class FactoryResource extends Resource
                         ->password()
                         ->required()
                         ->confirmed()
-                        ->hidden('edit')
-
                         ->columnSpan(6)
                         ->maxLength(50)
                         ->dehydrated() // مهم لتخزين القيمة
@@ -86,8 +84,6 @@ class FactoryResource extends Resource
                         ->label('تأكيد كلمة المرور')
                         ->password()
                         ->required()
-                        ->hidden('edit')
-
                         ->columnSpan(6)
                         ->maxLength(50)
                         ->dehydrated(false), // لا تحفظ قيمة التأكيد في DB

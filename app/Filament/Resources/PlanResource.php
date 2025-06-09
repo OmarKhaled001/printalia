@@ -2,23 +2,24 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PlanResource\Pages;
-use App\Filament\Resources\PlanResource\RelationManagers;
-use App\Models\Plan;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\Plan;
 use Filament\Tables;
+use Filament\Forms\Get;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
+
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\BooleanColumn;
+use App\Filament\Resources\PlanResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PlanResource\RelationManagers;
 
 class PlanResource extends Resource
 {
@@ -34,19 +35,30 @@ class PlanResource extends Resource
             TextInput::make('name')->label('اسم الخطة')->required(),
             TextInput::make('price')->label('السعر')->suffix('ر.س')
                 ->numeric()->required(),
-            TextInput::make('duration')->label('المدة')->numeric()->required(),
-            Select::make('duration_unit')->label('وحدة المدة')
+            Toggle::make('is_infinity')
+                ->label('غير محدودة')
+                ->reactive(),
+
+            TextInput::make('duration')
+                ->label('المدة')
+                ->numeric()
+                ->required()
+                ->visible(fn(Get $get) => !$get('is_infinity')),
+
+            Select::make('duration_unit')
+                ->label('وحدة المدة')
                 ->options([
                     'day' => 'يوم',
                     'month' => 'شهر',
                     'year' => 'سنة',
                 ])
                 ->default('day')
-                ->required(),
+                ->required()
+                ->visible(fn(Get $get) => !$get('is_infinity')),
+
             TextInput::make('design_count')->label('حد التصاميم')->numeric()->nullable(),
             Textarea::make('description')->label('الوصف')->rows(3)->nullable(),
             Toggle::make('is_active')->label('نشطة'),
-            Toggle::make('is_infinity')->label('غير محدودة'),
         ]);
     }
 

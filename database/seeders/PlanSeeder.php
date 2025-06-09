@@ -32,8 +32,6 @@ class PlanSeeder extends Seeder
         Plan::create([
             'name' => 'خطة اللامحدود',
             'price' => 150.00,
-            'duration' => 30,
-            'duration_unit' => 'day',
             'description' => 'عدد لا نهائي من التصميمات لمدة شهر',
             'design_count' => null,
             'is_active' => true,
