@@ -56,7 +56,7 @@ class PlanResource extends Resource
                 ->required()
                 ->visible(fn(Get $get) => !$get('is_infinity')),
 
-            TextInput::make('design_count')->label('حد التصاميم')->numeric()->nullable(),
+            TextInput::make('design_count')->label('حد التصاميم')->visible(fn(Get $get) => !$get('is_infinity'))->numeric()->nullable(),
             Textarea::make('description')->label('الوصف')->rows(3)->nullable(),
             Toggle::make('is_active')->label('نشطة'),
         ]);
