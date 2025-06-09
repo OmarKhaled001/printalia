@@ -7,6 +7,7 @@
     <title>{{ $settings::get('site_title', 'Printalia - منصة التصميم والطباعة حسب الطلب') }}</title>
     <meta name="description" content="{{ $settings::get('site_description', 'منصة يمنية متخصصة في تصميم وبيع المنتجات المطبوعة حسب الطلب') }}">
     <meta name="keywords" content="{{ $settings::get('site_keywords', 'Printalia, برنتاليا, تصميم منتجات, طباعة حسب الطلب, يمن') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Open Graph / Facebook Meta Tags (لتحسين المشاركة على السوشيال ميديا) -->
     <meta property="og:title" content="{{ $settings::get('site_title', 'Printalia') }}">
