@@ -85,7 +85,7 @@ class FactoryOrder extends Model
             }
 
             // 3. عند انتهاء التنفيذ
-            if ($factoryOrder->isDirty('status') && $factoryOrder->status->isFinished()) {
+            if ($factoryOrder->status->isFinished()) {
                 $profit = ($order->price - $order->design->product->price) * $order->quantity;
 
                 // تسجيل حوالة معلقة
