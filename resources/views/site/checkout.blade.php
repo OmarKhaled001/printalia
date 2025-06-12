@@ -25,7 +25,7 @@
     <meta name="twitter:description" content="منصة يمنية لتحويل التصاميم إلى منتجات قابلة للبيع مع ربط بالمصانع ونظام موكابس سهل للمصممين المبتدئين." />
     <meta name="twitter:image" content="https://example.com/assets/media/og-image.jpg" />
     <meta name="twitter:site" content="@Printalia" />
-    <link rel="shortcut icon" type="image/x-icon" href="{{ $settings::get('icon') ? asset('storage/' . $settings::get('icon')) : asset('assets/media/icon.png') }}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ $settings::get('icon') ? asset('storage/app/public/' . $settings::get('icon')) : asset('assets/media/icon.png') }}" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/bootstrap.rtl.min.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/font-awesome.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/slick.css" />

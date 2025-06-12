@@ -20,7 +20,7 @@
               </div>
               <div class="col-lg-6 sal-animate" data-sal="slide-right" data-sal-duration="1000">
                   <div class="case-study-featured-thumb">
-                      <img class="paralax-image" style="max-height: 600px;" src="{{ asset('storage/' . $settings::get('additional_1_section_image', '/media/others/mockup.png')) }}" alt="تصميم المنتج" style="will-change: transform; transform: perspective(1000px) rotateX(0deg) rotateY(0deg);" />
+                      <img class="paralax-image" style="max-height: 600px;" src="{{ asset('storage/app/public/' . $settings::get('additional_1_section_image', '/media/others/mockup.png')) }}" alt="تصميم المنتج" style="will-change: transform; transform: perspective(1000px) rotateX(0deg) rotateY(0deg);" />
 
                   </div>
               </div>
@@ -50,7 +50,7 @@
               </div>
               <div class="col-lg-6 sal-animate" data-sal="slide-right" data-sal-duration="1000">
                   <div class="case-study-featured-thumb">
-                      <img class="paralax-image" style="max-height: 600px;" src="{{ asset('storage/' . $settings::get('additional_2_section_image', '/media/others/mockup.png')) }}" alt="تصميم المنتج" style="will-change: transform; transform: perspective(1000px) rotateX(0deg) rotateY(0deg);" />
+                      <img class="paralax-image" style="max-height: 600px;" src="{{ asset('storage/app/public/' . $settings::get('additional_2_section_image', '/media/others/mockup.png')) }}" alt="تصميم المنتج" style="will-change: transform; transform: perspective(1000px) rotateX(0deg) rotateY(0deg);" />
                   </div>
               </div>
 

@@ -19,7 +19,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{$settings::get('site_title', 'Printalia') }}">
     <meta name="twitter:description" content="{{$settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{$settings::get('icon') ? asset('storage/' .$settings::get('icon')) : asset('assets/media/icon.png') }}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{$settings::get('icon') ? asset('storage/app/public/' .$settings::get('icon')) : asset('assets/media/icon.png') }}" />
     <link rel="stylesheet" href="assets/css/vendor/bootstrap.rtl.min.css" />
     <link rel="stylesheet" href="assets/css/vendor/font-awesome.css" />
     <link rel="stylesheet" href="assets/css/vendor/slick.css" />

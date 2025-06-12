@@ -49,7 +49,7 @@ class OrderResource extends Resource
                                             $design->id => new HtmlString(
                                                 '<div class="flex flex-col items-center gap-2 p-2 rounded-md hover:border-primary-500 cursor-pointer">' .
                                                     // Adjusted image size: w-20 h-24 (approx 80px x 96px) for readability
-                                                    '<img src="' . asset('storage/' . $design->image_front) . '" class="w-20 h-24 object-contain" alt="' . e($design->title) . '">' .
+                                                    '<img src="' . asset('storage/app/public/' . $design->image_front) . '" class="w-20 h-24 object-contain" alt="' . e($design->title) . '">' .
                                                     '<span>' . e($design->title) . '</span>' .
                                                     '</div>'
                                             )

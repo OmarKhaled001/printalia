@@ -20,7 +20,7 @@
                            <img src="{{ asset('assets') }}/media/banner/window.png" alt="تصميم المنتج" />
                        </div>
                        <div class="large-thumb-2" data-sal="slide-left" data-sal-duration="800" data-sal-delay="800">
-                           <img src="{{ asset('storage/' . $settings::get('hero_section_image', '/media/banner/laptop-poses.png')) }}" alt="تصميم المنتج" />
+                           <img src="{{ asset('storage/app/public/' . $settings::get('hero_section_image', '/media/banner/laptop-poses.png')) }}" alt="تصميم المنتج" />
                        </div>
                        <ul class="list-unstyled shape-group">
                            <li class="shape shape-1" data-sal="slide-left" data-sal-duration="500" data-sal-delay="800">

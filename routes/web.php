@@ -78,9 +78,9 @@ Route::get('/products/mockup/{identifier}', function ($identifier) {
         // Assuming 'image_front' stores the path relative to public storage or a URL
         // Make sure the image_front path is publicly accessible (e.g., via storage:link)
         // Or, if it's a full URL, ensure it's correct.
-        $imageUrl = $product->image_front ? asset('storage/' . $product->image_front) : null;
+        $imageUrl = $product->image_front ? asset('storage/app/public/' . $product->image_front) : null;
 
-        if ($imageUrl && file_exists(public_path('storage/' . $product->image_front))) {
+        if ($imageUrl && file_exists(public_path('storage/app/public/' . $product->image_front))) {
             return response()->json([
                 'success' => true,
                 'name' => $product->name,

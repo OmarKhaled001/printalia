@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
-    <link rel="shortcut icon" type="image/x-icon" href="{{ $settings::get('icon') ? asset('storage/' . $settings::get('icon')) : asset('assets/media/icon.png') }}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ $settings::get('icon') ? asset('storage/app/public/' . $settings::get('icon')) : asset('assets/media/icon.png') }}" />
 
     <style>
         :root {
@@ -680,7 +680,7 @@
                 <div class="product-grid" id="frontProductsGrid">
                     @foreach($products as $product)
                     <div class="product-item" data-product-id="{{ $product->id }}" data-side="front" data-price="{{ $product->price }}" onclick="loadProductMockup({{ $product->id }}, 'front')">
-                        <img src="{{ asset('storage/' . $product->image_front) }}" class="product-image" alt="{{ $product->name }}">
+                        <img src="{{ asset('storage/app/public/' . $product->image_front) }}" class="product-image" alt="{{ $product->name }}">
                         <div class="product-name">{{ $product->name }}</div>
                         <div class="product-price">{{ number_format($product->price, 2) }} ر.س</div>
                     </div>
@@ -690,7 +690,7 @@
                     @foreach($products as $product)
                     @if($product->is_double_sided && $product->image_back)
                     <div class="product-item" data-product-id="{{ $product->id }}" data-side="back" data-price="{{ $product->price }}" onclick="loadProductMockup({{ $product->id }}, 'back')">
-                        <img src="{{ asset('storage/' . $product->image_back) }}" class="product-image" alt="{{ $product->name }}">
+                        <img src="{{ asset('storage/app/public/' . $product->image_back) }}" class="product-image" alt="{{ $product->name }}">
                         <div class="product-name">{{ $product->name }}</div>
                         <div class="product-price">{{ number_format($product->price, 2) }} ر.س</div>
                     </div>
@@ -929,8 +929,8 @@
             if (!product) return;
 
             const imageUrl = side === 'front' ?
-                "{{ asset('storage/') }}/" + product.image_front :
-                "{{ asset('storage/') }}/" + product.image_back;
+                "{{ asset('storage/app/public/') }}/" + product.image_front :
+                "{{ asset('storage/app/public/') }}/" + product.image_back;
 
             fabric.Image.fromURL(imageUrl, function(img) {
                 // قياس الصورة لتناسب الكانفس مع الحفاظ على النسبة
