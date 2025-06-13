@@ -37,6 +37,9 @@
                              <li>
                                  <a href="#op-pricing">الاشتركات</a>
                              </li>
+                             <li>
+                                 <a href="{{ route('privacy-policy') }}">سياستنا</a>
+                             </li>
                              @if (Auth::guard('designer')->check())
                              <li class="header-btn">
                                  <a href="{{ route('filament.designer.auth.login') }}" class="axil-btn btn-fill-primary">لوحة التحكم</a>

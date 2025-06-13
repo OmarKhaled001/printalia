@@ -7,16 +7,20 @@ use Filament\Pages\Page;
 use App\Models\BankAccount;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
 use Illuminate\Support\Facades\Cache;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\Actions;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 
 class Setting extends Page implements HasForms
@@ -43,40 +47,65 @@ class Setting extends Page implements HasForms
         return 'الإعدادات ';
     }
 
-    public $bank_accounts;
-    public $logo;
-    public $icon;
     public $site_title;
     public $site_keywords;
     public $site_description;
-    public $bank_code;
-    public $present_earn;
+
+    public $logo;
+    public $icon;
+
+    public $primary_color;
+    public $secondary_color;
+    public $accent_color;
+    public $link_color;
+    public $body_color;
+    public $font_family;
+    public $font_secondary;
+
     public $hero_section_title;
     public $hero_section_description;
     public $hero_section_is_visible;
     public $hero_section_image;
+
     public $about_section_title;
     public $about_section_description;
     public $about_section_is_visible;
     public $about_section_image;
+
     public $vision_section_title;
     public $vision_section_description;
     public $vision_section_is_visible;
     public $vision_section_image;
+
     public $additional_1_section_title;
     public $additional_1_section_description;
     public $additional_1_section_is_visible;
     public $additional_1_section_image;
+
     public $additional_2_section_title;
     public $additional_2_section_description;
     public $additional_2_section_is_visible;
     public $additional_2_section_image;
+
     public $contact_phone;
     public $contact_email;
     public $contact_zip_code;
     public $contact_address;
     public $facebook_link;
     public $instagram_link;
+
+    public $bank_accounts;
+    public $bank_code;
+    public $present_earn;
+
+    public $platform_policy_title;
+    public $platform_policy_description;
+    public $shipping_policy_title;
+    public $shipping_policy_description;
+    public $return_policy_title;
+    public $return_policy_description;
+
+
 
     public function mount()
     {
@@ -122,6 +151,19 @@ class Setting extends Page implements HasForms
             'contact_address' => \App\Models\Setting::where('key', 'contact_address')->value('value'),
             'facebook_link' => \App\Models\Setting::where('key', 'facebook_link')->value('value'),
             'instagram_link' => \App\Models\Setting::where('key', 'instagram_link')->value('value'),
+            'primary_color'     => \App\Models\Setting::where('key', 'primary_color')->value('value') ?: 'rgb(63, 162, 46)',
+            'secondary_color'   => \App\Models\Setting::where('key', 'secondary_color')->value('value') ?: '#1E3A1F',
+            'accent_color'      => \App\Models\Setting::where('key', 'accent_color')->value('value') ?: '#D7F4C2',
+            'link_color'        => \App\Models\Setting::where('key', 'link_color')->value('value') ?: \App\Models\Setting::where('key', 'primary_color')->value('value') ?: 'rgb(63, 162, 46)',
+            'body_color'        => \App\Models\Setting::where('key', 'body_color')->value('value') ?: '#43594A',
+            'font_family'       => \App\Models\Setting::where('key', 'font_family')->value('value') ?: 'Cairo',
+            'font_secondary'    => \App\Models\Setting::where('key', 'font_secondary')->value('value') ?: 'Cairo',
+            'platform_policy_title' => \App\Models\Setting::where('key', 'platform_policy_title')->value('value'),
+            'platform_policy_description' => \App\Models\Setting::where('key', 'platform_policy_description')->value('value'),
+            'shipping_policy_title' => \App\Models\Setting::where('key', 'shipping_policy_title')->value('value'),
+            'shipping_policy_description' => \App\Models\Setting::where('key', 'shipping_policy_description')->value('value'),
+            'return_policy_title' => \App\Models\Setting::where('key', 'return_policy_title')->value('value'),
+            'return_policy_description' => \App\Models\Setting::where('key', 'return_policy_description')->value('value'),
             'bank_accounts' => $bankAccounts,
 
         ]);
@@ -136,6 +178,7 @@ class Setting extends Page implements HasForms
 
             Tabs::make('settings_tabs')
                 ->tabs([
+
                     Tab::make('إعدادات الموقع')
                         ->icon('heroicon-o-globe-alt')
                         ->schema([
@@ -157,20 +200,59 @@ class Setting extends Page implements HasForms
                                 ->columnSpanFull()
                                 ->required(),
 
-                            FileUpload::make('logo')
-                                ->label('الشعار')
-                                ->imageEditor()
-                                ->image()
-                                ->directory('settings'),
 
-                            FileUpload::make('icon')
-                                ->label('الشعار المُصغر')
-                                ->imageEditor()
-                                ->image()
-                                ->directory('settings'),
 
                         ])->columns(2),
 
+                    Tab::make('الثيم')
+                        ->schema([
+                            FileUpload::make('logo')->label('الشعار')->image()->directory('settings'),
+                            FileUpload::make('icon')->label('الشعار المُصغر')->image()->directory('settings'),
+
+                            ColorPicker::make('primary_color')->label('اللون الأساسي'),
+                            ColorPicker::make('secondary_color')->label('اللون الثانوي'),
+                            ColorPicker::make('accent_color')->label('لون التمييز'),
+                            ColorPicker::make('link_color')->label('لون الروابط'),
+                            ColorPicker::make('body_color')->label('لون النص الأساسي'),
+
+                            Select::make('font_family')
+                                ->label('الخط الأساسي')
+                                ->options([
+                                    'Cairo' => 'Cairo',
+                                    'Tajawal' => 'Tajawal',
+                                    'Amiri' => 'Amiri',
+                                    'Mada' => 'Mada',
+                                    'Aref Ruqaa' => 'Aref Ruqaa',
+                                    'Changa' => 'Changa',
+                                    'El Messiri' => 'El Messiri',
+                                    'Reem Kufi' => 'Reem Kufi',
+                                    'Baloo Bhaijaan 2' => 'Baloo Bhaijaan 2',
+                                    'Noto Naskh Arabic' => 'Noto Naskh Arabic',
+                                    'Noto Kufi Arabic' => 'Noto Kufi Arabic',
+                                    'IBM Plex Sans Arabic' => 'IBM Plex Sans Arabic',
+                                    'Harmattan' => 'Harmattan',
+                                    'Lateef' => 'Lateef',
+                                    'Scheherazade New' => 'Scheherazade New',
+                                ])
+                                ->searchable()
+                                ->required(),
+
+                            Actions::make([
+                                Action::make('resetTheme')
+                                    ->label('إعادة ضبط الثيم')
+                                    ->color('danger')
+                                    ->action(fn() => $this->form->fill([
+                                        'primary_color' => 'rgb(63, 162, 46)',
+                                        'secondary_color' => '#1E3A1F',
+                                        'accent_color' => '#D7F4C2',
+                                        'link_color' => 'rgb(63, 162, 46)',
+                                        'body_color' => '#43594A',
+                                        'font_family' => 'Cairo',
+                                        'font_secondary' => 'Cairo',
+                                    ])),
+                            ]),
+                        ])
+                        ->columns(2),
                     Tab::make('نظام التربح')
                         ->icon('heroicon-o-currency-dollar')
                         ->schema([
@@ -247,6 +329,30 @@ class Setting extends Page implements HasForms
                             Toggle::make('vision_section_is_visible')->label('فعال ؟')->columns(2),
 
                         ])->columns(2),
+                    Tab::make('سياستنا')
+                        ->icon('heroicon-o-eye')
+                        ->schema([
+
+                            \Filament\Forms\Components\Fieldset::make('سياسة المنصة')
+                                ->schema([
+                                    TextInput::make('platform_policy_title')->label('عنوان سياسة المنصة'),
+                                    Textarea::make('platform_policy_description')->label('وصف سياسة المنصة'),
+                                ]),
+
+                            \Filament\Forms\Components\Fieldset::make('سياسة الشحن')
+                                ->schema([
+                                    TextInput::make('shipping_policy_title')->label('عنوان سياسة الشحن'),
+                                    Textarea::make('shipping_policy_description')->label('وصف سياسة الشحن'),
+                                ]),
+
+                            \Filament\Forms\Components\Fieldset::make('سياسة الاسترجاع')
+                                ->schema([
+                                    TextInput::make('return_policy_title')->label('عنوان سياسة الاسترجاع'),
+                                    Textarea::make('return_policy_description')->label('وصف سياسة الاسترجاع'),
+                                ]),
+
+                        ])->columns(2),
+
                     Tab::make('إضافي 1')
                         ->icon('heroicon-o-folder-plus')
                         ->schema([
@@ -310,6 +416,21 @@ class Setting extends Page implements HasForms
             );
         }
 
+        if (isset($data['font_family'])) {
+            \App\Models\Setting::updateOrCreate(
+                ['key' => 'font_family'],
+                ['value' => $data['font_family']]
+            );
+        }
+
+        foreach ($data as $key => $value) {
+            if ($key !== 'font_family') {
+                \App\Models\Setting::updateOrCreate(
+                    ['key' => $key],
+                    ['value' => $value ?? '']
+                );
+            }
+        }
         Cache::forget('g_setting');
 
         Notification::make()
@@ -317,5 +438,10 @@ class Setting extends Page implements HasForms
             ->title('تم تحديث الإعدادات بنجاح')
             ->body('جاري تحديث إعدادات الموقع في الخلفية.')
             ->send();
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return url()->current();
     }
 }

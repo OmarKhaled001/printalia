@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\DesignController;
+use App\Http\Controllers\DynamicCssController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Middleware\EnsureDesignerIsVerified;
 
@@ -63,11 +64,11 @@ Route::post('/filament-custom/save-design', [ImageController::class, 'saveDesign
     ->name('filament.custom.save-design');
 
 
-Route::get('/designs/{design}/share', function (Design $design) {
+Route::get('/privacy-policy', function () {
     // This is a simple example. You'd likely have a dedicated Blade view for sharing.
     // This view would display the design image and details.
-    return view('share-design', compact('design'));
-})->name('view-design');
+    return view('site.privacy-policy');
+})->name('privacy-policy');
 
 // New API route for fetching mockup product
 Route::get('/products/mockup/{identifier}', function ($identifier) {
@@ -100,3 +101,6 @@ Route::get('/products/mockup/{identifier}', function ($identifier) {
         ], 404);
     }
 })->name('api.products.mockup');
+
+
+Route::get('dynamic-styles.css', DynamicCssController::class);

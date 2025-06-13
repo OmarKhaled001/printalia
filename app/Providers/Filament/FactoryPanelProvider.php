@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
+use App\Models\Setting;
 use Filament\PanelProvider;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
@@ -26,18 +27,35 @@ class FactoryPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        $primaryColor = Setting::where('key', 'primary_color')->value('value') ?? '#6366f1';
+        $fontFamily = Setting::where('key', 'font_family')->value('value') ?? 'Inter';
         return $panel
             ->id('factory')
             ->path('factory')
             ->login()
             ->authGuard('factory')
-            ->colors([
-                'primary' => Color::Green,
-            ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('1s')
             ->brandLogo(asset('logo.png'))->brandLogoHeight('2.2rem')
-            ->font('cairo')
+            ->font($fontFamily)
+            ->colors([
+                'primary' =>  $primaryColor,
+            ])
+            ->renderHook('head.start', function () {
+                $fonts = array_unique([
+                    Setting::where('key', 'font_family')->value('value') ?? 'Inter',
+                ]);
+
+                $fontLinks = collect($fonts)->map(function ($font) {
+                    $encoded = urlencode($font);
+                    return "<link href=\"https://fonts.googleapis.com/css2?family={$encoded}&display=swap\" rel=\"stylesheet\">";
+                })->implode("\n");
+
+                return <<<HTML
+                    {$fontLinks}
+                    <link rel="stylesheet" href="{$GLOBALS['app']['url']}/dynamic-styles.css">
+                HTML;
+            })
             ->discoverResources(in: app_path('Filament/Factory/Resources'), for: 'App\\Filament\\Factory\\Resources')
             ->discoverPages(in: app_path('Filament/Factory/Pages'), for: 'App\\Filament\\Factory\\Pages')
             ->pages([

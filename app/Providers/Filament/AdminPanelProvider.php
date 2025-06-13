@@ -5,8 +5,8 @@ namespace App\Providers\Filament;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
+use App\Models\Setting;
 use Filament\PanelProvider;
-use App\Filament\Pages\Setting;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use Illuminate\Support\Facades\Auth;
@@ -27,24 +27,42 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        $primaryColor = Setting::where('key', 'primary_color')->value('value') ?? '#6366f1';
+        $fontFamily = Setting::where('key', 'font_family')->value('value') ?? 'Inter';
         return $panel
             ->default()
             ->id('admin')
             ->path('admin')
             ->login()
             ->authGuard('web')
-            ->font('cairo')
             ->brandLogo(asset('logo.png'))->brandLogoHeight('2.2rem')
+            ->font($fontFamily)
             ->colors([
-                'primary' => Color::Green,
+                'primary' =>  $primaryColor,
             ])
+            ->renderHook('head.start', function () {
+                $fonts = array_unique([
+                    Setting::where('key', 'font_family')->value('value') ?? 'Inter',
+                ]);
+
+                $fontLinks = collect($fonts)->map(function ($font) {
+                    $encoded = urlencode($font);
+                    return "<link href=\"https://fonts.googleapis.com/css2?family={$encoded}&display=swap\" rel=\"stylesheet\">";
+                })->implode("\n");
+
+                return <<<HTML
+                    {$fontLinks}
+                    <link rel="stylesheet" href="{$GLOBALS['app']['url']}/dynamic-styles.css">
+                HTML;
+            })
+
             ->databaseNotifications()
             ->databaseNotificationsPolling('3s')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
-                Setting::class,
+                \App\Filament\Pages\Setting::class,
             ])
             ->plugins([
                 FilamentEditProfilePlugin::make()->shouldRegisterNavigation(false)

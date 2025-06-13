@@ -134,6 +134,7 @@
         }
 
     </style>
+    <link rel="stylesheet" href="{{ url('dynamic-styles.css') }}">
 </head>
 
 <body class="onepage-template">

@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
+use App\Models\Setting;
 use Filament\PanelProvider;
 use Filament\Actions\Action;
 use Filament\Pages\Dashboard;
@@ -38,15 +39,8 @@ class DesignerPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        // $designer = Auth::user();
-        // dd($designer);
-        // $subscription = $designer->activeSubscription()->latest()->first();
-        // $plan = $subscription?->plan ?? (object)['name' => 'غير معروف', 'design_limit' => 0];
-
-        // $designsUsed = $designer->designs()->count();
-        // $remainingDesigns = max(0, ($plan->design_limit ?? 0) - $designsUsed);
-
-        // $daysLeft = now()->diffInDays(optional($subscription)->end_date, false);
+        $primaryColor = Setting::where('key', 'primary_color')->value('value') ?? '#6366f1';
+        $fontFamily = Setting::where('key', 'font_family')->value('value') ?? 'Inter';
         return $panel
             ->id('designer')
             ->path('designer')
@@ -54,10 +48,25 @@ class DesignerPanelProvider extends PanelProvider
             ->registration(RegisterDesigner::class)
             // ->profile()
             ->authGuard('designer')
-            ->font('cairo')
+            ->font($fontFamily)
             ->colors([
-                'primary' => Color::Green,
+                'primary' =>  $primaryColor,
             ])
+            ->renderHook('head.start', function () {
+                $fonts = array_unique([
+                    Setting::where('key', 'font_family')->value('value') ?? 'Inter',
+                ]);
+
+                $fontLinks = collect($fonts)->map(function ($font) {
+                    $encoded = urlencode($font);
+                    return "<link href=\"https://fonts.googleapis.com/css2?family={$encoded}&display=swap\" rel=\"stylesheet\">";
+                })->implode("\n");
+
+                return <<<HTML
+                    {$fontLinks}
+                    <link rel="stylesheet" href="{$GLOBALS['app']['url']}/dynamic-styles.css">
+                HTML;
+            })
             ->databaseNotifications()
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
                 return $builder->items([

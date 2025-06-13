@@ -89,7 +89,6 @@
 
         body {
             direction: rtl;
-            font-family: "Cairo", Arial, sans-serif;
             background-color: var(--color-light);
             color: var(--color-body);
             overflow: hidden;
@@ -609,6 +608,8 @@
         }
 
     </style>
+    
+    <link rel="stylesheet" href="{{ url('dynamic-styles.css') }}">
 </head>
 <body>
     <div class="container-fluid">

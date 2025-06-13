@@ -38,9 +38,7 @@
            <li class="shape shape-2" data-sal="zoom-in" data-sal-duration="800" data-sal-delay="500">
                <img src="{{ asset('assets') }}/media/others/bubble-38.png" alt="Bubble" />
            </li>
-           <li class="shape shape-3" data-sal="slide-left" data-sal-duration="500" data-sal-delay="700">
-               <img src="{{ asset('assets') }}/media/others/bubble-14.png" alt="Bubble" />
-           </li>
+          
            <li class="shape shape-4" data-sal="slide-left" data-sal-duration="500" data-sal-delay="700">
                <img src="{{ asset('assets') }}/media/others/bubble-14.png" alt="Bubble" />
            </li>

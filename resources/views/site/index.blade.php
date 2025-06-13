@@ -41,12 +41,10 @@
             direction: rtl;
             /* text-align: right; */
         }
-
-        *:not(i):not(.fa):not([class*="fa-"]) {
-            font-family: "Cairo", sans-serif !important;
-        }
-
     </style>
+        <!-- in resources/views/vendor/filament/layouts/app.blade.php -->
+ 
+    <link rel="stylesheet" href="{{ url('dynamic-styles.css') }}">
 </head>
 
 <body class="sticky-header onepage-template">

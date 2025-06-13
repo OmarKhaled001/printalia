@@ -25,13 +25,38 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-            Schema::defaultStringLength(191);
+        Schema::defaultStringLength(191);
 
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch->locales(['ar', 'en'])->displayLocale('ar')->visible(false);
         });
 
         View::share('settings', app(\App\Models\Setting::class));
+
+        $googleFonts = [
+            'Cairo',
+            'Tajawal',
+            'Amiri',
+            'Mada',
+            'Aref Ruqaa',
+            'Changa',
+            'El Messiri',
+            'Reem Kufi',
+            'Baloo Bhaijaan 2',
+            'Noto Naskh Arabic',
+            'Noto Kufi Arabic',
+            'IBM Plex Sans Arabic',
+            'Harmattan',
+            'Lateef',
+            'Scheherazade New',
+        ];
+
+        $fontLinks = collect($googleFonts)->map(function ($font) {
+            $encoded = urlencode($font);
+            return "https://fonts.googleapis.com/css2?family={$encoded}&display=swap";
+        })->toArray();
+
+        View::share('googleFontLinks', $fontLinks);
 
         \App\Models\Subscription::observe(SubscriptionObserver::class);
     }
