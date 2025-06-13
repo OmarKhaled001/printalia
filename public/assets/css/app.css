@@ -9451,7 +9451,7 @@ body.op-modal-open {
 .active-dark-mode {
     color-scheme: dark;
     --dark-main-body: #212121;
-    --dark-card: #86ec00;
+    --dark-card: #1e1f1e;
     --dark-bg-color: #212121;
     --dark-body-text: #D3D3D4;
     --dark-title-light: #D3D3D4;
