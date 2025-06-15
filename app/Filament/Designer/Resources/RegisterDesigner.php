@@ -188,18 +188,23 @@ class RegisterDesigner extends SimplePage // Renamed for clarity, assuming you'l
                         TextInput::make('password')
                             ->label('كلمة المرور')
                             ->password()
-                            ->revealable(filament()->arePasswordsRevealable())
                             ->required()
-                            ->rule(Password::default())
-                            ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                            ->same('password_confirmation') // Changed to `password_confirmation` to match the field name
-                            ->validationAttribute('كلمة المرور'), // Custom validation attribute for password
-                        TextInput::make('password_confirmation') // Correct field name
+                            ->confirmed()
+                            ->hidden('edit')
+
+                            ->columnSpan(6)
+                            ->maxLength(50)
+                            ->dehydrated() // مهم لتخزين القيمة
+                            ->mutateDehydratedStateUsing(fn($state) => bcrypt($state)),
+
+                        TextInput::make('password_confirmation')
                             ->label('تأكيد كلمة المرور')
                             ->password()
-                            ->revealable(filament()->arePasswordsRevealable())
                             ->required()
-                            ->dehydrated(false),
+                            ->hidden('edit')
+                            ->columnSpan(6)
+                            ->maxLength(50)
+                            ->dehydrated(false), // لا تحفظ قيمة التأكيد في DB
                     ])->columns(1), // You can organize fields into columns within a step
                     Wizard\Step::make('التوثيق')->schema([
                         FileUpload::make('profile')
