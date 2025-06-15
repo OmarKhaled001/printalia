@@ -59,12 +59,14 @@ class ProductResource extends Resource
                 FileUpload::make('image_front')
                     ->label('صورة أمامية')
                     ->image()
+                    ->disk('public')
                     ->directory('products/front')
                     ->columnSpan(6),
 
                 FileUpload::make('image_back')
                     ->label('صورة خلفية')
                     ->image()
+                    ->disk('public')
                     ->visible(fn(callable $get) => $get('is_double_sided'))
                     ->directory('products/back')
                     ->columnSpan(6),
