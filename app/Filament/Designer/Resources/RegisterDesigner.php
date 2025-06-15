@@ -138,7 +138,6 @@ class RegisterDesigner extends SimplePage // Renamed for clarity, assuming you'l
     protected function handleRegistration(array $data): Model
     {
         // Hash the password before creating the user
-        $data['password'] = Hash::make($data['password']);
         return $this->getUserModel()::create($data);
     }
 
@@ -190,8 +189,6 @@ class RegisterDesigner extends SimplePage // Renamed for clarity, assuming you'l
                             ->password()
                             ->required()
                             ->confirmed()
-                            ->hidden('edit')
-
                             ->columnSpan(6)
                             ->maxLength(50)
                             ->dehydrated() // مهم لتخزين القيمة
