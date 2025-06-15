@@ -9454,7 +9454,7 @@ body.op-modal-open {
     --dark-card: #1e1f1e;
     --dark-bg-color: #212121;
     --dark-body-text: #D3D3D4;
-    --dark-title-light: #D3D3D4;
+    --dark-title-light: var(--color-primary);
     --dark-solid-btn: var(--color-ghost);
     --dark-border-gray: var(--color-body);
 }
