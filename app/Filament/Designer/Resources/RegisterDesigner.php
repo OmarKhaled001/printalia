@@ -189,7 +189,6 @@ class RegisterDesigner extends SimplePage // Renamed for clarity, assuming you'l
                             ->password()
                             ->required()
                             ->confirmed()
-                            ->columnSpan(6)
                             ->maxLength(50)
                             ->dehydrated() // مهم لتخزين القيمة
                             ->mutateDehydratedStateUsing(fn($state) => bcrypt($state)),
@@ -199,7 +198,6 @@ class RegisterDesigner extends SimplePage // Renamed for clarity, assuming you'l
                             ->password()
                             ->required()
                             ->hidden('edit')
-                            ->columnSpan(6)
                             ->maxLength(50)
                             ->dehydrated(false), // لا تحفظ قيمة التأكيد في DB
                     ])->columns(1), // You can organize fields into columns within a step
