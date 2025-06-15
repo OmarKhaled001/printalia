@@ -19,8 +19,8 @@ $plans = Plan::where('is_active', true)->get();
                         <div class="price-wrap">
                             <div class="monthly-pricing d-flex align-items-center gap-1 justify-content-center">
                                 <span class="amount">{{ number_format($plan->price, 2) }}</span>
-                                <img class="amount" src="{{ asset('assets/media/Saudi_Riyal_Symbol.svg') }}" alt="ريال سعودي" style="width: 30px;" />
-                                <span class="duration">/شهرياً</span>
+                                
+                                <span class="duration">ر.س/شهرياً</span>
                             </div>
                         </div>
                         <div class="pricing-btn">

@@ -45,9 +45,7 @@
            <li class="shape shape-5" data-sal="slide-left" data-sal-duration="500" data-sal-delay="700">
                <img src="{{ asset('assets') }}/media/others/bubble-14.png" alt="Bubble" />
            </li>
-           <li class="shape shape-7" data-sal="slide-left" data-sal-duration="500" data-sal-delay="700">
-               <img src="{{ asset('assets') }}/media/others/bubble-41.png" alt="Bubble" />
-           </li>
+        
        </ul>
    </section>
    @endif
