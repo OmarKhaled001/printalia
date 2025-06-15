@@ -197,7 +197,6 @@ class RegisterDesigner extends SimplePage // Renamed for clarity, assuming you'l
                             ->label('تأكيد كلمة المرور')
                             ->password()
                             ->required()
-                            ->hidden('edit')
                             ->maxLength(50)
                             ->dehydrated(false), // لا تحفظ قيمة التأكيد في DB
                     ])->columns(1), // You can organize fields into columns within a step
