@@ -14,11 +14,40 @@
                     </div>
                 </div>
                  <div class="footer-social-link">
-                        <ul class="list-unstyled">
-                            <li><a href="https://facebook.com/" data-sal="slide-up" data-sal-duration="500" data-sal-delay="100"><i class="fab fa-facebook-f"></i></a></li>
-                            <li><a href="https://twitter.com/" data-sal="slide-up" data-sal-duration="500" data-sal-delay="200"><i class="fab fa-x-twitter"></i></a></li>
-                            <li><a href="https://www.instagram.com/" data-sal="slide-up" data-sal-duration="500" data-sal-delay="500"><i class="fab fa-instagram"></i></a></li>
-                        </ul>
+                      <ul class="list-unstyled">
+                        @if($settings::get('facebook_link'))
+                            <li>
+                                <a href="{{ $settings::get('facebook_link') }}" target="_blank" data-sal="slide-up" data-sal-duration="500" data-sal-delay="100">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if($settings::get('insta_link'))
+                            <li>
+                                <a href="{{ $settings::get('insta_link') }}" target="_blank" data-sal="slide-up" data-sal-duration="500" data-sal-delay="200">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if($settings::get('contact_phone'))
+                            <li>
+                                <a href="https://wa.me/{{ $settings::get('contact_phone') }}" target="_blank" data-sal="slide-up" data-sal-duration="500" data-sal-delay="300">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if($settings::get('contact_email'))
+                            <li>
+                                <a href="mailto:{{ $settings::get('contact_email') }}" target="_blank" data-sal="slide-up" data-sal-duration="500" data-sal-delay="400">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+
                     </div>
                 <div class="col-md-4">
                     <div class="copyright-text ">
