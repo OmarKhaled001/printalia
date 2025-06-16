@@ -49,18 +49,7 @@
                     </ul>
 
                     </div>
-                <div class="col-md-4">
-                    <div class="copyright-text ">
-                        {{$settings::get('contact_phone',
-                             "01068778340")}}
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="copyright-text">
-                        {{$settings::get('contact_email',
-                             "printalia@info.com")}}
-                    </div>
-                </div>
+                
             </div>
 
         </div>
