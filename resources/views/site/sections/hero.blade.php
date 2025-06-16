@@ -6,9 +6,9 @@
                    <div class="banner-content" data-sal="slide-up" data-sal-duration="1000" data-sal-delay="100">
                        <h1 class="title">{{ $settings::get('hero_section_title','ابدأ مشروعك في الطباعة حسب الطلب بسهولة')}}</h1>
                        <span class="subtitle">
-                           {{$settings::get('hero_section_description',
+                           {!!  $settings::get('hero_section_description',
                            "صمّم منتجك، ضعه على موكاب جاهز، واربطه مباشرة مع المصنع وابدأ
-                           البيع من دون رأس مال")}}
+                           البيع من دون رأس مال")!!}
 
                        </span>
                        <a href="#op-pricing" class="axil-btn btn-fill-primary btn-large">ابدأ الآن</a>
