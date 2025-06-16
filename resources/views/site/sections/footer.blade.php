@@ -5,11 +5,11 @@
                    
                 </div>
 
-        <div class="footer-bottom" data-sal="slide-up" data-sal-duration="500" data-sal-delay="100">
-            <div class="row">
+        <div  class="footer-bottom" data-sal="slide-up" data-sal-duration="500" data-sal-delay="100">
+            <div class="row" style="font-size:16px !important;">
                 <div class="col-md-4">
                     <div class="footer-copyright">
-                        <span class="copyright-text">© 2025. All rights reserved by
+                        <span class="copyright-text" style="font-size:16px !important;">© 2025. All rights reserved by
                             <a href="#">Printalia</a>.</span>
                     </div>
                 </div>
