@@ -23,9 +23,9 @@
                             </li>
                         @endif
 
-                        @if($settings::get('insta_link'))
+                        @if($settings::get('instagram_link'))
                             <li>
-                                <a href="{{ $settings::get('insta_link') }}" target="_blank" data-sal="slide-up" data-sal-duration="500" data-sal-delay="200">
+                                <a href="{{ $settings::get('instagram_link') }}" target="_blank" data-sal="slide-up" data-sal-duration="500" data-sal-delay="200">
                                     <i class="fab fa-instagram"></i>
                                 </a>
                             </li>
