@@ -1,7 +1,7 @@
 <footer class="footer-area">
     <div class="container">
    <div class="footer-top">
-     <div class="footer-copyright">
+     <div class="footer-copyright" style="font-size:16px !important;">
                    
                 </div>
 

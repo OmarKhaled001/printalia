@@ -28,7 +28,7 @@ $plans = Plan::where('is_active', true)->get();
                         </div>
                     </div>
                     <div class="pricing-body">
-                        <ul class="list-unstyled">
+                        <ul class="list-unstyled" style="font-size:16px !important;">
                             <li>{{ $plan->design_count ?? 'بشكل غير محدود' }} تصميم على موك أب شهرياً</li>
                             <li>إرسال طلب تنفيذ للمصنع</li>
                             <li>تتبع حالة الطلب</li>
