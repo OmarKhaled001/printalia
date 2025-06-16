@@ -101,11 +101,11 @@ class OrderResource extends Resource
 
                         Forms\Components\Placeholder::make('price_display')
                             ->label('السعر')
-                            ->content(fn(callable $get) => number_format($get('price') ?? 0, 2) . ' ج.م'),
+                            ->content(fn(callable $get) => number_format($get('price') ?? 0, 2) . ' ر.س'),
 
                         Forms\Components\Placeholder::make('total_display')
                             ->label('الإجمالي')
-                            ->content(fn(callable $get) => number_format($get('total') ?? 0, 2) . ' ج.م'),
+                            ->content(fn(callable $get) => number_format($get('total') ?? 0, 2) . ' ر.س'),
 
                         Forms\Components\Hidden::make('price'),
                         Forms\Components\Hidden::make('total'),
