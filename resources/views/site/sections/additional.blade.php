@@ -12,7 +12,7 @@
                               {{$settings::get('additional_1_section_title',
                              "من نحن ؟")}}
                           </h1>
-                          <div style="text-align: start !important; font-size:21px;">
+                          <div style="text-align: start !important; font-size:21px !important;">
                                 {!! $settings::get('additional_1_section_description',
                              "نحن فريق يمني شغوف بالتقنية وريادة الأعمال، أطلقنا منصة برنتاليا كحل مبتكر في مجال التجارة الالكترونية لصناعة براند خاص فيك بدون مخاطرة وراس مال . مهمتنا هي تمكين كل مبدع أو رائد أعمال طموح من دخول عالم التجارة الإلكترونية بوسائل ذكية وآمنة")!!} </div>
                       </div>
@@ -42,7 +42,7 @@
                              رؤيتنا
                              ")}}
                           </h1>
-                          <div style="text-align: start !important; font-size:21px;">
+                          <div style="text-align: start !important; font-size:21px !important;">
                                 {!! $settings::get('additional_2_section_description',
                              "أن نفتح آفاق التجارة الإلكترونية في اليمن، ونمكّن المبدعين من تحويل أفكارهم إلى علامات تجارية ناجحة بدون تعقيدات أو تكاليف عالية.")!!} </div>
                       </div>
