@@ -10,6 +10,7 @@ use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Illuminate\Support\Facades\Cache;
+use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\Repeater;
@@ -18,8 +19,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\ColorPicker;
-use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 
@@ -297,7 +298,23 @@ class Setting extends Page implements HasForms
 
                             Group::make()->schema([
                                 TextInput::make('hero_section_title')->label('العنوان'),
-                                Textarea::make('hero_section_description')->label('الوصف'),
+                                RichEditor::make('hero_section_description')
+                                    ->label('الوصف')
+                                    ->toolbarButtons([
+                                        'bold',
+                                        'italic',
+                                        'underline',
+                                        'strike',
+                                        'link',
+                                        'bulletList',
+                                        'orderedList',
+                                        'blockquote',
+                                        'codeBlock',
+                                        'h2',
+                                        'h3',
+                                        'undo',
+                                        'redo',
+                                    ])
                             ]),
                             FileUpload::make('hero_section_image')->label('الصورة')->directory('settings'),
                             Toggle::make('hero_section_is_visible')->label('فعال ؟')->columns(2),
@@ -309,7 +326,23 @@ class Setting extends Page implements HasForms
                         ->schema([
                             Group::make()->schema([
                                 TextInput::make('about_section_title')->label('العنوان'),
-                                Textarea::make('about_section_description')->label('الوصف'),
+                                RichEditor::make('about_section_description')
+                                    ->label('الوصف')
+                                    ->toolbarButtons([
+                                        'bold',
+                                        'italic',
+                                        'underline',
+                                        'strike',
+                                        'link',
+                                        'bulletList',
+                                        'orderedList',
+                                        'blockquote',
+                                        'codeBlock',
+                                        'h2',
+                                        'h3',
+                                        'undo',
+                                        'redo',
+                                    ])
                             ]),
 
                             FileUpload::make('about_section_image')->label('الصورة')->directory('settings'),
@@ -322,7 +355,23 @@ class Setting extends Page implements HasForms
                         ->schema([
                             Group::make()->schema([
                                 TextInput::make('vision_section_title')->label('العنوان'),
-                                Textarea::make('vision_section_description')->label('الوصف'),
+                                RichEditor::make('vision_section_description')
+                                    ->label('الوصف')
+                                    ->toolbarButtons([
+                                        'bold',
+                                        'italic',
+                                        'underline',
+                                        'strike',
+                                        'link',
+                                        'bulletList',
+                                        'orderedList',
+                                        'blockquote',
+                                        'codeBlock',
+                                        'h2',
+                                        'h3',
+                                        'undo',
+                                        'redo',
+                                    ])
                             ]),
 
                             FileUpload::make('vision_section_image')->label('الصورة')->directory('settings'),
@@ -336,19 +385,67 @@ class Setting extends Page implements HasForms
                             \Filament\Forms\Components\Fieldset::make('سياسة المنصة')
                                 ->schema([
                                     TextInput::make('platform_policy_title')->label('عنوان سياسة المنصة'),
-                                    Textarea::make('platform_policy_description')->label('وصف سياسة المنصة'),
+                                    RichEditor::make('platform_policy_description')
+                                        ->label('الوصف')
+                                        ->toolbarButtons([
+                                            'bold',
+                                            'italic',
+                                            'underline',
+                                            'strike',
+                                            'link',
+                                            'bulletList',
+                                            'orderedList',
+                                            'blockquote',
+                                            'codeBlock',
+                                            'h2',
+                                            'h3',
+                                            'undo',
+                                            'redo',
+                                        ])
                                 ]),
 
                             \Filament\Forms\Components\Fieldset::make('سياسة الشحن')
                                 ->schema([
                                     TextInput::make('shipping_policy_title')->label('عنوان سياسة الشحن'),
-                                    Textarea::make('shipping_policy_description')->label('وصف سياسة الشحن'),
+                                    RichEditor::make('shipping_policy_description')
+                                        ->label('الوصف')
+                                        ->toolbarButtons([
+                                            'bold',
+                                            'italic',
+                                            'underline',
+                                            'strike',
+                                            'link',
+                                            'bulletList',
+                                            'orderedList',
+                                            'blockquote',
+                                            'codeBlock',
+                                            'h2',
+                                            'h3',
+                                            'undo',
+                                            'redo',
+                                        ])
                                 ]),
 
                             \Filament\Forms\Components\Fieldset::make('سياسة الاسترجاع')
                                 ->schema([
                                     TextInput::make('return_policy_title')->label('عنوان سياسة الاسترجاع'),
-                                    Textarea::make('return_policy_description')->label('وصف سياسة الاسترجاع'),
+                                    RichEditor::make('return_policy_description')
+                                        ->label('الوصف')
+                                        ->toolbarButtons([
+                                            'bold',
+                                            'italic',
+                                            'underline',
+                                            'strike',
+                                            'link',
+                                            'bulletList',
+                                            'orderedList',
+                                            'blockquote',
+                                            'codeBlock',
+                                            'h2',
+                                            'h3',
+                                            'undo',
+                                            'redo',
+                                        ])
                                 ]),
 
                         ])->columns(2),
@@ -358,7 +455,23 @@ class Setting extends Page implements HasForms
                         ->schema([
                             Group::make()->schema([
                                 TextInput::make('additional_1_section_title')->label('العنوان'),
-                                Textarea::make('additional_1_section_description')->label('الوصف'),
+                                RichEditor::make('additional_1_section_description')
+                                    ->label('الوصف')
+                                    ->toolbarButtons([
+                                        'bold',
+                                        'italic',
+                                        'underline',
+                                        'strike',
+                                        'link',
+                                        'bulletList',
+                                        'orderedList',
+                                        'blockquote',
+                                        'codeBlock',
+                                        'h2',
+                                        'h3',
+                                        'undo',
+                                        'redo',
+                                    ])
                             ]),
 
                             FileUpload::make('additional_1_section_image')->label('الصورة')->directory('settings'),
@@ -371,7 +484,23 @@ class Setting extends Page implements HasForms
                         ->schema([
                             Group::make()->schema([
                                 TextInput::make('additional_2_section_title')->label('العنوان'),
-                                Textarea::make('additional_2_section_description')->label('الوصف'),
+                                RichEditor::make('additional_2_section_description')
+                                    ->label('الوصف')
+                                    ->toolbarButtons([
+                                        'bold',
+                                        'italic',
+                                        'underline',
+                                        'strike',
+                                        'link',
+                                        'bulletList',
+                                        'orderedList',
+                                        'blockquote',
+                                        'codeBlock',
+                                        'h2',
+                                        'h3',
+                                        'undo',
+                                        'redo',
+                                    ])
                             ]),
 
                             FileUpload::make('additional_2_section_image')->label('الصورة')->directory('settings'),
