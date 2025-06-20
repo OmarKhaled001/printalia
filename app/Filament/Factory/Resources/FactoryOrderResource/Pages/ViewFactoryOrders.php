@@ -118,6 +118,7 @@ class ViewFactoryOrder extends ViewRecord
 
             Section::make('ملخص الطلب')->schema([
                 TextEntry::make('order.quantity')->label('الكمية')->default(0),
+                TextEntry::make('order.size')->label('المقاس'),
                 TextEntry::make('order.total')
                     ->label('الإجمالي')
                     ->formatStateUsing(fn($state) => number_format($state ?? 0, 2) . ' ر.س'),

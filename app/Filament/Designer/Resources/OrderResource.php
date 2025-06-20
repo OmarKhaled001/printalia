@@ -15,6 +15,7 @@ use Illuminate\Support\HtmlString;
 use Filament\Forms\Components\Radio;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -98,6 +99,20 @@ class OrderResource extends Resource
                             ->afterStateUpdated(function ($state, callable $set, callable $get) {
                                 $set('total', floatval($get('price')) * intval($state));
                             }),
+
+                        Select::make('size')
+                            ->label('مقاس التيشيرت')
+                            ->options([
+                                'XS' => 'XS - صغير جدًا',
+                                'S' => 'S - صغير',
+                                'M' => 'M - متوسط',
+                                'L' => 'L - كبير',
+                                'XL' => 'XL - كبير جدًا',
+                                'XXL' => 'XXL - أكبر',
+                                'XXXL' => 'XXXL - عملاق',
+                            ])
+                            ->required()
+                            ->native(false),
 
                         Forms\Components\Placeholder::make('price_display')
                             ->label('السعر')
