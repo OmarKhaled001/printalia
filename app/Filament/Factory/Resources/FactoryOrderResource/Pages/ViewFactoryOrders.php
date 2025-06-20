@@ -103,7 +103,8 @@ class ViewFactoryOrder extends ViewRecord
             Section::make('معلومات العميل')->schema([
                 TextEntry::make('order.customer.name')->label('الاسم')->default('-'),
                 TextEntry::make('order.customer.phone')->label('رقم الهاتف')->default('-'),
-            ])->columns(2),
+                TextEntry::make('order.customer.address')->label('العنوان')->default('-'),
+            ])->columns(3),
 
             Section::make('معلومات المنتج والتصميم')->schema([
                 TextEntry::make('order.design.title')->label('التصميم')->default('-'),
