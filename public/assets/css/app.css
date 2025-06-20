@@ -7440,7 +7440,7 @@ body.op-modal-open {
 .mainmenu>li>a {
     color: var(--color-body);
     font-weight: 500;
-    font-size: var(--font-body-2);
+    font-size: 18px;
     font-family: var(--font-primary);
     line-height: 60px;
     height: 60px;
