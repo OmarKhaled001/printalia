@@ -18,6 +18,7 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\Placeholder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Designer\Resources\OrderResource\Pages;
 use App\Filament\Designer\Resources\OrderResource\RelationManagers;
@@ -121,7 +122,15 @@ class OrderResource extends Resource
                         Forms\Components\Placeholder::make('total_display')
                             ->label('الإجمالي')
                             ->content(fn(callable $get) => number_format($get('total') ?? 0, 2) . ' ر.س'),
-
+                        Placeholder::make('shipping_notice')
+                            ->content(new HtmlString('🔔 <strong >تنبيه قبل إنشاء الطلب:</strong><br>
+                            سعر المنتج لا يشمل التوصيل.<br>
+                            سعر التوصيل داخل صنعاء في الأماكن القريبة من أمانة العاصمة: <strong>1000 ريال يمني</strong>.<br>
+                            وفي الأماكن البعيدة في صنعاء: <strong>1500 ريال يمني</strong>.<br>
+                            وبالنسبة لخارج صنعاء: <a href="' . route('privacy-policy') . '" style="color: #ff6666; text-decoration: underline;"><strong>اضغط هنا</strong></a>.<br><br>'))
+                            ->label('')
+                            ->disableLabel()
+                            ->columnSpanFull(),
                         Forms\Components\Hidden::make('price'),
                         Forms\Components\Hidden::make('total'),
                     ]),

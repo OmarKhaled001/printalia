@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html class="no-js" lang="ar">
+
 <head>
     <!-- Meta Data -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>{{$settings::get('site_title', 'Printalia - منصة التصميم والطباعة حسب الطلب') }}</title>
-    <meta name="description" content="{{$settings::get('site_description', 'منصة يمنية متخصصة في تصميم وبيع المنتجات المطبوعة حسب الطلب') }}">
-    <meta name="keywords" content="{{$settings::get('site_keywords', 'Printalia, برنتاليا, تصميم منتجات, طباعة حسب الطلب, يمن') }}">
+    <title>{{ $settings::get('site_title', 'Printalia - منصة التصميم والطباعة حسب الطلب') }}</title>
+    <meta name="description"
+        content="{{ $settings::get('site_description', 'منصة يمنية متخصصة في تصميم وبيع المنتجات المطبوعة حسب الطلب') }}">
+    <meta name="keywords"
+        content="{{ $settings::get('site_keywords', 'Printalia, برنتاليا, تصميم منتجات, طباعة حسب الطلب, يمن') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Open Graph / Facebook Meta Tags (لتحسين المشاركة على السوشيال ميديا) -->
-    <meta property="og:title" content="{{$settings::get('site_title', 'Printalia') }}">
-    <meta property="og:description" content="{{$settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
+    <meta property="og:title" content="{{ $settings::get('site_title', 'Printalia') }}">
+    <meta property="og:description"
+        content="{{ $settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="{{ asset('images/logo-social-share.png') }}">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{$settings::get('site_title', 'Printalia') }}">
-    <meta name="twitter:description" content="{{$settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
+    <meta name="twitter:title" content="{{ $settings::get('site_title', 'Printalia') }}">
+    <meta name="twitter:description"
+        content="{{ $settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{$settings::get('icon') ? asset('storage/app/public/' .$settings::get('icon')) : asset('assets/media/icon.png') }}" />
+    <link rel="shortcut icon" type="image/x-icon"
+        href="{{ $settings::get('icon') ? asset('storage/app/public/' . $settings::get('icon')) : asset('assets/media/icon.png') }}" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/bootstrap.rtl.min.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/font-awesome.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/slick.css" />
@@ -42,8 +48,8 @@
             /* text-align: right; */
         }
     </style>
-        <!-- in resources/views/vendor/filament/layouts/app.blade.php -->
- 
+    <!-- in resources/views/vendor/filament/layouts/app.blade.php -->
+
     <link rel="stylesheet" href="{{ url('dynamic-styles.css') }}">
 </head>
 
@@ -113,95 +119,108 @@
     </div>
     <!-- Blog Modal Box -->
 
-   <div id="main-wrapper" class="main-wrapper">
+    <div id="main-wrapper" class="main-wrapper">
 
         <!--=====================================-->
         <!--=        Header Area Start       	=-->
         <!--=====================================-->
-               <header class="header axil-header header-style-1">
-     <div id="axil-sticky-placeholder"></div>
-     <div class="axil-mainmenu">
-         <div class="container">
-             <div class="header-navbar">
-                 <div class="header-logo">
-                     <a href="{{ route('home') }}"><img class="light-version-logo" src="{{$settings::get('icon') ? asset('storage/app/public/' .$settings::get('logo')) : asset('assets/media/logo.png') }}" width="160px" alt="logo" /></a>
-                     <a href="{{ route('home') }}"><img class="dark-version-logo" src="{{$settings::get('icon') ? asset('storage/app/public/' .$settings::get('logo')) : asset('assets/media/logo.png') }}" width="160px" alt="logo" /></a>
-                     <a href="{{ route('home') }}"><img class="sticky-logo" src="{{$settings::get('icon') ? asset('storage/app/public/' .$settings::get('logo')) : asset('assets/media/logo.png') }}" width="160px" alt="logo" /></a>
-                 </div>
-                 <div class="header-main-nav">
-                     <!-- Start Mainmanu Nav -->
-                     <nav class="mainmenu-nav" id="mobilemenu-popup">
-                         <div class="d-block d-lg-none">
-                             <div class="mobile-nav-header">
-                                 <div class="mobile-nav-logo">
-                                     <a href="{{ route('home') }}">
-                                         <img class="light-mode" src="{{$settings::get('icon') ? asset('storage/app/public/' .$settings::get('logo')) : asset('assets/media/logo.png') }}" width="160px" alt="Site Logo" />
-                                         <img class="dark-mode" src="{{$settings::get('icon') ? asset('storage/app/public/' .$settings::get('logo')) : asset('assets/media/logo.png') }}" width="160px" alt="Site Logo" />
-                                     </a>
-                                 </div>
-                                 <button class="mobile-menu-close" data-bs-dismiss="offcanvas">
-                                     <i class="fas fa-times"></i>
-                                 </button>
-                             </div>
-                         </div>
-                         <ul class="mainmenu" id="onepagenav">
-                             <li>
-                                 <a href="{{ route('home') }}#op-home">الرئيسية</a>
-                             </li>
-                             <li>
-                                 <a href="{{ route('home') }}#op-about">من نحن</a>
-                             </li>
-                             <li>
-                                 <a href="{{ route('home') }}#op-vision">رؤيتنا</a>
-                             </li>
-                             <li>
-                                 <a href="{{ route('home') }}#op-pricing">الاشتركات</a>
-                             </li>
-                             <li>
-                                 <a href="{{ route('privacy-policy') }}">سياستنا</a>
-                             </li>
-                             @if (Auth::guard('designer')->check())
-                             <li class="header-btn">
-                                 <a href="{{ route('filament.designer.auth.login') }}" class="axil-btn btn-fill-primary">لوحة التحكم</a>
-                             </li>
-                             @else
-                             <li class="header-btn">
-                                 <a href="{{ route('filament.designer.auth.login') }}" class="axil-btn btn-fill-primary">سجل الآن</a>
-                             </li>
-                             @endif
+        <header class="header axil-header header-style-1">
+            <div id="axil-sticky-placeholder"></div>
+            <div class="axil-mainmenu">
+                <div class="container">
+                    <div class="header-navbar">
+                        <div class="header-logo">
+                            <a href="{{ route('home') }}"><img class="light-version-logo"
+                                    src="{{ $settings::get('icon') ? asset('storage/app/public/' . $settings::get('logo')) : asset('assets/media/logo.png') }}"
+                                    width="160px" alt="logo" /></a>
+                            <a href="{{ route('home') }}"><img class="dark-version-logo"
+                                    src="{{ $settings::get('icon') ? asset('storage/app/public/' . $settings::get('logo')) : asset('assets/media/logo.png') }}"
+                                    width="160px" alt="logo" /></a>
+                            <a href="{{ route('home') }}"><img class="sticky-logo"
+                                    src="{{ $settings::get('icon') ? asset('storage/app/public/' . $settings::get('logo')) : asset('assets/media/logo.png') }}"
+                                    width="160px" alt="logo" /></a>
+                        </div>
+                        <div class="header-main-nav">
+                            <!-- Start Mainmanu Nav -->
+                            <nav class="mainmenu-nav" id="mobilemenu-popup">
+                                <div class="d-block d-lg-none">
+                                    <div class="mobile-nav-header">
+                                        <div class="mobile-nav-logo">
+                                            <a href="{{ route('home') }}">
+                                                <img class="light-mode"
+                                                    src="{{ $settings::get('icon') ? asset('storage/app/public/' . $settings::get('logo')) : asset('assets/media/logo.png') }}"
+                                                    width="160px" alt="Site Logo" />
+                                                <img class="dark-mode"
+                                                    src="{{ $settings::get('icon') ? asset('storage/app/public/' . $settings::get('logo')) : asset('assets/media/logo.png') }}"
+                                                    width="160px" alt="Site Logo" />
+                                            </a>
+                                        </div>
+                                        <button class="mobile-menu-close" data-bs-dismiss="offcanvas">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <ul class="mainmenu" id="onepagenav">
+                                    <li>
+                                        <a href="{{ route('home') }}#op-home">الرئيسية</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('home') }}#op-about">من نحن</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('home') }}#op-vision">رؤيتنا</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('home') }}#op-pricing">الاشتركات</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('privacy-policy') }}">سياستنا</a>
+                                    </li>
+                                    @if (Auth::guard('designer')->check())
+                                        <li class="header-btn">
+                                            <a href="{{ route('filament.designer.auth.login') }}"
+                                                class="axil-btn btn-fill-primary">لوحة التحكم</a>
+                                        </li>
+                                    @else
+                                        <li class="header-btn">
+                                            <a href="{{ route('filament.designer.auth.login') }}"
+                                                class="axil-btn btn-fill-primary">سجل الآن</a>
+                                        </li>
+                                    @endif
 
-                     </nav>
-                     <!-- End Mainmanu Nav -->
-                 </div>
-                 <div class="header-action">
-                     <ul class="list-unstyled">
-                         <li class="mobile-menu-btn sidemenu-btn d-lg-none d-block">
-                             <button class="btn-wrap" data-bs-toggle="offcanvas" data-bs-target="#mobilemenu-popup">
-                                 <span></span>
-                                 <span></span>
-                                 <span></span>
-                             </button>
-                         </li>
-                         <li class="my_switcher d-block d-lg-none mx-2">
-                             <ul>
-                                 <li title="Light Mode">
-                                     <a href="javascript:void(0)" class="setColor light" data-theme="light">
-                                         <i class="fal fa-lightbulb-on"></i>
-                                     </a>
-                                 </li>
-                                 <li title="Dark Mode">
-                                     <a href="javascript:void(0)" class="setColor dark" data-theme="dark">
-                                         <i class="fas fa-moon"></i>
-                                     </a>
-                                 </li>
-                             </ul>
-                         </li>
-                     </ul>
-                 </div>
-             </div>
-         </div>
-     </div>
- </header>
+                            </nav>
+                            <!-- End Mainmanu Nav -->
+                        </div>
+                        <div class="header-action">
+                            <ul class="list-unstyled">
+                                <li class="mobile-menu-btn sidemenu-btn d-lg-none d-block">
+                                    <button class="btn-wrap" data-bs-toggle="offcanvas"
+                                        data-bs-target="#mobilemenu-popup">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </button>
+                                </li>
+                                <li class="my_switcher d-block d-lg-none mx-2">
+                                    <ul>
+                                        <li title="Light Mode">
+                                            <a href="javascript:void(0)" class="setColor light" data-theme="light">
+                                                <i class="fal fa-lightbulb-on"></i>
+                                            </a>
+                                        </li>
+                                        <li title="Dark Mode">
+                                            <a href="javascript:void(0)" class="setColor dark" data-theme="dark">
+                                                <i class="fas fa-moon"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
 
 
         <!--=====================================-->
@@ -237,48 +256,49 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-10">
                         <div class="privacy-policy-content">
-                          
-                      <h4>
-                            {{ $settings::get('platform_policy_title', 'سياسة المنصة') }}
-                        </h4>
-                        <p>
-                            {{ $settings::get('platform_policy_description', 'نحن نلتزم بتقديم تجربة تسوق آمنة وموثوقة، ونحافظ على خصوصية المستخدمين وبياناتهم وفقًا لأعلى المعايير.') }}
-                        </p>
 
-                        <h4>
-                            {{ $settings::get('shipping_policy_title', 'سياسة الشحن') }}
-                        </h4>
-                        <p>
-                            {{ $settings::get('shipping_policy_description', 'نقوم بشحن الطلبات خلال 2-5 أيام عمل. تتوفر خدمة التوصيل إلى جميع المناطق، مع إمكانية تتبع الشحنة بعد الشحن.') }}
-                        </p>
+                            <h4>
+                                {{ $settings::get('platform_policy_title', 'سياسة المنصة') }}
+                            </h4>
+                            <p>
+                                {{ $settings::get('platform_policy_description', 'نحن نلتزم بتقديم تجربة تسوق آمنة وموثوقة، ونحافظ على خصوصية المستخدمين وبياناتهم وفقًا لأعلى المعايير.') }}
+                            </p>
 
-                        <h4>
-                            {{ $settings::get('return_policy_title', 'سياسة الإرجاع') }}
-                        </h4>
-                        <p>
-                            {{ $settings::get('return_policy_description', 'يحق للعملاء إرجاع المنتجات خلال 14 يومًا من تاريخ الاستلام بشرط أن تكون بحالتها الأصلية ومرفقة بالفاتورة.') }}
-                        </p>
+                            <h4>
+                                {{ $settings::get('shipping_policy_title', 'سياسة الشحن') }}
+                            </h4>
+                            <p>
+                                {{ $settings::get('shipping_policy_description', 'نقوم بشحن الطلبات خلال 2-5 أيام عمل. تتوفر خدمة التوصيل إلى جميع المناطق، مع إمكانية تتبع الشحنة بعد الشحن.') }}
+                            </p>
 
-                           
-                            
+                            <h4>
+                                {{ $settings::get('return_policy_title', 'سياسة الإرجاع') }}
+                            </h4>
+                            <p>
+                                {{ $settings::get('return_policy_description', 'يحق للعملاء إرجاع المنتجات خلال 14 يومًا من تاريخ الاستلام بشرط أن تكون بحالتها الأصلية ومرفقة بالفاتورة.') }}
+                            </p>
+
+
+
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
- 
+
         <!--=====================================-->
         <!--=        Footer Area Start       	=-->
         <!--=====================================-->
-             @include('site.sections.footer')
+        @include('site.sections.footer')
 
 
 
         <!--=====================================-->
         <!--=       Offcanvas Menu Area       	=-->
-        
+
     </div>
     @include('site.sections.script')
 </body>
+
 </html>
