@@ -48,12 +48,14 @@ class DynamicCssController extends Controller
 
 body {
     font-family: var(--font-primary);
-    color: var(--color-body);
+    color: var(--color-body) !important;
     background-color: var(--color-accent);
     /* --- NEW: Applying the font size --- */
-    font-size: var(--font-size-base);
 }
 
+p{
+    font-size: var(--font-size-base) !important;
+}
 a {
     color: var(--color-link);
     text-decoration: none;
