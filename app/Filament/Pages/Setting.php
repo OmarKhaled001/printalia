@@ -61,6 +61,7 @@ class Setting extends Page implements HasForms
     public $link_color;
     public $body_color;
     public $font_size;
+    public $font_size_title;
     public $font_family;
     public $font_secondary;
 
@@ -159,6 +160,7 @@ class Setting extends Page implements HasForms
             'link_color'        => \App\Models\Setting::where('key', 'link_color')->value('value') ?: \App\Models\Setting::where('key', 'primary_color')->value('value') ?: 'rgb(63, 162, 46)',
             'body_color'        => \App\Models\Setting::where('key', 'body_color')->value('value') ?: '#43594A',
             'font_size'       => \App\Models\Setting::where('key', 'font_size')->value('value') ?: 'Cairo',
+            'font_size_title'       => \App\Models\Setting::where('key', 'font_size_title')->value('value') ?: 'Cairo',
             'font_family'       => \App\Models\Setting::where('key', 'font_family')->value('value') ?: 'Cairo',
             'font_secondary'    => \App\Models\Setting::where('key', 'font_secondary')->value('value') ?: 'Cairo',
             'platform_policy_title' => \App\Models\Setting::where('key', 'platform_policy_title')->value('value'),
@@ -217,12 +219,6 @@ class Setting extends Page implements HasForms
                             ColorPicker::make('accent_color')->label('لون التمييز'),
                             ColorPicker::make('link_color')->label('لون الروابط'),
                             ColorPicker::make('body_color')->label('لون النص الأساسي'),
-                            TextInput::make('font_size')
-                                ->label('حجم الخط الأساسي')
-                                ->numeric()
-                                ->suffix('px')
-                                ->required()
-                                ->default(16),
                             Select::make('font_family')
                                 ->label('الخط الأساسي')
                                 ->options([
@@ -244,6 +240,19 @@ class Setting extends Page implements HasForms
                                 ])
                                 ->searchable()
                                 ->required(),
+                            TextInput::make('font_size_title')
+                                ->label('حجم الخط للعناوين')
+                                ->numeric()
+                                ->suffix('px')
+                                ->required()
+                                ->default(16),
+                            TextInput::make('font_size')
+                                ->label('حجم الخط الأساسي')
+                                ->numeric()
+                                ->suffix('px')
+                                ->required()
+                                ->default(16),
+
 
                             Actions::make([
                                 Action::make('resetTheme')

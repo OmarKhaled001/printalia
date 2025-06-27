@@ -22,6 +22,7 @@ class DynamicCssController extends Controller
         $fontSecondary  = Setting::where('key', 'font_secondary')->value('value') ?: 'Poppins';
         // --- NEW: Added font size setting ---
         $fontSize       = Setting::where('key', 'font_size')->value('value') ?: '16';
+        $fontSizeTitle       = Setting::where('key', 'font_size_title')->value('value') ?: '26';
 
 
         // تجهيز Google Fonts import
@@ -44,6 +45,7 @@ class DynamicCssController extends Controller
     --font-secondary: '{$fontSecondary}', sans-serif;
     /* --- NEW: CSS variable for font size --- */
     --font-size-base: {$fontSize}px;
+    --font-size-title: {$fontSizeTitle}px;
 }
 
 body {
@@ -51,6 +53,10 @@ body {
     color: var(--color-body) !important;
     background-color: var(--color-accent);
     /* --- NEW: Applying the font size --- */
+}
+
+h1{
+    font-size: var(--font-size-title) !important;
 }
 
 p{
