@@ -1,64 +1,38 @@
 <?php
 
-// File: app/Models/Order.php
-// --- النسخة النهائية والصحيحة ---
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\StatusTypes;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     * تم تحديث هذه القائمة لتتوافق مع هيكل الطلب متعدد المنتجات.
-     */
-    protected $fillable = [
-        'customer_id',
-        'designer_id',
-        'factory_id',
-        'total',
-        'status',
-    ];
+    protected $fillable = ['customer_id', 'designer_id', 'design_id', 'quantity', 'price', 'size', 'total'];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'total' => 'float',
-    ];
 
-    /**
-     * Get the customer that owns the order.
-     */
-    public function customer(): BelongsTo
+    public function design()
+    {
+        return $this->belongsTo(Design::class);
+    }
+
+    public function customer()
     {
         return $this->belongsTo(Customer::class);
     }
-
-    /**
-     * Get the designer associated with the order.
-     * You might need to change this to the correct User model if you have one.
-     */
-    public function designer(): BelongsTo
+    public function designer()
     {
-        return $this->belongsTo(User::class, 'designer_id');
+        return $this->belongsTo(Designer::class);
+    }
+    public function factoryOrders()
+    {
+        return $this->hasMany(FactoryOrder::class);
     }
 
-    /**
-     * The products that belong to the order.
-     */
-    public function products(): BelongsToMany
+    public function currentFactoryOrder()
     {
-        return $this->belongsToMany(Product::class, 'order_product')
-            ->withPivot('quantity', 'price', 'size') // لجلب الكمية والسعر من الجدول الوسيط
-            ->withTimestamps();
+        return $this->hasOne(FactoryOrder::class)->latestOfMany();
     }
 }

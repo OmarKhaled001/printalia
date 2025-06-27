@@ -1,53 +1,23 @@
 <?php
 
-// File: app/Models/Product.php
-// --- النسخة النهائية والصحيحة ---
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'sku',
-        'price',
-        'description',
-        'is_double_sided',
-        'has_sizes',
-        'is_published',
-        'image_front',
-        'image_back'
-    ];
+    protected $fillable = ['name', 'sku', 'price', 'description', 'is_double_sided', 'has_sizes', 'is_published', 'image_front', 'image_back'];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'price' => 'float',
-        'is_double_sided' => 'boolean',
-        'has_sizes' => 'boolean',
-        'is_published' => 'boolean',
-    ];
 
-    /**
-     * The orders that belong to the product.
-     */
-    public function orders(): BelongsToMany
+    public function designs()
     {
-        return $this->belongsToMany(Order::class, 'order_product')
-            ->withPivot('quantity', 'price', 'size')
-            ->withTimestamps();
+        return $this->hasMany(Design::class);
     }
 
-    // The SKU generation logic is good, no changes needed.
+
     public static function generateSku(): string
     {
         do {
