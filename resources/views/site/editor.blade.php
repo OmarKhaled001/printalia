@@ -270,22 +270,21 @@
         }
 
         .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            display: flex;
+            /* تغيير: من grid إلى flex */
+            flex-wrap: wrap;
+            /* إضافة: للسماح للعناصر بالانتقال لسطر جديد */
             gap: 8px;
+            /* يبقى كما هو */
             overflow-y: auto;
-            /* تعديل: الشبكة هي التي ستقوم بالتمرير */
+            /* يبقى كما هو */
             height: 100%;
-            /* تعديل: إزالة الارتفاع الثابت والسماح لها بملء المساحة */
+            /* يبقى كما هو */
         }
 
         .product-item {
-            border: var(--border-light);
-            border-radius: 5px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: var(--transition);
-            background-color: var(--color-white);
+            /* flex-grow | flex-shrink | flex-basis */
+            flex: 1 1 90px;
         }
 
         .product-item:hover {
