@@ -145,7 +145,7 @@ class DesignerPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
-                EnsureDesignerIsVerified::class,
+                // EnsureDesignerIsVerified::class,
                 Authenticate::class,
             ]);
     }

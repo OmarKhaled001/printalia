@@ -61,27 +61,42 @@ class OrderResource extends Resource
                             Placeholder::make('products_label')
                                 ->label('أضف المنتجات إلى الطلب'),
 
-                            // استخدام Repeater لإضافة منتجات متعددة
                             Repeater::make('products')
                                 ->label('المنتجات')
-                                ->relationship() // لتعبئة البيانات تلقائياً عند التعديل
+                                ->relationship()
                                 ->schema([
                                     Select::make('product_id')
                                         ->label('المنتج')
-                                        ->relationship('products', 'name') // علاقة مختلفة للمنتجات
+                                        ->options(Product::query()->pluck('name', 'id'))
                                         ->searchable()
-                                        ->preload()
                                         ->required()
                                         ->reactive()
                                         ->afterStateUpdated(function (Set $set, $state) {
                                             $product = Product::find($state);
                                             if ($product) {
-                                                // تعيين السعر بناءً على المنتج المختار
                                                 $set('price', $product->price);
                                             }
                                         })
                                         ->columnSpan(4),
-
+                                    Select::make('size')
+                                        ->label('المقاس')
+                                        ->options([
+                                            'XS' => 'XS',
+                                            'S' => 'S',
+                                            'M' => 'M',
+                                            'L' => 'L',
+                                            'XL' => 'XL',
+                                            'XXL' => 'XXL',
+                                            'XXXL' => 'XXXL',
+                                        ])
+                                        ->native(false)
+                                        // It is visible only if the selected product has sizes
+                                        ->visible(fn(Get $get): bool => !!Product::find($get('product_id'))?->has_sizes)
+                                        // It is required only if it is visible
+                                        ->required(fn(Get $get): bool => !!Product::find($get('product_id'))?->has_sizes)
+                                        ->columnSpan([
+                                            'md' => 2,
+                                        ]),
                                     TextInput::make('quantity')
                                         ->label('الكمية')
                                         ->numeric()
@@ -90,18 +105,17 @@ class OrderResource extends Resource
                                         ->reactive()
                                         ->columnSpan(2),
 
-                                    // حقل السعر سيتم تعيينه تلقائياً
                                     TextInput::make('price')
                                         ->label('السعر')
                                         ->numeric()
                                         ->required()
                                         ->disabled()
+                                        ->dehydrated() // Ensures the disabled field value is saved
                                         ->columnSpan(2),
                                 ])
                                 ->columns(8)
-                                ->live() // مهم جداً لتحديث الإجمالي
+                                ->live()
                                 ->afterStateUpdated(function (Get $get, Set $set) {
-                                    // دالة لحساب الإجمالي الكلي للطلب
                                     self::updateTotals($get, $set);
                                 })
                                 ->deleteAction(
@@ -110,7 +124,6 @@ class OrderResource extends Resource
                         ]),
                     Forms\Components\Wizard\Step::make('المراجعة والدفع')
                         ->schema([
-                            // عرض الإجمالي النهائي في خطوة المراجعة
                             Placeholder::make('total')
                                 ->label('الإجمالي النهائي للطلب')
                                 ->content(function (Get $get): string {
@@ -119,7 +132,6 @@ class OrderResource extends Resource
                         ])
                 ])->columnSpanFull(),
 
-                // حقل مخفي لتخزين الإجمالي النهائي
                 Hidden::make('total')->default(0),
             ]);
     }
