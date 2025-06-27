@@ -271,12 +271,11 @@
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            /* تعديل: تحديد عمودين متساويين في العرض */
+            grid-template-columns: repeat(2, 1fr);
             gap: 8px;
             overflow-y: auto;
-            /* تعديل: الشبكة هي التي ستقوم بالتمرير */
             height: 100%;
-            /* تعديل: إزالة الارتفاع الثابت والسماح لها بملء المساحة */
         }
 
         .product-item {
