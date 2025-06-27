@@ -271,11 +271,12 @@
 
         .product-grid {
             display: grid;
-            /* تعديل: تحديد عمودين متساويين في العرض */
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
             gap: 8px;
             overflow-y: auto;
+            /* تعديل: الشبكة هي التي ستقوم بالتمرير */
             height: 100%;
+            /* تعديل: إزالة الارتفاع الثابت والسماح لها بملء المساحة */
         }
 
         .product-item {
@@ -395,10 +396,21 @@
             }
 
             .product-grid {
-                grid-template-columns: repeat(2, 1fr);
-                height: auto;
-                /* يتم إعادة التعيين للشاشات الكبيرة */
-                max-height: calc(100vh - 200px);
+                display: flex;
+                /* تغيير: من grid إلى flex */
+                flex-wrap: wrap;
+                /* إضافة: للسماح للعناصر بالانتقال لسطر جديد */
+                gap: 8px;
+                /* يبقى كما هو */
+                overflow-y: auto;
+                /* يبقى كما هو */
+                height: 100%;
+                /* يبقى كما هو */
+            }
+
+            .product-item {
+                /* flex-grow | flex-shrink | flex-basis */
+                flex: 1 1 90px;
             }
 
             .mobile-controls {
@@ -575,9 +587,21 @@
             }
 
             .product-grid {
-                grid-template-columns: repeat(2, 1fr);
-                height: auto;
-                max-height: calc(100vh - 200px);
+                display: flex;
+                /* تغيير: من grid إلى flex */
+                flex-wrap: wrap;
+                /* إضافة: للسماح للعناصر بالانتقال لسطر جديد */
+                gap: 8px;
+                /* يبقى كما هو */
+                overflow-y: auto;
+                /* يبقى كما هو */
+                height: 100%;
+                /* يبقى كما هو */
+            }
+
+            .product-item {
+                /* flex-grow | flex-shrink | flex-basis */
+                flex: 1 1 90px;
             }
 
             .mobile-controls {
