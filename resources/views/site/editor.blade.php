@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="ar" data-theme="light">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>المصمم</title>
-    <meta name="description" content="{{ $settings::get('site_description', 'منصة يمنية متخصصة في تصميم وبيع المنتجات المطبوعة حسب الطلب') }}">
-    <meta name="keywords" content="{{ $settings::get('site_keywords', 'Printalia, برنتاليا, تصميم منتجات, طباعة حسب الطلب, يمن') }}">
+    <meta name="description"
+        content="{{ $settings::get('site_description', 'منصة يمنية متخصصة في تصميم وبيع المنتجات المطبوعة حسب الطلب') }}">
+    <meta name="keywords"
+        content="{{ $settings::get('site_keywords', 'Printalia, برنتاليا, تصميم منتجات, طباعة حسب الطلب, يمن') }}">
 
     <!-- Open Graph / Facebook Meta Tags (لتحسين المشاركة على السوشيال ميديا) -->
     <meta property="og:title" content="{{ $settings::get('site_title', 'Printalia') }}">
-    <meta property="og:description" content="{{ $settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
+    <meta property="og:description"
+        content="{{ $settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="{{ asset('images/logo-social-share.png') }}">
@@ -17,12 +21,14 @@
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $settings::get('site_title', 'Printalia') }}">
-    <meta name="twitter:description" content="{{ $settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
+    <meta name="twitter:description"
+        content="{{ $settings::get('site_description', 'منصة التصميم والطباعة حسب الطلب في اليمن') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
-    <link rel="shortcut icon" type="image/x-icon" href="{{ $settings::get('icon') ? asset('storage/app/public/' . $settings::get('icon')) : asset('assets/media/icon.png') }}" />
+    <link rel="shortcut icon" type="image/x-icon"
+        href="{{ $settings::get('icon') ? asset('storage/app/public/' . $settings::get('icon')) : asset('assets/media/icon.png') }}" />
 
     <style>
         :root {
@@ -209,12 +215,18 @@
             background-color: var(--color-white);
             border-top: var(--border-light);
             padding: 10px;
-            overflow-y: auto;
             box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-            height: 400px;
+            height: 45vh;
+            /* تعديل: استخدام ارتفاع نسبي بدلاً من 400px الثابتة */
             z-index: 20;
             transform: translateY(100%);
             transition: transform 0.3s ease;
+            overflow: hidden;
+            /* تعديل: إخفاء التمرير للسماح للعنصر الداخلي بالتحكم به */
+
+            /* إضافة: تحويل اللوحة إلى حاوية Flex */
+            display: flex;
+            flex-direction: column;
         }
 
         .products-panel.show {
@@ -262,7 +274,9 @@
             grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
             gap: 8px;
             overflow-y: auto;
-            height: 100px;
+            /* تعديل: الشبكة هي التي ستقوم بالتمرير */
+            height: 100%;
+            /* تعديل: إزالة الارتفاع الثابت والسماح لها بملء المساحة */
         }
 
         .product-item {
@@ -369,16 +383,22 @@
                 position: relative;
                 width: 280px;
                 height: auto;
+                /* يتم إعادة التعيين للشاشات الكبيرة */
                 border-top: none;
                 border-left: var(--border-light);
                 box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
                 transform: none;
                 padding: 15px;
+                overflow: visible;
+                /* إعادة التعيين للشاشات الكبيرة */
+                display: block;
+                /* إعادة التعيين للشاشات الكبيرة */
             }
 
             .product-grid {
                 grid-template-columns: repeat(2, 1fr);
-                height: 30%;
+                height: auto;
+                /* يتم إعادة التعيين للشاشات الكبيرة */
                 max-height: calc(100vh - 200px);
             }
 
@@ -606,17 +626,18 @@
                 /* 4:3 aspect ratio */
             }
         }
-
     </style>
-    
+
     <link rel="stylesheet" href="{{ url('dynamic-styles.css') }}">
 </head>
+
 <body>
     <div class="container-fluid">
 
 
         <div class="toolbar">
-            <a class="btn btn-success btn-sm" href="{{ route('filament.designer.pages.dashboard') }}" title="لوحة التحكم">
+            <a class="btn btn-success btn-sm" href="{{ route('filament.designer.pages.dashboard') }}"
+                title="لوحة التحكم">
                 <i class="fas fa-tachometer-alt"></i>
                 <span class="d-none d-lg-inline">لوحة التحكم</span>
             </a>
@@ -679,23 +700,29 @@
                     <div class="panel-tab" onclick="switchProductView('back')">الواجهة الخلفية</div>
                 </div>
                 <div class="product-grid" id="frontProductsGrid">
-                    @foreach($products as $product)
-                    <div class="product-item" data-product-id="{{ $product->id }}" data-side="front" data-price="{{ $product->price }}" onclick="loadProductMockup({{ $product->id }}, 'front')">
-                        <img src="{{ asset('storage/app/public/' . $product->image_front) }}" class="product-image" alt="{{ $product->name }}">
-                        <div class="product-name">{{ $product->name }}</div>
-                        <div class="product-price">{{ number_format($product->price, 2) }} ر.س</div>
-                    </div>
+                    @foreach ($products as $product)
+                        <div class="product-item" data-product-id="{{ $product->id }}" data-side="front"
+                            data-price="{{ $product->price }}"
+                            onclick="loadProductMockup({{ $product->id }}, 'front')">
+                            <img src="{{ asset('storage/app/public/' . $product->image_front) }}"
+                                class="product-image" alt="{{ $product->name }}">
+                            <div class="product-name">{{ $product->name }}</div>
+                            <div class="product-price">{{ number_format($product->price, 2) }} ر.س</div>
+                        </div>
                     @endforeach
                 </div>
                 <div class="product-grid d-none" id="backProductsGrid">
-                    @foreach($products as $product)
-                    @if($product->is_double_sided && $product->image_back)
-                    <div class="product-item" data-product-id="{{ $product->id }}" data-side="back" data-price="{{ $product->price }}" onclick="loadProductMockup({{ $product->id }}, 'back')">
-                        <img src="{{ asset('storage/app/public/' . $product->image_back) }}" class="product-image" alt="{{ $product->name }}">
-                        <div class="product-name">{{ $product->name }}</div>
-                        <div class="product-price">{{ number_format($product->price, 2) }} ر.س</div>
-                    </div>
-                    @endif
+                    @foreach ($products as $product)
+                        @if ($product->is_double_sided && $product->image_back)
+                            <div class="product-item" data-product-id="{{ $product->id }}" data-side="back"
+                                data-price="{{ $product->price }}"
+                                onclick="loadProductMockup({{ $product->id }}, 'back')">
+                                <img src="{{ asset('storage/app/public/' . $product->image_back) }}"
+                                    class="product-image" alt="{{ $product->name }}">
+                                <div class="product-name">{{ $product->name }}</div>
+                                <div class="product-price">{{ number_format($product->price, 2) }} ر.س</div>
+                            </div>
+                        @endif
                     @endforeach
 
                 </div>
@@ -714,7 +741,8 @@
                     <h5 class="modal-title">حفظ التصميم</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="saveDesignForm" method="POST" action="{{ route('designs.store') }}" enctype="multipart/form-data">
+                <form id="saveDesignForm" method="POST" action="{{ route('designs.store') }}"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
@@ -730,7 +758,8 @@
                             <p>سعر المنتج: <span id="productPriceSpan">0.00</span> ر.س</p>
                             <div class="mb-3">
                                 <label class="form-label">سعر البيع</label>
-                                <input type="number" class="form-control" id="salePriceInput" name="sale_price" step="0.01" min="0" required>
+                                <input type="number" class="form-control" id="salePriceInput" name="sale_price"
+                                    step="0.01" min="0" required>
                             </div>
                             <p>هامش الربح: <span id="profitSpan">0.00</span> ر.س</p>
                         </div>
@@ -758,9 +787,9 @@
     <script>
         // Initialize Fabric.js Canvas
         const canvas = new fabric.Canvas("canvas", {
-            preserveObjectStacking: true
-            , width: 800
-            , height: 600
+            preserveObjectStacking: true,
+            width: 800,
+            height: 600
         });
 
         // Zoom level management
@@ -829,9 +858,9 @@
         // Setup canvas event listeners for undo/redo
         function setupCanvasEvents() {
             canvas.on({
-                'object:added': saveState
-                , 'object:modified': saveState
-                , 'object:removed': saveState
+                'object:added': saveState,
+                'object:modified': saveState,
+                'object:removed': saveState
             });
         }
 
@@ -921,9 +950,10 @@
             });
 
             // تحديد العنصر المحدد
-            document.querySelectorAll(`.product-item[data-product-id="${productId}"][data-side="${side}"]`).forEach(item => {
-                item.classList.add('selected');
-            });
+            document.querySelectorAll(`.product-item[data-product-id="${productId}"][data-side="${side}"]`).forEach(
+                item => {
+                    item.classList.add('selected');
+                });
 
             // العثور على المنتج في المصفوفة
             const product = products.find(p => p.id == productId);
@@ -936,23 +966,22 @@
             fabric.Image.fromURL(imageUrl, function(img) {
                 // قياس الصورة لتناسب الكانفس مع الحفاظ على النسبة
                 const scaleFactor = Math.min(
-                    canvas.width / img.width
-                    , canvas.height / img.height
+                    canvas.width / img.width, canvas.height / img.height
                 );
 
                 img.set({
-                    scaleX: scaleFactor
-                    , scaleY: scaleFactor
-                    , left: canvas.width / 2
-                    , top: canvas.height / 2
-                    , originX: 'center'
-                    , originY: 'center'
+                    scaleX: scaleFactor,
+                    scaleY: scaleFactor,
+                    left: canvas.width / 2,
+                    top: canvas.height / 2,
+                    originX: 'center',
+                    originY: 'center'
                 });
 
                 canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
-                    scaleX: img.scaleX
-                    , scaleY: img.scaleY
-                , });
+                    scaleX: img.scaleX,
+                    scaleY: img.scaleY,
+                });
 
                 saveState(); // Save state after background change
 
@@ -1013,8 +1042,8 @@
 
             // الحصول على صورة الخلفية فقط
             const mockupDataURL = canvas.toDataURL({
-                format: "png"
-                , multiplier: 1
+                format: "png",
+                multiplier: 1
             });
 
             // 2. حفظ صورة التصميم فقط (الشعارات بدون الخلفية)
@@ -1023,8 +1052,8 @@
                 canvas.renderAll();
 
                 const designDataURL = canvas.toDataURL({
-                    format: "png"
-                    , multiplier: 1
+                    format: "png",
+                    multiplier: 1
                 });
 
                 // 3. حفظ الصورة المدمجة (الخلفية + التصميم)
@@ -1033,8 +1062,8 @@
                     canvas.renderAll();
 
                     const mergedDataURL = canvas.toDataURL({
-                        format: "png"
-                        , multiplier: 1
+                        format: "png",
+                        multiplier: 1
                     });
 
                     // تحويل البيانات إلى ملفات
@@ -1118,12 +1147,12 @@
                     const scale = 0.2;
 
                     img.set({
-                        left: canvas.width / 2
-                        , top: canvas.height / 2
-                        , scaleX: scale
-                        , scaleY: scale
-                        , originX: 'center'
-                        , originY: 'center'
+                        left: canvas.width / 2,
+                        top: canvas.height / 2,
+                        scaleX: scale,
+                        scaleY: scale,
+                        originX: 'center',
+                        originY: 'center'
                     });
                     canvas.add(img);
                     canvas.setActiveObject(img);
@@ -1148,7 +1177,7 @@
         function triggerFileInput(id) {
             document.getElementById(id).click();
         }
-
     </script>
 </body>
+
 </html>
