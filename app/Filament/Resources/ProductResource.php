@@ -54,7 +54,10 @@ class ProductResource extends Resource
                     ->live()
                     ->columnSpan(12),
 
-
+                Toggle::make('has_sizes')
+                    ->label('مقاسات متعددة؟')
+                    ->live() // Added live for reactivity, useful for showing/hiding other fields
+                    ->columnSpan(12),
 
                 FileUpload::make('image_front')
                     ->label('صورة أمامية')

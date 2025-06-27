@@ -1,5 +1,8 @@
 <?php
 
+// File: app/Http/Controllers/DynamicCssController.php
+// --- Updated to include font size ---
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
@@ -17,6 +20,9 @@ class DynamicCssController extends Controller
 
         $fontPrimary    = Setting::where('key', 'font_family')->value('value') ?: 'Cairo';
         $fontSecondary  = Setting::where('key', 'font_secondary')->value('value') ?: 'Poppins';
+        // --- NEW: Added font size setting ---
+        $fontSize       = Setting::where('key', 'font_size')->value('value') ?: '16';
+
 
         // تجهيز Google Fonts import
         $googleImport = "@import url('https://fonts.googleapis.com/css2?family=" . urlencode($fontPrimary) . "&display=swap');\n";
@@ -36,12 +42,16 @@ class DynamicCssController extends Controller
     --color-dark: {$primaryColor};
     --font-primary: '{$fontPrimary}', sans-serif;
     --font-secondary: '{$fontSecondary}', sans-serif;
+    /* --- NEW: CSS variable for font size --- */
+    --font-size-base: {$fontSize}px;
 }
 
 body {
     font-family: var(--font-primary);
     color: var(--color-body);
     background-color: var(--color-accent);
+    /* --- NEW: Applying the font size --- */
+    font-size: var(--font-size-base);
 }
 
 a {

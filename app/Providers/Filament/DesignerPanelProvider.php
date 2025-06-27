@@ -12,6 +12,7 @@ use Filament\Pages\Dashboard;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Filament\Navigation\NavigationGroup;
 use Orion\FilamentGreeter\GreeterPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -39,8 +40,22 @@ class DesignerPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        $primaryColor = Setting::where('key', 'primary_color')->value('value') ?? '#6366f1';
-        $fontFamily = Setting::where('key', 'font_family')->value('value') ?? 'Inter';
+        $primaryColor = '#6366f1';
+        $fontFamily = 'Inter';
+
+        // 2. Only query the database for settings if the 'settings' table exists.
+        //    This prevents errors during `php artisan migrate`.
+        if (Schema::hasTable('settings')) {
+            $primaryColorFromDb = Setting::where('key', 'primary_color')->value('value');
+            if ($primaryColorFromDb) {
+                $primaryColor = $primaryColorFromDb;
+            }
+
+            $fontFamilyFromDb = Setting::where('key', 'font_family')->value('value');
+            if ($fontFamilyFromDb) {
+                $fontFamily = $fontFamilyFromDb;
+            }
+        }
         return $panel
             ->id('designer')
             ->path('designer')

@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'sku', 'price', 'description', 'is_double_sided', 'is_published', 'image_front', 'image_back'];
+    protected $fillable = ['name', 'sku', 'price', 'description', 'is_double_sided', 'has_sizes', 'is_published', 'image_front', 'image_back'];
 
 
     public function designs()
@@ -36,5 +37,12 @@ class Product extends Model
                 $product->sku = self::generateSku();
             }
         });
+    }
+
+    public function orders(): BelongsToMany
+    {
+        return $this->belongsToMany(Order::class, 'order_product')
+            ->withPivot('quantity', 'price')
+            ->withTimestamps();
     }
 }

@@ -24,15 +24,24 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
         Schema::defaultStringLength(191);
 
-        LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
-            $switch->locales(['ar', 'en'])->displayLocale('ar')->visible(false);
-        });
+        // --- Start of the fix ---
+        // We check if the 'settings' table exists before trying to access it.
+        // This prevents errors when running commands like `php artisan migrate`
+        // on a fresh database where the table hasn't been created yet.
+        if (Schema::hasTable('settings')) {
+            LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
+                $switch->locales(['ar', 'en'])->displayLocale('ar')->visible(false);
+            });
 
-        View::share('settings', app(\App\Models\Setting::class));
+            // This line is now safe because it will only run if the 'settings' table exists.
+            View::share('settings', app(\App\Models\Setting::class));
+        }
+        // --- End of the fix ---
 
+
+        // This font logic is safe because it does not depend on the database.
         $googleFonts = [
             'Cairo',
             'Tajawal',
@@ -58,6 +67,10 @@ class AppServiceProvider extends ServiceProvider
 
         View::share('googleFontLinks', $fontLinks);
 
-        \App\Models\Subscription::observe(SubscriptionObserver::class);
+
+        // As a good practice, we'll also wrap the observer registration in a similar check.
+        if (Schema::hasTable('subscriptions')) {
+            \App\Models\Subscription::observe(SubscriptionObserver::class);
+        }
     }
 }
