@@ -35,6 +35,7 @@ class OrderResource extends Resource
     protected static ?string $modelLabel = 'طلب';
     protected static ?string $pluralModelLabel = 'الطلبات';
 
+
     public static function form(Form $form): Form
     {
         return $form
@@ -77,7 +78,10 @@ class OrderResource extends Resource
                                                 $set('price', $product->price);
                                             }
                                         })
-                                        ->columnSpan(4),
+                                        ->columnSpan([
+                                            'md' => 3,
+                                        ]),
+
                                     Select::make('size')
                                         ->label('المقاس')
                                         ->options([
@@ -90,37 +94,44 @@ class OrderResource extends Resource
                                             'XXXL' => 'XXXL',
                                         ])
                                         ->native(false)
-                                        // It is visible only if the selected product has sizes
                                         ->visible(fn(Get $get): bool => !!Product::find($get('product_id'))?->has_sizes)
-                                        // It is required only if it is visible
                                         ->required(fn(Get $get): bool => !!Product::find($get('product_id'))?->has_sizes)
                                         ->columnSpan([
                                             'md' => 2,
                                         ]),
+
                                     TextInput::make('quantity')
                                         ->label('الكمية')
                                         ->numeric()
                                         ->required()
                                         ->default(1)
                                         ->reactive()
-                                        ->columnSpan(2),
+                                        ->columnSpan([
+                                            'md' => 1,
+                                        ]),
 
                                     TextInput::make('price')
                                         ->label('السعر')
                                         ->numeric()
                                         ->required()
                                         ->disabled()
-                                        ->dehydrated() // Ensures the disabled field value is saved
-                                        ->columnSpan(2),
+                                        ->dehydrated()
+                                        ->columnSpan([
+                                            'md' => 2,
+                                        ]),
                                 ])
                                 ->columns(8)
                                 ->live()
+                                // --- START OF THE FIX ---
+                                // Changed self:: to the explicit class name OrderResource::
+                                // This is a more robust way to call a static method from a closure.
                                 ->afterStateUpdated(function (Get $get, Set $set) {
-                                    self::updateTotals($get, $set);
+                                    OrderResource::updateTotals($get, $set);
                                 })
                                 ->deleteAction(
-                                    fn(Forms\Components\Actions\Action $action) => $action->after(fn(Get $get, Set $set) => self::updateTotals($get, $set)),
+                                    fn(Forms\Components\Actions\Action $action) => $action->after(fn(Get $get, Set $set) => OrderResource::updateTotals($get, $set)),
                                 ),
+                            // --- END OF THE FIX ---
                         ]),
                     Forms\Components\Wizard\Step::make('المراجعة والدفع')
                         ->schema([
@@ -134,6 +145,22 @@ class OrderResource extends Resource
 
                 Hidden::make('total')->default(0),
             ]);
+    }
+
+    public static function updateTotals(Get $get, Set $set): void
+    {
+        $total = 0;
+        $selectedProducts = $get('products');
+
+        if (is_array($selectedProducts)) {
+            foreach ($selectedProducts as $item) {
+                if (!empty($item['price']) && !empty($item['quantity'])) {
+                    $total += $item['price'] * $item['quantity'];
+                }
+            }
+        }
+
+        $set('total', $total);
     }
     public static function getEloquentQuery(): Builder
     {

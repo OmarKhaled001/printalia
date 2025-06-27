@@ -42,13 +42,18 @@ class DesignerPanelProvider extends PanelProvider
     {
         $primaryColor = '#6366f1';
         $fontFamily = 'Inter';
-
+        $logo = asset('assets/media/logo.png');
         // 2. Only query the database for settings if the 'settings' table exists.
         //    This prevents errors during `php artisan migrate`.
         if (Schema::hasTable('settings')) {
             $primaryColorFromDb = Setting::where('key', 'primary_color')->value('value');
             if ($primaryColorFromDb) {
                 $primaryColor = $primaryColorFromDb;
+            }
+
+            $logoFromDb = Setting::where('key', 'logo')->value('value');
+            if ($logoFromDb) {
+                $logo = asset('storage/app/public/' . $logoFromDb);
             }
 
             $fontFamilyFromDb = Setting::where('key', 'font_family')->value('value');
@@ -125,7 +130,7 @@ class DesignerPanelProvider extends PanelProvider
                     ->columnSpan('full'),
 
             ])
-            ->brandLogo(asset('logo.png'))->brandLogoHeight('2.2rem')
+            ->brandLogo($logo)->brandLogoHeight('2.2rem')
             ->discoverResources(in: app_path('Filament/Designer/Resources'), for: 'App\\Filament\\Designer\\Resources')
             ->discoverPages(in: app_path('Filament/Designer/Pages'), for: 'App\\Filament\\Designer\\Pages')
             ->pages([
